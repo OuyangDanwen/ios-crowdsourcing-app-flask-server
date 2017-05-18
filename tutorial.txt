@@ -1,0 +1,11 @@
+1.Build tensorflow from source. Follow the tutorial from https://www.tensorflow.org/install/install_sources.
+2.The retrained_model dir contains all the necessary files needed for prediction based on the retrained model.
+3.The test_image dir contains some test images. You can also try you own images.
+4.Open terminal and run the following command: bazel-bin/tensorflow/examples/label_image/label_image \
+--graph="path to output_graph.pb in the retrained_model dir" --labels="path to output_labels.txt in the retrained_model dir" \
+--output_layer=final_result \
+--image="path to your test image" --input_layer=Mul
+5. The different predictable classes of the retrained model can be found in /retrained_model/bottleneck. They are just the names of the respective subfolders.
+6. For retraining your own model, follow the tutorial on https://www.tensorflow.org/tutorials/image_retraining. By default, tensorflow saves all generated graph and labels in \tmp which will be cleared on reboot each time. Therefore, you should edit /tensorflow/bazel-bin/tensorflow/examples/image_retraining/retrain.py to store those data in a permenant dir for reuse.
+7. Do not forget the "--input_layer=Mul" flag for prediction. It is missing from the old tutorial but it is necessary now.
+8. Links to model: https://drive.google.com/open?id=0Bw5qd-tQaKB3THBHdUFPbWt2bFU.

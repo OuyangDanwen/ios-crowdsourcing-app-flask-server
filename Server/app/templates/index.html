@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+	<h1>Hello, {{user.name}}!</h1>
+	<a href='get_labels' class="button">Show All Labels</a><br><br>
+	<a href="show_version" class="button">Show Version</a><br><br>
+    <h3>Upload a Image for Prediction</h3>
+    <form method=post enctype=multipart/form-data>
+      <p><input type=file name=file id="predictImage">		
+         <!-- <input type=submit value=Upload> -->
+         <input type="submit" name="predict", value=Predict onclick="checkEmpty2()";>
+    </form>
+    <h3>Upload a New Labeled Image</h3>
+    <form method=post enctype=multipart/form-data>
+      <p><input type=file name=file id="newImage">
+         <input type="text" name=text id="text">	
+         <input type="submit" name="upload" value=Save onclick="checkEmpty1()";>
+    </form><br><br>
+    <script>
+    	function checkEmpty1() {
+
+    		if (document.getElementById("newImage").files.length == 0) {
+    			alert("Missing image")
+    		}
+    		else if (document.getElementById("text").value == "") {
+    			alert("Must add a label");
+    		}
+    	}
+
+    	function checkEmpty2() {
+    		if (document.getElementById("predictImage").files.length == 0) {
+    			alert("Missing image")
+    		}
+    	}
+    </script>
+	<!-- <a href="add_image" class="button">Add Image</a><br><br> -->
+	<a href="retrain_model" class="button">Retrain Model</a>
+{% endblock %}
