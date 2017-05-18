@@ -1,8 +1,0 @@
-<!DOCTYPE html>
-{% extends "base.html" %}
-{% block content %}
-<h1>The predicted result in descending confidence: </h1>
-	{% for prediction in output %}
-	<div><h2>{{prediction}}</h2></div>
-	{% endfor %}
-{% endblock %}
