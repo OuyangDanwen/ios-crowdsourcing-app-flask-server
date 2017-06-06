@@ -1,0 +1,101 @@
+<div class="widgets">
+<div class="row">
+<div class="col-md-12">
+  <div class="row show-grid">
+<div class="col-xl-3 col-lg-6 col-md-6">
+  <form enctype="multipart/form-data" class="form-horizontal">
+  <ba-card title="PREDICT IMAGE" baCardClass="with-scroll">
+    <label for="file-upload" class="btn btn-info">
+        Choose file
+    </label>
+      <input id="file-upload" type="file" name="pic" accept="image/*" (change)="onChange($event)">
+      <label for="file-submit" class="btn btn-info">
+        Submit
+    </label>
+      <input id="file-submit" type="submit" name="predict">
+  </ba-card>
+    
+  </form>
+</div>
+<div class="col-xl-3 col-lg-6 col-md-6">
+  <form enctype="multipart/form-data" class="form-horizontal" (ngSubmit)='myFunc()'>
+  <ba-card title="TENSORFLOW VERSION" baCardClass="with-scroll">
+  <label for="file-submit2" class="btn btn-info">
+        Check
+    </label>
+    <h5 class="panel-subtitle"> {{this.version}} </h5>
+    <input id="file-submit2" type="submit" name="predict" style="display:none;" value="Click Me">
+    
+  </ba-card>
+  </form>
+</div>
+
+<div class="col-md-6">
+  <form enctype="multipart/form-data" class="form-horizontal">
+  <ba-card title="LABEL IMAGE" baCardClass="with-scroll">
+    <label for="file-upload2" class="btn btn-info" >
+        Choose file
+    </label>
+      <input multiple id="file-upload2" type="file" name="photo" accept="image/*" (change)="onLabel($event)" [multiple]="true">
+      <input type="text" name="text" [(ngModel)]="labelTxt">
+      <label for="file-submit" class="btn btn-info" (click)="setLabel(labelTxt)">
+        Upload
+    </label>
+      <input id="file-submit" type="submit" name="predict">
+  </ba-card>
+    
+  </form>
+</div>
+</div>
+</div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+
+      <ba-card title="Predictions" baCardClass="with-scroll table-panel">
+        <div class="horizontal-scroll">
+  <table class="table table-hover">
+    <thead>
+    <tr class="black-muted-bg">
+      <th class="align-right">Label</th>
+      <th class="table-arr"></th>
+      <th class="align-right">Confidence Score</th>
+      <th class="table-arr"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of metricsTableData1" class="no-top-border">
+      <td class="align-right">{{item.label}}</td>
+      <td></td>
+      <td class="align-right">{{item.confidence}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+      </ba-card>
+    </div>
+</div>
+
+<!--
+<div class="col-md-6">
+  <form enctype="multipart/form-data" class="form-horizontal">
+  <ba-card title="PREDICT IMAGE" baCardClass="with-scroll">
+    <label for="file-upload" class="btn btn-info">
+        Choose file
+    </label>
+      <input id="file-upload" type="file" name="pic" accept="image/*" (change)="onChange($event)">
+      <label for="file-submit" class="btn btn-info">
+        Submit
+    </label>
+      <input id="file-submit" type="submit" name="predict">
+  </ba-card>
+    
+  </form>
+</div>
+
+<div class="widgets">
+    <div class="col-md-6">
+      <ba-card title="" baCardClass="with-scroll table-panel">
+        <hover-table></hover-table>
+      </ba-card>
+    </div>-->
