@@ -25,3 +25,4 @@ bin
 Packages/
 .build/
 iOS16Perfect.xcodeproj
+*.pyc

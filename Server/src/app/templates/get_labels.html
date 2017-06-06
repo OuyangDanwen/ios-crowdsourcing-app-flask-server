@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+	<h1>All Current Labels Are Listed:</h1>
+	{% for label in labels %}
+	<div><h2>{{label}}</h2></div>
+	{% endfor %}
+{% endblock %}

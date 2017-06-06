@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	{% if title %}
+	<title>{{title}} - Siemens CT Mobile</title>
+	{% else %}
+	<title>Welcome to Siemens CT Mobile</title>
+	{% endif %}
+<style>
+.button {
+  font: bold 11px Arial;
+  text-decoration: none;
+  background-color: #EEEEEE;
+  color: #333333;
+  padding: 2px 6px 2px 6px;
+  border-top: 1px solid #CCCCCC;
+  border-right: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+  border-left: 1px solid #CCCCCC;
+}
+</style>
+</head>
+<body>
+	<div> <a href="/index">Home</a></div>
+	<hr>
+	{% block content %}{% endblock %}
+</body>
+</html>
