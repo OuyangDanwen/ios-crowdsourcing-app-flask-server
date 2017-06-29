@@ -342,14 +342,8 @@ def deleteImage(label, name):
 # Check if path is valid!!!
 @app.route('/api/images/<label>/<name>', methods=['GET'])
 def sendImage(label, name):
-    #base = "/home/ec2-user/Server/file_system/thumbnails/" + label + "/" + name
     base = "/home/ec2-user/Server/file_system/train_image/" + label + "/" + name
     return send_file(base, mimetype='image/jpeg')
-
-# @app.route('/testtttt', methods=['GET'])
-# def testtttt():
-#     insert_training_data_and_create_labels()
-#     return "", 200
 
 @app.route('/api/mindsight/predictions/validate', methods=['POST'])
 @jwt_required

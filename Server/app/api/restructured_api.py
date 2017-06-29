@@ -81,17 +81,6 @@ def retrain():
 	retrainer.start()
 	return jsonify({'msg': 'success'}), 200
 
-# @app.route('/api/dashboard/labels', methods=['POST'])
-# def addLabel_dashboard():
-#     content = request.get_json()
-#     encodedImage = content['images']
-#     label = content['label']
-#     imgs = []
-#     for img in encodedImage:
-#         imgs.append(base64.b64decode(img))
-#     handleLabelforMultipleImages(imgs, label)
-#     return 201
-
 @app.route('/api/mindsight/labels', methods=['POST'])
 def addLabel_mindsight():
 	content = request.get_json()
@@ -101,6 +90,3 @@ def addLabel_mindsight():
 	coordinates = content['coordinates']
 	handleLabelForSingleImage(img, label, username, coordinates)
 	return jsonify({'msg': 'success'}), 201
-
-
-
