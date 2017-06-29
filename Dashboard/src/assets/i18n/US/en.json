@@ -60,9 +60,9 @@
     "feed": "Feed",
     "todo_list": "To Do List",
     "calendar": "Calendar",
-    "new_visits": "New Visits",
-    "purchases": "Purchases",
-    "active_users": "Active Users",
+    "num_labels": "Labels",
+    "num_images": "Images",
+    "training_time": "Training Time",
     "returned": "Returned",
     "popular_app": {
       "super_app": "Super App",

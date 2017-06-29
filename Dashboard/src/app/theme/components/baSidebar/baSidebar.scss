@@ -122,7 +122,9 @@ $angle-right: '\f101';
     overflow: hidden;
     cursor: pointer;
     &:hover {
-      color: $primary;
+      color: $sidebar-text-hover;
+      background-color: $white-color;
+      text-decoration: underline !important;
       b {
         color: $primary;
       }

@@ -26,6 +26,31 @@ export const PAGES_MENU = [
           }
         }
       },
+       {
+        path: 'resources',
+        data: {
+          menu: {
+            title: 'Resources',
+            icon: 'ion-folder',
+            selected: false,
+            expanded: false,
+            order: 0
+          }
+        }
+      },
+            {
+        path: 'images',
+        data: {
+          menu: {
+            title: 'Images',
+            icon: 'ion-images',
+            selected: false,
+            expanded: false,
+            order: 0
+          }
+        }
+      },
+
       // {
       //   path: 'labels',  // path for our page
       //   data: { // custom menu declaration
