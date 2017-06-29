@@ -181,7 +181,6 @@ def cropImage(imgPath, label, coordinates):
             y = (float)(coordinate.split(',')[1])
             pixels.append((x,y))
         im = Image.open(imgPath)
-        print(str(pixels))
         contour = ImagePath.Path(pixels)
         minimalBound = contour.getbbox()
         im = im.crop(minimalBound)
