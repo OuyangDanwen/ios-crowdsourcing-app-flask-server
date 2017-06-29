@@ -1,89 +1,113 @@
-import {Component, ViewChild} from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { DashboardService } from './dashboard.service';
 import { NgForm } from '@angular/forms';
+import { NgUploaderOptions } from 'ngx-uploader';
+
 @Component({
   selector: 'dashboard',
   styleUrls: ['./dashboard.scss'],
   templateUrl: './dashboard.html'
 })
 export class Dashboard {
-  metricsTableData1:Array<any>;
+  metricsTableData1: Array<any>;
   arrayOfKeys = [];
+  public defaultPicture = 'assets/img/theme/upload.jpg';
+  public profile: any = {
+    picture: 'assets/img/theme/upload.jpg'
+  };
 
-  constructor(private dashboardService: DashboardService) {}
-  file: File;  
-  file1: File;
+  constructor(private dashboardService: DashboardService) {
+    this.myFunc();
+    this.showRetrainingInfo();
+    this.showBackendVersion();
+   }
+   
+   public uploaderOptions: NgUploaderOptions = {
+    url: '',
+  };
+
+  file: File;
   version = '';
-  labelTxt: string;
-  base64textString:string='';
-  files: FileList; 
+  training_time = '';
+  training_duration = '';
+  num_labels = '';
+  num_images = '';
+  repoVersion = '';
+
+  postResources(event: EventTarget) {
+    let eventObj: MSInputMethodContext = <MSInputMethodContext>event;
+    let target: HTMLInputElement = <HTMLInputElement>eventObj.target;
+    let files: FileList = target.files;
+    this.dashboardService.uploadRes(files[0])
+      .subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => console.log(error)
+      );
+  }
+
+//Retrain
+  retrainModal() {
+    this.dashboardService.retrain()
+    .subscribe((response) => {
+        console.log("Got " + response);
+      },
+      (error) => { console.log(error); }
+      );
+  }
   
   onChange(event: EventTarget) {
-        let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
-        let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
-        let files: FileList = target.files;
-        this.file = files[0];
-         this.doAnythingWithFile();
-    }
+    let eventObj: MSInputMethodContext = <MSInputMethodContext>event;
+    let target: HTMLInputElement = <HTMLInputElement>eventObj.target;
+    let files: FileList = target.files;
+    this.file = files[0];
+    this.doAnythingWithFile();
+  }
 
-   doAnythingWithFile() {
-         this.dashboardService.upload(this.file)
+  doAnythingWithFile() {
+    this.dashboardService.upload(this.file)
       .subscribe(
-        (response) => {
-          this.arrayOfKeys = Object.keys(response);
-          console.log(response.constructor.name);
-          this.metricsTableData1 = response;
+      (response) => {
+        this.arrayOfKeys = Object.keys(response);
+        console.log(response.constructor.name);
+        this.metricsTableData1 = response;
       },
-        (error) => console.log(error)
+      (error) => console.log(error)
       );
-   }
+  }
 
-   
-   myFunc(){
-     this.dashboardService.showVersion()
+
+  myFunc() {
+    this.dashboardService.showVersion()
       .subscribe(
-        (version: any) => {console.log("Version : " + version); this.version = version;},
-        (error) => console.log(error)
+      (version: any) => { console.log("Version : " + version); this.version = version; },
+      (error) => console.log(error)
       );
-   }
+  }
 
-//Batch uploading
-
-onLabel(event: EventTarget) {
-        let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
-        let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
-        let files: FileList = target.files;
-        console.log(files.length);
-        this.file1 = files[0];
-        if (files && this.file1) {
-        var reader = new FileReader();
-        reader.onload =this.handleReaderLoaded.bind(this);
-        reader.readAsBinaryString(this.file1);
-    }
-    }
-
-    handleReaderLoaded(readerEvt) {
-     var binaryString = readerEvt.target.result;
-     this.base64textString= btoa(binaryString);
-    }
-
-
-   labelFile(tempString: string,base64textString: string) {
-      this.dashboardService.uploadFileLabel(tempString,this.base64textString)
+  showRetrainingInfo() {
+    this.dashboardService.showRetrainingInfo()
       .subscribe(
-        (response) => {
-          this.arrayOfKeys = Object.keys(response);
-          console.log(response)
-      },
-        (error) => console.log(error)
+      (response) => { //console.log("Version : " + response.training_time); 
+      console.log(response.training_time);
+      this.training_time = response.training_time.slice(0,19);
+      this.training_duration = response.training_duration;
+      this.num_labels = response.num_labels[1];
+      this.num_images = response.num_images;
+ },
+      (error) => console.log(error)
       );
-   }
-setLabel(labelTxt: string) {
-this.labelTxt = labelTxt;
-this.labelFile(this.labelTxt,this.base64textString);
-}
+  }
 
-getLabel() {
-  return this.labelTxt;
-}
+  showBackendVersion() {
+      this.dashboardService.showRepoVersion()
+      .subscribe(
+      (response) => { console.log("Version : " + response); 
+      this.repoVersion = response.version;
+ },
+      (error) => console.log(error)
+      );
+  }
+
 }

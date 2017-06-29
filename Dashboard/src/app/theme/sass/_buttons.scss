@@ -88,6 +88,13 @@ button.btn.btn-success {
   }
 }
 
+button.btn.btn-success {
+  @include buttonColor($success, $success);
+  &:hover {
+   background-color: $btn-primary-pressed;
+  }
+}
+
 button.btn.btn-info {
   @include buttonColor($info, $info);
   &:active, &:target {

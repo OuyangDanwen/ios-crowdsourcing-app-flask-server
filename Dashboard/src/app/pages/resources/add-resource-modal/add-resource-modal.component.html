@@ -1,0 +1,42 @@
+<div class="modal-content col-md-12">
+    <div class="modal-header">
+        <h4 class="modal-title col-md-12">{{modalHeader}}</h4>
+        <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+        <form enctype="multipart/form-data" class="form-horizontal">
+            <div class="form-group col-md-12">
+                <label for="recipient-name">Type</label><br>
+                <select class="col-md-12" (change)="onSelectChange($event.target.value)">
+                        <option *ngFor="let r of resourceTypes">{{r}}</option>
+                    </select>
+            </div>
+            <div class="form-group col-md-12">
+                <label for="recipient-name">Name</label>
+                <input class="col-md-12" type="text" name="text" [(ngModel)]="resName">
+            </div>
+            <div class="form-group col-md-12">
+                <label for="recipient-name">Label</label><br>
+                <input class="col-md-12" type="text" name="text" [(ngModel)]="labelTxt">
+            </div>
+
+            <div *ngIf="isLink" class="form-group col-md-12">
+                <label class="form-control-label" for="recipient-name">URL</label><br>
+                <input class="col-md-12" type="text" name="text" [(ngModel)]="url">
+            </div>
+            <br *ngIf="isLink">
+            <div *ngIf="!isLink">
+                <label for="recipient-name" class="form-control-label col-md-12">Files</label>
+                <input class="col-md-12" id="file-upload2" type="file" name="photo" (change)="onLabel($event)">
+            </div>
+        </form>
+        <p class="col-md-12" *ngFor="let file of filesLst">
+            {{file.name}}
+            <br></p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger confirm-btn" (click)="setLabel(labelTxt)" [disabled]="disableButton()">Save changes</button>
+    </div>
+</div>

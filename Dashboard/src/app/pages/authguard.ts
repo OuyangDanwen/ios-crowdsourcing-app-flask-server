@@ -10,7 +10,7 @@ export class AuthGuard implements CanActivate {
     const data = localStorage.getItem('access_token');
     if (data === null) {
       // If they do, return true and allow the user to load the home component
-      console.log("No access token found bitches!");
+      console.log("No access token found!");
       this.router.navigate(['login']);
       return false;
     }

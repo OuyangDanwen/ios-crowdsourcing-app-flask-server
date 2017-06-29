@@ -1,0 +1,28 @@
+<div class="modal-content col-md-12">
+    <div class="modal-header">
+        <h5 class="modal-title col-md-12" id="exampleModalLabel">{{modalHeader}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body col-md-12">
+        <div class="form-group col-md-12">
+            <label for="recipient-name" class="form-control-label">Label</label>
+            <input class="col-md-12" type="text" name="text" value="{{label}}" disabled>
+        </div>
+        <div *ngIf="!safeGuard">
+            <div class="form-group col-md-12">
+                <label for="recipient-name" class="form-control-label">Please enter the label again:</label>
+                <input class="col-md-12" type="text" name="text" [(ngModel)]="safeGuardInput">
+            </div>
+        </div>
+        <div class="form-group col-md-12">
+            <div class="alert col-md-12" [class.alert-warning]="tt === 0" [class.alert-danger]="tt===1" [class.alert-success]="tt===2" role="alert">
+                {{warningMessages[tt]}}
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Close</button>
+            <button type="button" class="btn btn-primary btn-danger" (click)="inc()" [disabled]="!(safeGuardCheck()) || this.tt === 2">Delete</button>
+        </div>
+    </div>
