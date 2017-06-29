@@ -9,11 +9,26 @@ imagePath = '/home/ec2-user/Server/file_system/test_image/laptop.jpeg'
 modelFullPath = '/home/ec2-user/Server/tensorflow/retrained_model/output_graph.pb'
 labelsFullPath = '/home/ec2-user/Server/tensorflow/retrained_model/output_labels.txt'
 
+def parseAnswer(answer, scores, requestFrom):
+    lbs = []
+    size = len(answer)
+    if requestFrom == "dashboard":
+            for index in range(size):
+                dic = {}
+                dic['label'] = str(answer[index])
+                dic['confidence'] = str("{0:.2f}%".format(scores[index]*100))
+                lbs.append(dic)
+    else:
+        for index in range(size):
+            dic = {}
+            dic['label'] = str(answer[index])
+            dic['confidence'] = str("{0:.2f}".format(scores[index]))
+            lbs.append(dic)
+    return lbs
 
 def create_graph():
     """Creates a graph from saved GraphDef file and returns a saver."""
     # Creates graph from saved graph_def.pb.
-    
     with tf.gfile.FastGFile(modelFullPath, 'rb') as f:
         graph_def = tf.GraphDef()
         graph_def.ParseFromString(f.read())
@@ -32,11 +47,6 @@ def predictImage(filename, requestFrom):
 
     # Creates graph from saved GraphDef.
     f = open("/home/ec2-user/Server/log.txt", "a+")
-    # start = datetime.now()
-    # create_graph()
-    # end = datetime.now()
-    # elapsed_time = end - start
-    # f.write("Time spent on loading the graph: " + str(elapsed_time) + ", ")
 
     with tf.Session() as sess:
         start = datetime.now()
@@ -66,19 +76,5 @@ def predictImage(filename, requestFrom):
             scores.append(predictions[index])
         print(scores)
 
-        size = len(answer)
-        lbs = []
-        if requestFrom == "dashboard":
-            for index in range(size):
-                dic = {}
-                dic['label'] = str(answer[index])
-                dic['confidence'] = str("{0:.2f}%".format(scores[index]*100))
-                lbs.append(dic)
-        else:
-            for index in range(size):
-                dic = {}
-                dic['label'] = str(answer[index])
-                dic['confidence'] = str("{0:.2f}".format(scores[index]))
-                lbs.append(dic)
-        os.remove(imagePath)
+        lbs = parseAnswer(answer, scores, requestFrom)
         return lbs
