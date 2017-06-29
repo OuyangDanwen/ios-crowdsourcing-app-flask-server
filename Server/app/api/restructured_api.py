@@ -87,6 +87,6 @@ def addLabel_mindsight():
 	img = base64.b64decode(content['image'])
 	label = content['label'].lower()
 	username = content['username']
-	coordinates = content['coordinates']
+	coordinates = content['coordinates'] # a list of coordinates to reconstruct user tracing
 	handleLabelForSingleImage(img, label, username, coordinates)
 	return jsonify({'msg': 'success'}), 201
