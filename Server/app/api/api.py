@@ -42,6 +42,11 @@ def __get_jwt_identity():
     key = get_jwt_identity()
     username = key.split('.')[1]
     return username
+
+def __get_session_object():
+    key = get_jwt_identity()
+    sess = localSessionStorage.get(key)
+    return sess
 # This method will also get whatever object is passed into the
 # create_access_token method, and let us define what the identity
 # should be for this object
@@ -113,8 +118,8 @@ def _revoke_current_token():
 @jwt_required
 def logout():
     try:
-        current_user = __get_jwt_identity()
-        localSessionStorage.delete(current_user)
+        key = get_jwt_identity()
+        localSessionStorage.delete(key)
         _revoke_current_token()
     except KeyError:
         return jsonify({
@@ -126,8 +131,7 @@ def logout():
 @app.route('/api/protected', methods=['GET'])
 @jwt_required
 def protected():
-    current_user = __get_jwt_identity()
-    sess = localSessionStorage.get(current_user)
+    sess = __get_session_object()
     return jsonify({'Your location : ': sess.location}), 200
 
 @app.route('/api/version', methods=['GET'])
