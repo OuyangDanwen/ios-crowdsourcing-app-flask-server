@@ -10,7 +10,6 @@ import datetime
 from pymongo import MongoClient
 from simplekv.db.mongo import MongoStore
 import json
-import base64
 from ..logic.helper_functions import *
 from ..logic.db_operations import *
 import uuid
@@ -370,3 +369,13 @@ def validate_label():
             newPath = os.path.join(newPath, label + '_' + str(dirCount) + '.jpeg')
             os.rename(filename, newPath)
     return jsonify({'msg': 'Done'}), 200
+
+
+
+
+
+
+
+
+
+

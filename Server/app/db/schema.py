@@ -12,9 +12,6 @@ class MongoEncoder(JSONEncoder):
         return default(o)
 
 
-# TODO: Make things required
-# TODO: Corect the structure
-# TODO: Check for uniqueness
 class User(Document):
     # Maybe it's needed in the future? Figure out other roles
     usertype = StringField(required=True)
@@ -84,4 +81,4 @@ class Video(Resource):
 class ContentFeed(Resource):
     type = StringField(required=True)
     query = StringField(required=True)
-    numResults = IntField(required=True)
+    maxResults = IntField(required=True)
