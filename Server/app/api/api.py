@@ -1,9 +1,8 @@
 from flask import render_template, request, redirect, url_for, flash, jsonify, send_file
-from werkzeug.utils import secure_filename
-from app import app
-import os
-import tensorflow as tf
-from schema import *
+# from werkzeug.utils import secure_filename
+# from app import app
+# import os
+from ..db.schema import *
 from flask_jwt_extended import JWTManager, jwt_required, \
     get_jwt_identity, revoke_token, create_access_token, \
     get_raw_jwt
@@ -12,8 +11,10 @@ from pymongo import MongoClient
 from simplekv.db.mongo import MongoStore
 import json
 import base64
-from helper_functions import saveLabel, editLabel, saveLabelPhotos, resizeAllImages, createThumbnails
-from db_operations import create_label, add_random_resources, insert_training_data_and_create_labels
+from ..logic.helper_functions import *
+from ..logic.db_operations import *
+# helper_functions import saveLabel, editLabel, saveLabelPhotos, resizeAllImages, createThumbnails
+# from db_operations import create_label, add_random_resources, insert_training_data_and_create_labels
 import uuid
 
 TRAIN_STATS_FILE = "/home/ec2-user/Server/tensorflow/training_stats/time.txt"
@@ -107,7 +108,7 @@ def protected():
 @app.route('/api/version', methods=['GET'])
 @jwt_required
 def version():
-    return jsonify({'version': tf.__version__}), 200
+    return jsonify({'version': "1.1.0"}), 200
 
 @app.route('/api/labels', methods=['GET'])
 def getLabels():

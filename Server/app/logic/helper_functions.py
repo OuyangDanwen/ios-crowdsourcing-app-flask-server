@@ -1,6 +1,6 @@
-from datetime import datetime
-from db_operations import insert_training_data_and_create_labels, create_user, create_label, add_label_and_image
-from predict_image import create_graph, predictImage
+import datetime
+from db_operations import *
+from ..tflow.predict_image import *
 import os
 from PIL import Image
 from PIL import ImagePath

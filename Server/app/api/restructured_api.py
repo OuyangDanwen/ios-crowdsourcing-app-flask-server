@@ -4,9 +4,11 @@ import os
 import threading
 import json
 import base64
-from db_operations import insert_training_data_and_create_labels, create_user, create_label, add_label_and_image
-from predict_image import create_graph, predictImage
-from helper_functions import predict_helper, handleLabelForSingleImage, resize
+from ..logic.db_operations import  *
+# from db_operations import insert_training_data_and_create_labels, create_user, create_label, add_label_and_image
+from ..tflow.predict_image import *
+# from predict_image import create_graph, predictImage
+from ..logic.helper_functions import *
 from flask_jwt_extended import JWTManager, jwt_required, \
     get_jwt_identity, revoke_token, create_access_token, \
     get_raw_jwt
