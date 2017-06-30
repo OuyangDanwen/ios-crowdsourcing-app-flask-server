@@ -3,9 +3,9 @@ from werkzeug.utils import secure_filename
 from app import app
 import os
 from ..db.schema import *
-from flask_jwt_extended import JWTManager, jwt_required, \
-    get_jwt_identity, revoke_token, create_access_token, \
-    get_raw_jwt
+from flask_jwt_extended import (
+    JWTManager, jwt_required, get_jwt_identity, revoke_token, create_access_token,
+    get_raw_jwt)
 import datetime
 from pymongo import MongoClient
 from simplekv.db.mongo import MongoStore
@@ -29,13 +29,33 @@ app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = 'all'
 # TODO: Tweak this in the future
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes=1000000)
 jwt = JWTManager(app)
-
+# Store session data
+localSessionStorage = MongoStore(db, 'session')
 # Return true if so
 def user_exists(username):
     user = User.objects(username=username)
     if len(user) != 0:
         return True
     return False
+
+def __get_jwt_identity():
+    key = get_jwt_identity()
+    username = key.split('.')[1]
+    return username
+# This method will also get whatever object is passed into the
+# create_access_token method, and let us define what the identity
+# should be for this object
+@jwt.user_identity_loader
+def user_identity_lookup(user):
+    return user.key
+
+class UserSession:
+    def __init__(self, key, username, location):
+        self.key = key
+        self.username = username
+        # longitude, latitude
+        # coordinates : [34.444 ,  34.444]
+        self.location = location
 
 @app.route('/api/register', methods=['POST'])
 def register():
@@ -66,12 +86,20 @@ def register():
 def login():
     username = request.json.get('username', None)
     password = request.json.get('password', None)
+    location = request.json.get('location', None)
     user = User.objects(username=username, password=password)
     if len(user) == 0:
         return jsonify({"msg": "Bad User or Password"}), 401
     User.objects(username=username).update_one(lastLogin=datetime.datetime.now())
+    if location is None:
+        return jsonify({"msg": "Location is not set"}), 401
+    session_key = "{0}.{1}".format(uuid.uuid4(), username)
+    sess = UserSession(session_key, username, location)
+    access_token = create_access_token(identity=sess)
+    # key value pair -> RANDOM_STRING.username : session
+    localSessionStorage.put(session_key, sess)
     ret = {
-        'access_token': create_access_token(identity=username)
+        'access_token': access_token
     }
     return jsonify(ret), 200
 
@@ -85,6 +113,8 @@ def _revoke_current_token():
 @jwt_required
 def logout():
     try:
+        current_user = __get_jwt_identity()
+        localSessionStorage.delete(current_user)
         _revoke_current_token()
     except KeyError:
         return jsonify({
@@ -96,8 +126,9 @@ def logout():
 @app.route('/api/protected', methods=['GET'])
 @jwt_required
 def protected():
-    current_user = get_jwt_identity()
-    return jsonify({'Your authentication works!': current_user}), 200
+    current_user = __get_jwt_identity()
+    sess = localSessionStorage.get(current_user)
+    return jsonify({'Your location : ': sess.location}), 200
 
 @app.route('/api/version', methods=['GET'])
 @jwt_required
@@ -125,7 +156,7 @@ def postLabel():
     label = request.form["label"].lower()
     if not len(label) > 0:
         return jsonify({'msg': 'No label found'}), 400
-    username = get_jwt_identity()
+    username = __get_jwt_identity()
     # Save label
     saveLabel(label, username)
     files = request.files.getlist('files[]')
@@ -138,7 +169,7 @@ def getRetrainingInfo():
     with open(TRAIN_STATS_FILE) as f:
         last_line = f.readlines()[-1]
         training_info = last_line.split(', ')
-        ret = {'training_time': training_info[0].split(': ')[1], 'training_duration': training_info[1].split(': '), 
+        ret = {'training_time': training_info[0].split(': ')[1], 'training_duration': training_info[1].split(': '),
         'num_labels': training_info[2].split(': '), 'num_images': training_info[3].split(': ')}
     return jsonify(ret), 200
 
@@ -217,7 +248,7 @@ def postResource():
         res_type = request.form["type"]
         res_name = request.form["name"]
         res_label = request.form["label"]
-        res_createdBy = get_jwt_identity()  # Get username from auth
+        res_createdBy = __get_jwt_identity()  # Get username from auth
         # Fail early and often ;)
         if not any(s in res_type for s in ["document", "link", "video", "audio"]):
             return jsonify({'msg': 'Invalid resource format'}), 400
@@ -341,7 +372,7 @@ def sendImage(label, name):
 @app.route('/api/mindsight/predictions/validate', methods=['POST'])
 @jwt_required
 def validate_label():
-    username = get_jwt_identity()
+    username = __get_jwt_identity()
     content = request.get_json()
     label = content['label']
     filenames = content['filenames']
