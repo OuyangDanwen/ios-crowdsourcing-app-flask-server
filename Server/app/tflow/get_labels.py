@@ -4,5 +4,5 @@ import sys
 
 
 def getLabels():
-	labels = os.listdir('/home/ec2-user/Server/tensorflow/retrained_model/bottleneck')
-	return labels 
+    labels = os.listdir('/home/ec2-user/Server/tensorflow/retrained_model/bottleneck')
+    return labels

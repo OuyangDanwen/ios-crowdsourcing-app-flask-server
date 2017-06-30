@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from schema import *
+from ..db.schema import *
 
 connect('mindsight', host='mongodb://127.0.0.1/mindsight', port=27017)
 def test():

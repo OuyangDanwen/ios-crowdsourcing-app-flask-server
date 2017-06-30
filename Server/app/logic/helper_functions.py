@@ -1,6 +1,6 @@
-import datetime
+from datetime import datetime
 from db_operations import *
-from ..tflow.predict_image import *
+from ..tflow.predict_image import create_graph, predictImage
 import os
 from PIL import Image
 from PIL import ImagePath
@@ -225,15 +225,3 @@ def cropImage(imgPath, label, coordinates):
         minimalBound = contour.getbbox()
         im = im.crop(minimalBound)
         im.save(imgPath)
-
-
-
-
-
-
-
-
-
-
-
-
