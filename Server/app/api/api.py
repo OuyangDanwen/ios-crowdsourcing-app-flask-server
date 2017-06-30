@@ -15,10 +15,7 @@ from ..logic.db_operations import *
 import uuid
 
 TRAIN_STATS_FILE = "/home/ec2-user/Server/tensorflow/training_stats/time.txt"
-BACKEND_VERSION_FILE = "../version.log"
-
-# TODO: Return PROPER HTTP response codes in case of errors
-# TODO : FIGURE OUT ASYNCHRONOUS DATABASE CALLS!!!!
+CURRENT_SERVER_VERSION = "0.0.1"
 
 # connection for kv
 connection = MongoClient('localhost', 27017)
@@ -156,9 +153,7 @@ def getResources():
 @app.route('/api/backend_version', methods=['GET'])
 @jwt_required
 def getBackendVersion():
-    with open(BACKEND_VERSION_FILE) as f:
-        version = f.readline()
-    return jsonify({'version': version}), 200
+    return jsonify({'version': CURRENT_SERVER_VERSION}), 200
 
 # Get resources for a particular label
 @app.route('/api/<label>/resources', methods=['GET'])
@@ -369,13 +364,3 @@ def validate_label():
             newPath = os.path.join(newPath, label + '_' + str(dirCount) + '.jpeg')
             os.rename(filename, newPath)
     return jsonify({'msg': 'Done'}), 200
-
-
-
-
-
-
-
-
-
-
