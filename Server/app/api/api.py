@@ -1,7 +1,7 @@
-from flask import render_template, request, redirect, url_for, flash, jsonify, send_file
-# from werkzeug.utils import secure_filename
-# from app import app
-# import os
+from flask import request, jsonify, send_file
+from werkzeug.utils import secure_filename
+from app import app
+import os
 from ..db.schema import *
 from flask_jwt_extended import JWTManager, jwt_required, \
     get_jwt_identity, revoke_token, create_access_token, \
@@ -13,8 +13,6 @@ import json
 import base64
 from ..logic.helper_functions import *
 from ..logic.db_operations import *
-# helper_functions import saveLabel, editLabel, saveLabelPhotos, resizeAllImages, createThumbnails
-# from db_operations import create_label, add_random_resources, insert_training_data_and_create_labels
 import uuid
 
 TRAIN_STATS_FILE = "/home/ec2-user/Server/tensorflow/training_stats/time.txt"

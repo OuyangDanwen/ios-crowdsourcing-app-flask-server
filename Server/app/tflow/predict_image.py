@@ -1,7 +1,7 @@
 #!/usr/bin/python
-
-# import numpy as np
-# import tensorflow as tf
+# Windows users comment this (config issue)
+import numpy as np
+import tensorflow as tf
 import os
 from datetime import datetime
 
