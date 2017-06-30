@@ -29,8 +29,10 @@ app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = 'all'
 # TODO: Tweak this in the future
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes=1000000)
 jwt = JWTManager(app)
+
 # Store session data
-localSessionStorage = MongoStore(db, 'session')
+localSessionStorage = MongoStore(db, 'session'
+
 # Return true if so
 def user_exists(username):
     user = User.objects(username=username)
@@ -47,13 +49,13 @@ def __get_session_object():
     key = get_jwt_identity()
     sess = localSessionStorage.get(key)
     return sess
-# This method will also get whatever object is passed into the
-# create_access_token method, and let us define what the identity
-# should be for this object
+
+# Key is the identity encapsulated in JWT
 @jwt.user_identity_loader
 def user_identity_lookup(user):
     return user.key
 
+# Extend it to store whatever attributes you want
 class UserSession:
     def __init__(self, key, username, location):
         self.key = key
@@ -72,12 +74,8 @@ def register():
     if user_exists(username):
         return jsonify({"msg": "User already exists"}), 401
     user = User(
-        name=name,
-        # TODO: Make this not-static
-        usertype="user",
-        username=username, 
-        password=password, 
-        createdOn=datetime.datetime.now(),
+        name=name, usertype="user", username=username,
+        password=password, createdOn=datetime.datetime.now(),
         lastLogin=datetime.datetime.now()
     )
     user.save()
@@ -96,15 +94,18 @@ def login():
     if len(user) == 0:
         return jsonify({"msg": "Bad User or Password"}), 401
     User.objects(username=username).update_one(lastLogin=datetime.datetime.now())
+
+    # Login needs to have location attribute set
     if location is None:
         return jsonify({"msg": "Location is not set"}), 401
+
+    # Generate new session id : RANDOM_STRING.username
     session_key = "{0}.{1}".format(uuid.uuid4(), username)
     sess = UserSession(session_key, username, location)
-    access_token = create_access_token(identity=sess)
-    # key value pair -> RANDOM_STRING.username : session
+    # Store session data
     localSessionStorage.put(session_key, sess)
     ret = {
-        'access_token': access_token
+        'access_token': create_access_token(identity=sess)
     }
     return jsonify(ret), 200
 
@@ -118,6 +119,7 @@ def _revoke_current_token():
 @jwt_required
 def logout():
     try:
+        # delete session data
         key = get_jwt_identity()
         localSessionStorage.delete(key)
         _revoke_current_token()
@@ -153,7 +155,6 @@ def getLabels():
     }
     return jsonify(ret), 200
 
-# TODO: finish this
 @app.route('/api/labels', methods = ['POST'])
 @jwt_required
 def postLabel():
@@ -229,20 +230,6 @@ def putResource():
         return jsonify({"msg": "Label doesn't exist!"}), 401
     Resource.objects(name=old_label).update_one(name=new_label)
     return jsonify({'msg': 'Done'}), 200
-    # old_path = "/home/ec2-user/Server/file_system/resources/" + name
-    # if not len(old_path) > 0:
-    #     return jsonify({'msg': 'No resouce found in request'}), 403
-    # new_resource = request.json.get('new_resource', None).lower()
-    # if not len(new_resource) > 0:
-    #     return jsonify({'msg': 'Missing required request format'}), 400
-    # resource = Resource.objects(path=old_path)
-    # if resource == None:
-    #     return jsonify({"msg": "Resource doesn't exist!"}), 401
-    # new_path = os.path.join(old_path[:old_path.rfind('/')], new_resource)
-    # os.rename(old_path, new_path)
-    # Resource.objects(path=old_path).update_one(name=new_resource, path=new_path)
-    # return jsonify({'msg': 'Done'}), 200
-
 
 @app.route('/api/resources', methods=['POST'])
 @jwt_required
@@ -312,19 +299,14 @@ def putLabel():
     labelList = Label.objects(name=old_label)
     if len(labelList) == 0:
         return jsonify({"msg": "Label doesn't exist!"}), 401
-    # try:
     new_path = editLabel(old_label, new_label)
     # Change labelname in database
     Label.objects(name=old_label).update_one(name=new_label, path=new_path)
     # Change label in folder
     # Change label in database (resources
     Resource.objects(label=old_label).update(label=new_label)
-    # except Exception:
-    # return jsonify({"msg": "Cannot find label in File System"}), 401
     return jsonify({'msg': 'Done'}), 200
 
-# Delete label, and resources attached to it
-# For now, only deleting in database
 # TODO: Delete from filesystem (both resources, and everything associated with a label :'( )
 @app.route('/api/labels/<label>', methods = ['DELETE'])
 def deleteLabel(label):
