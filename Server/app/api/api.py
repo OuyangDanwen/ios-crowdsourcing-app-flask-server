@@ -370,13 +370,3 @@ def validate_label():
             newPath = os.path.join(newPath, label + '_' + str(dirCount) + '.jpeg')
             os.rename(filename, newPath)
     return jsonify({'msg': 'Done'}), 200
-
-
-
-
-
-
-
-
-
-
