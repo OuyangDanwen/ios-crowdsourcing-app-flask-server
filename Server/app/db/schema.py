@@ -81,6 +81,6 @@ class Video(Resource):
 
 
 class ContentFeed(Resource):
-    type = StringField(required=True)
+    adapterType = StringField(required=True)
     query = StringField(required=True)
     maxResults = IntField(required=True)

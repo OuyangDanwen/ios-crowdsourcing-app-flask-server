@@ -74,6 +74,14 @@ def post_resource():
                 url=res_url, location=res_location
             ).save()
             return jsonify({'msg': 'Saved!'}), 200
+        if res_type == "contentfeed":
+            adapter_type = request.form["adapterType"]
+            ContentFeed(
+                name=res_name, path="", label=res_label,
+                createdBy=res_createdBy, createdOn=datetime.datetime.now(),
+                adapterType=adapter_type, location=res_location
+            ).save()
+            return jsonify({'msg': 'Saved!'}), 200
         # Get file object
         file = request.files["file"]
         res_size = request.form["size"]
