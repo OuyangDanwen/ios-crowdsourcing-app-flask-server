@@ -33,7 +33,7 @@ def delete_resource(name):
         return jsonify({"msg": "Resource doesn't exist!"}), 401
 
     Resource.objects(name=name).delete()
-    #os.remove(path)
+    # os.remove(path)
     return jsonify({'msg': 'Done'}), 200
 
 
@@ -75,11 +75,14 @@ def post_resource():
             ).save()
             return jsonify({'msg': 'Saved!'}), 200
         if res_type == "contentfeed":
-            adapter_type = request.form["adapterType"]
+            res_adapter_type = request.form["adapterType"]
+            res_query = request.form["query"]
+            res_maxResults = int(request.form["maxResults"])
             ContentFeed(
                 name=res_name, path="", label=res_label,
                 createdBy=res_createdBy, createdOn=datetime.datetime.now(),
-                adapterType=adapter_type, location=res_location
+                adapterType=res_adapter_type, location=res_location,
+                query=res_query, maxResults=res_maxResults
             ).save()
             return jsonify({'msg': 'Saved!'}), 200
         # Get file object
@@ -116,6 +119,6 @@ def post_resource():
         }), 400
     except NotUniqueError:
         return jsonify({
-            'msg': 'URL already exists!'
+            'msg': 'Resource with name already exists!'
         }), 400
     return jsonify({'msg': 'Done'}), 200
