@@ -60,7 +60,7 @@ def post_resource():
         res_type = request.form["type"]
         res_name = request.form["name"]
         res_label = request.form["label"]
-        res_location = request.form["location"]
+        res_location = request.form.getlist("location")
         res_createdBy = get_jwt_identity_override()  # Get username from auth
         # Fail early and often ;)
         allowed_res_list = ["document", "link", "video", "audio", "contentfeed"]
