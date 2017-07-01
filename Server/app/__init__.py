@@ -35,4 +35,4 @@ app.config['FALSE_POSITIVE_FOLDER'] = FALSE_POSITIVE_FOLDER
 # DB Connection
 connect('mindsight', host='mongodb://127.0.0.1/mindsight', port=27017)
 # Set JWT-Authentication
-from api import restructured_api, api, authentication
+from api import restructured_api, api, authentication, resource

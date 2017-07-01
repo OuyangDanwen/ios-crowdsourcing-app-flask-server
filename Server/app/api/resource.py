@@ -1,0 +1,108 @@
+from . import *
+
+
+@app.route('/api/resources', methods=['GET'])
+def getResources():
+    rsrc = [rs for rs in Resource.objects().order_by("-createdOn")]
+    ret = {
+        "resources": json.loads(json.dumps(rsrc, cls=MongoEncoder))
+    }
+    return jsonify(ret), 200
+
+# Get resources for a particular label
+@app.route('/api/<label>/resources', methods=['GET'])
+def getLabelsResources(label):
+    rsrc = [rs for rs in Resource.objects(label=label).order_by("-createdOn")]
+    ret = {
+        "resources": json.loads(json.dumps(rsrc, cls=MongoEncoder))
+    }
+    return jsonify(ret), 200
+
+#TODO: delete the resource from file system
+@app.route('/api/resources/<name>', methods=['DELETE'])
+@jwt_required
+def deleteResource(name):
+    # path = "/home/ec2-user/Server/file_system/resources/" + name
+    if not len(name) > 0:
+        return jsonify({'msg': 'No resource found in request'}), 403
+
+    resource_obj = Resource.objects(name=name)
+    if len(resource_obj) == 0:
+        return jsonify({"msg": "Resource doesn't exist!"}), 401
+
+    Resource.objects(name=name).delete()
+    #os.remove(path)
+    return jsonify({'msg': 'Done'}), 200
+
+
+@app.route('/api/resources/', methods=['PUT'])
+@jwt_required
+def putResource():
+        # Modify label and whatever it is referencing
+    old_label = request.json.get('name', None)
+    new_label = request.json.get('newname', None)
+    if not len(old_label) > 0:
+        return jsonify({'msg': 'No label found in request'}), 403
+    labelList = Resource.objects(name=old_label)
+    if len(labelList) == 0:
+        return jsonify({"msg": "Label doesn't exist!"}), 401
+    Resource.objects(name=old_label).update_one(name=new_label)
+    return jsonify({'msg': 'Done'}), 200
+
+@app.route('/api/resources', methods=['POST'])
+@jwt_required
+def postResource():
+    try:
+        # Use type to create collection documents
+        res_type = request.form["type"]
+        res_name = request.form["name"]
+        res_label = request.form["label"]
+        res_createdBy = get_jwt_identity_override()  # Get username from auth
+        # Fail early and often ;)
+        if not any(s in res_type for s in ["document", "link", "video", "audio"]):
+            return jsonify({'msg': 'Invalid resource format'}), 400
+        if res_type == "link":
+            res_url = request.form["url"]
+            Link(
+                name=res_name, path=res_url, label=res_label,
+                createdBy=res_createdBy, createdOn=datetime.datetime.now(),
+                url=res_url
+            ).save()
+            return jsonify({'msg': 'Saved!'}), 200
+        # Get file object
+        file = request.files["file"]
+        res_size = request.form["size"]
+        # Get file extension
+        res_extension = file.filename.rsplit('.', 1)[1].lower()
+        # Assign random name
+        unique_filename = str(uuid.uuid4()) + '.' + str(res_extension)
+        res_path = os.path.join(app.config['RESOURCE_FOLDER'], unique_filename)
+        # save file
+        file.save(res_path)
+        if res_type == "document":
+            Document(
+                name=res_name, path=res_path, label=res_label,
+                createdBy=res_createdBy, createdOn=datetime.datetime.now(),
+                extension=res_extension, size=res_size
+            ).save()
+        elif res_type == "video":
+            Video(
+                name=res_name, path=res_path, label=res_label,
+                createdBy=res_createdBy, createdOn=datetime.datetime.now(),
+                extension=res_extension, size=res_size
+            ).save()
+        elif res_type == "audio":
+            Audio(
+                name=res_name, path=res_path, label=res_label,
+                createdBy=res_createdBy, createdOn=datetime.datetime.now(),
+                extension=res_extension, size=res_size
+            ).save()
+    except KeyError:
+        return jsonify({
+            'msg': 'Missing required request format'
+        }), 400
+    except NotUniqueError:
+        return jsonify({
+            'msg': 'URL already exists!'
+        }), 400
+    return jsonify({'msg': 'Done'}), 200

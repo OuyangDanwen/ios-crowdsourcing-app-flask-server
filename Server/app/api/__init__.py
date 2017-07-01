@@ -51,6 +51,7 @@ def get_session_object():
 def user_identity_lookup(user):
     return user.key
 
+
 # Extend it to store whatever attributes you want
 class UserSession:
     def __init__(self, key, username, location):
