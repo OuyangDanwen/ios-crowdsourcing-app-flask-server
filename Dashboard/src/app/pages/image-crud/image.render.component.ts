@@ -6,7 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   template: `
-    <img (click)="launchViewModal()" [src]="imgSrc" style="max-width:200px;max-height:200px;"/>
+    <img (click)="launchViewModal()" [src]="imgSrc" style="max-width:50px;max-height:50px;"/>
   `,
 })
 export class ImageRenderComponent implements OnInit {
