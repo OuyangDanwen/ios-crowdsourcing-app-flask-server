@@ -54,7 +54,8 @@ class Image(Document):
 class Resource(Document):
     name = StringField(required=True, unique=True)
     path = StringField(required=True, unique=True)  
-    label = StringField(required=True)  
+    label = StringField(required=True)
+    location = PointField(required=True)
     meta = {'allow_inheritance': True}
     createdOn = DateTimeField(required=True) 
     createdBy = StringField(required=True)
