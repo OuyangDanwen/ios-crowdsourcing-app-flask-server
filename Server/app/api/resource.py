@@ -60,10 +60,12 @@ def post_resource():
         res_type = request.form["type"]
         res_name = request.form["name"]
         res_label = request.form["label"]
+        res_location = request.form["location"]
         res_createdBy = get_jwt_identity_override()  # Get username from auth
         # Fail early and often ;)
-        if not any(s in res_type for s in ["document", "link", "video", "audio"]):
-            return jsonify({'msg': 'Invalid resource format'}), 400
+        allowed_res_list = ["document", "link", "video", "audio", "contentfeed"]
+        if not any(s in res_type for s in allowed_res_list):
+            return jsonify({'msg': 'Invalid resource type'}), 400
         if res_type == "link":
             res_url = request.form["url"]
             Link(
@@ -102,7 +104,7 @@ def post_resource():
             ).save()
     except KeyError:
         return jsonify({
-            'msg': 'Missing required request format'
+            'msg': 'Invalid request format or missing parameters! (Use multipart form data)'
         }), 400
     except NotUniqueError:
         return jsonify({
