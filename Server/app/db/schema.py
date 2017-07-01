@@ -53,7 +53,7 @@ class Image(Document):
 
 class Resource(Document):
     name = StringField(required=True, unique=True)
-    path = StringField(required=True, unique=True)  
+    path = StringField(required=True)
     label = StringField(required=True)
     location = PointField(required=True)
     meta = {'allow_inheritance': True}
@@ -73,7 +73,7 @@ class Link(Resource):
 class Audio(Resource):
     extension = StringField(required=True)
     size = StringField(required=True)
-    
+
 
 class Video(Resource):
     extension = StringField(required=True)
