@@ -80,23 +80,6 @@ def saveLabelPhotos(files, label, username):
         createThumbnail(label, imgName)
         add_label_and_image(label, imgName, username)
 
-# def saveLabel(files, label, username):
-#     labels = os.listdir(UPLOAD_FOLDER)
-#     dirCount = {}
-#     if label not in labels:
-#         newdir = os.path.join(UPLOAD_FOLDER, label)
-#         os.mkdir(newdir)
-#         create_label(label, username)
-
-#     for file in files:
-#         dirCount[label] = len(os.listdir(os.path.join(UPLOAD_FOLDER, label))) + 1
-#         imgName = os.path.join(label, label + '_' + str(dirCount[label]) + ".jpeg")
-#         imgName = os.path.join(UPLOAD_FOLDER, imgName)
-#         file.save(imgName)
-#         add_label_and_image(label, imgName, username)
-# #### end of addLabel helper functions
-
-
 #### start of edit label helper functions
 def editLabel(oldLabel, newLabel):
     curLabels = os.listdir(UPLOAD_FOLDER)
@@ -113,29 +96,6 @@ def editLabel(oldLabel, newLabel):
     return newPath
 
 #### end of edit label helper functions
-
-# def handleLabelforMultipleImages(imgs, label):
-# 	labels = os.listdir(app.config['UPLOAD_FOLDER'])
-# 	dirCount = {}
-# 	if label in labels:
-# 		for img in imgs:
-# 			dirCount[label] = len(os.listdir(os.path.join(app.config['UPLOAD_FOLDER'], label))) + 1
-#         	imgName = label + "/" + str(dirCount[label]) + ".jpg"
-# 	        imgName = os.path.join(app.config['UPLOAD_FOLDER'], imgName)
-# 	        with open(imgName, 'wb') as f:
-# 	            f.write(img)
-# 	        add_label_and_image(label, imgName)
-# 	else :
-# 	    newdir = os.path.join(app.config['UPLOAD_FOLDER'], label)
-# 	    os.mkdir(newdir)
-# 	    dirCount[label] = 0
-# 	    for img in imgs:
-# 	        dirCount[label] = dirCount[label] + 1
-# 	        imgName = os.path.join(newdir, str(dirCount[label]))
-# 	        with open(imgName, 'wb') as f:
-# 	            f.write(img)
-# 	        add_label_and_image(label, imgName)
-#### end of addLabel helper functions
 
 #### start of resize helper functions
 def resize(imgPath, thumbnailPath):
@@ -212,6 +172,7 @@ def createThumbnail(label, imgName):
     newPath = os.path.join(THUMBNAIL_FOLDER, imgPath)
     im.save(newPath, "JPEG")
 
+#crop the image based by reconstructing user tracing with the mobile application
 def cropImage(imgPath, label, coordinates):
     if len(coordinates) != 0:
         pixels = []
@@ -220,7 +181,6 @@ def cropImage(imgPath, label, coordinates):
             y = (float)(coordinate.split(',')[1])
             pixels.append((x,y))
         im = Image.open(imgPath)
-        print(str(pixels))
         contour = ImagePath.Path(pixels)
         minimalBound = contour.getbbox()
         im = im.crop(minimalBound)
