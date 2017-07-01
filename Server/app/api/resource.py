@@ -71,7 +71,7 @@ def post_resource():
             Link(
                 name=res_name, path=res_url, label=res_label,
                 createdBy=res_createdBy, createdOn=datetime.datetime.now(),
-                url=res_url
+                url=res_url, location=res_location
             ).save()
             return jsonify({'msg': 'Saved!'}), 200
         # Get file object
@@ -88,19 +88,19 @@ def post_resource():
             Document(
                 name=res_name, path=res_path, label=res_label,
                 createdBy=res_createdBy, createdOn=datetime.datetime.now(),
-                extension=res_extension, size=res_size
+                extension=res_extension, size=res_size, location=res_location
             ).save()
         elif res_type == "video":
             Video(
                 name=res_name, path=res_path, label=res_label,
                 createdBy=res_createdBy, createdOn=datetime.datetime.now(),
-                extension=res_extension, size=res_size
+                extension=res_extension, size=res_size, location=res_location
             ).save()
         elif res_type == "audio":
             Audio(
                 name=res_name, path=res_path, label=res_label,
                 createdBy=res_createdBy, createdOn=datetime.datetime.now(),
-                extension=res_extension, size=res_size
+                extension=res_extension, size=res_size, location=res_location
             ).save()
     except KeyError:
         return jsonify({
