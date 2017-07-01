@@ -1,75 +1,12 @@
 from . import *
 
-@app.route('/api/register', methods=['POST'])
-def register():
-    name = request.json.get('name', None)
-    username = request.json.get('username', None)
-    password = request.json.get('password', None)
-    if username is None or password is None or name is None:
-        return jsonify({"msg": "Invalid request"}), 401
-    if user_exists(username):
-        return jsonify({"msg": "User already exists"}), 401
-    user = User(
-        name=name, usertype="user", username=username,
-        password=password, createdOn=datetime.datetime.now(),
-        lastLogin=datetime.datetime.now()
-    )
-    user.save()
-    ret = {
-        'access_token': create_access_token(identity=username)
-    }
-    return jsonify(ret), 200
 
-# Standard login endpoint
-@app.route('/api/login', methods=['POST'])
-def login():
-    username = request.json.get('username', None)
-    password = request.json.get('password', None)
-    location = request.json.get('location', None)
-    user = User.objects(username=username, password=password)
-    if len(user) == 0:
-        return jsonify({"msg": "Bad User or Password"}), 401
-    User.objects(username=username).update_one(lastLogin=datetime.datetime.now())
-
-    # Login needs to have location attribute set
-    if location is None:
-        return jsonify({"msg": "Location is not set"}), 401
-
-    # Generate new session id : RANDOM_STRING.username
-    session_key = "{0}.{1}".format(uuid.uuid4(), username)
-    sess = UserSession(session_key, username, location)
-    # Store session data
-    localSessionStorage.put(session_key, sess)
-    ret = {
-        'access_token': create_access_token(identity=sess)
-    }
-    return jsonify(ret), 200
-
-def _revoke_current_token():
-    current_token = get_raw_jwt()
-    jti = current_token['jti']
-    revoke_token(jti)
-
-# Endpoint for revoking the current users access token
-@app.route('/api/logout', methods=['GET'])
-@jwt_required
-def logout():
-    try:
-        # delete session data
-        key = get_jwt_identity()
-        localSessionStorage.delete(key)
-        _revoke_current_token()
-    except KeyError:
-        return jsonify({
-            'msg': 'Access token not found in the blacklist store'
-        }), 400
-    return jsonify({"msg": "Successfully logged out"}), 200
 
 # Route for testing if auth works
 @app.route('/api/protected', methods=['GET'])
 @jwt_required
 def protected():
-    sess = __get_session_object()
+    sess = get_session_object()
     return jsonify({'Your location : ': sess.location}), 200
 
 @app.route('/api/version', methods=['GET'])
@@ -97,7 +34,7 @@ def postLabel():
     label = request.form["label"].lower()
     if not len(label) > 0:
         return jsonify({'msg': 'No label found'}), 400
-    username = __get_jwt_identity()
+    username = get_jwt_identity_override()
     # Save label
     saveLabel(label, username)
     files = request.files.getlist('files[]')
@@ -175,7 +112,7 @@ def postResource():
         res_type = request.form["type"]
         res_name = request.form["name"]
         res_label = request.form["label"]
-        res_createdBy = __get_jwt_identity()  # Get username from auth
+        res_createdBy = get_jwt_identity_override()  # Get username from auth
         # Fail early and often ;)
         if not any(s in res_type for s in ["document", "link", "video", "audio"]):
             return jsonify({'msg': 'Invalid resource format'}), 400
@@ -294,7 +231,7 @@ def sendImage(label, name):
 @app.route('/api/mindsight/predictions/validate', methods=['POST'])
 @jwt_required
 def validate_label():
-    username = __get_jwt_identity()
+    username = get_jwt_identity_override()
     content = request.get_json()
     label = content['label']
     filenames = content['filenames']

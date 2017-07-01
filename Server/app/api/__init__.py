@@ -36,12 +36,12 @@ def user_exists(username):
         return True
     return False
 
-def __get_jwt_identity():
+def get_jwt_identity_override():
     key = get_jwt_identity()
     username = key.split('.')[1]
     return username
 
-def __get_session_object():
+def get_session_object():
     key = get_jwt_identity()
     sess = localSessionStorage.get(key)
     return sess
@@ -59,6 +59,11 @@ class UserSession:
         # longitude, latitude
         # coordinates : [34.444 ,  34.444]
         self.location = location
+
+def revoke_current_token():
+    current_token = get_raw_jwt()
+    jti = current_token['jti']
+    revoke_token(jti)
 
 TRAIN_STATS_FILE = "/home/ec2-user/Server/tensorflow/training_stats/time.txt"
 CURRENT_SERVER_VERSION = "0.0.1"
