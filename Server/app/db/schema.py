@@ -79,6 +79,7 @@ class Video(Resource):
     extension = StringField(required=True)
     size = StringField(required=True)
 
+
 class ContentFeed(Resource):
     type = StringField(required=True)
     query = StringField(required=True)

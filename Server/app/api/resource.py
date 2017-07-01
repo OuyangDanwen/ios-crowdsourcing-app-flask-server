@@ -2,26 +2,28 @@ from . import *
 
 
 @app.route('/api/resources', methods=['GET'])
-def getResources():
+def get_resources():
     rsrc = [rs for rs in Resource.objects().order_by("-createdOn")]
     ret = {
         "resources": json.loads(json.dumps(rsrc, cls=MongoEncoder))
     }
     return jsonify(ret), 200
 
+
 # Get resources for a particular label
 @app.route('/api/<label>/resources', methods=['GET'])
-def getLabelsResources(label):
+def get_resources_label(label):
     rsrc = [rs for rs in Resource.objects(label=label).order_by("-createdOn")]
     ret = {
         "resources": json.loads(json.dumps(rsrc, cls=MongoEncoder))
     }
     return jsonify(ret), 200
 
-#TODO: delete the resource from file system
+
+# TODO: delete the resource from file system
 @app.route('/api/resources/<name>', methods=['DELETE'])
 @jwt_required
-def deleteResource(name):
+def delete_resource(name):
     # path = "/home/ec2-user/Server/file_system/resources/" + name
     if not len(name) > 0:
         return jsonify({'msg': 'No resource found in request'}), 403
@@ -37,7 +39,7 @@ def deleteResource(name):
 
 @app.route('/api/resources/', methods=['PUT'])
 @jwt_required
-def putResource():
+def put_resource():
         # Modify label and whatever it is referencing
     old_label = request.json.get('name', None)
     new_label = request.json.get('newname', None)
@@ -49,9 +51,10 @@ def putResource():
     Resource.objects(name=old_label).update_one(name=new_label)
     return jsonify({'msg': 'Done'}), 200
 
+
 @app.route('/api/resources', methods=['POST'])
 @jwt_required
-def postResource():
+def post_resource():
     try:
         # Use type to create collection documents
         res_type = request.form["type"]
