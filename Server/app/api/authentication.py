@@ -7,6 +7,7 @@ def register():
     name = request.json.get('name', None)
     username = request.json.get('username', None)
     password = request.json.get('password', None)
+    location = request.json.get('location', [])
     if username is None or password is None or name is None:
         return jsonify({"msg": "Invalid request"}), 401
     if user_exists(username):
@@ -17,8 +18,12 @@ def register():
         lastLogin=datetime.datetime.now()
     )
     user.save()
+    session_key = "{0}.{1}".format(uuid.uuid4(), username)
+    sess = UserSession(session_key, username, location)
+    # Store session data
+    localSessionStorage.put(session_key, sess)
     ret = {
-        'access_token': create_access_token(identity=username)
+        'access_token': create_access_token(identity=sess)
     }
     return jsonify(ret), 200
 
