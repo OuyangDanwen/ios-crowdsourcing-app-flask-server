@@ -1,6 +1,13 @@
 from . import *
 
-# Auth routes
+
+# Generate unique session id, and store it
+def create_session(username, location):
+    session_key = "{0}.{1}".format(uuid.uuid4(), username)
+    sess = UserSession(session_key, username, location)
+    # Store session data
+    localSessionStorage.put(session_key, sess)
+    return create_access_token(identity=sess)
 
 @app.route('/api/register', methods=['POST'])
 def register():
@@ -18,12 +25,8 @@ def register():
         lastLogin=datetime.datetime.now()
     )
     user.save()
-    session_key = "{0}.{1}".format(uuid.uuid4(), username)
-    sess = UserSession(session_key, username, location)
-    # Store session data
-    localSessionStorage.put(session_key, sess)
     ret = {
-        'access_token': create_access_token(identity=sess)
+        'access_token': create_session(username, location)
     }
     return jsonify(ret), 200
 
@@ -42,13 +45,8 @@ def login():
     if location is None:
         return jsonify({"msg": "Location is not set"}), 401
 
-    # Generate new session id : RANDOM_STRING.username
-    session_key = "{0}.{1}".format(uuid.uuid4(), username)
-    sess = UserSession(session_key, username, location)
-    # Store session data
-    localSessionStorage.put(session_key, sess)
     ret = {
-        'access_token': create_access_token(identity=sess)
+        'access_token': create_session(username, location)
     }
     return jsonify(ret), 200
 
