@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
-// import {EmailValidator, EqualPasswordsValidator} from '../../theme/validators';
 import { LoginService } from '../login/login.service';
 import { AppModule } from '../../app.module';
 
@@ -15,9 +14,6 @@ export class Register {
   name: AbstractControl;
   username: AbstractControl;
   password: AbstractControl;
-  // public repeatPassword:AbstractControl;
-  // public passwords:FormGroup;
-
   submitted: boolean = false;
 
   constructor(fb: FormBuilder) {
