@@ -175,7 +175,6 @@ def getLabelsResources(label):
 @app.route('/api/resources/<name>', methods=['DELETE'])
 @jwt_required
 def deleteResource(name):
-    # path = "/home/ec2-user/Server/file_system/resources/" + name
     if not len(name) > 0:
         return jsonify({'msg': 'No resource found in request'}), 403
 
@@ -184,7 +183,6 @@ def deleteResource(name):
         return jsonify({"msg": "Resource doesn't exist!"}), 401
 
     Resource.objects(name=name).delete()
-    #os.remove(path)
     return jsonify({'msg': 'Done'}), 200
 
 
@@ -353,14 +351,14 @@ def validate_label():
     label = content['label']
     filenames = content['filenames']
     validation = content['validation']
-    if validation:#positive
+    if validation: #positive feedback -> store images for the respective label
         newPath = os.path.join(app.config['UPLOAD_FOLDER'], label)
         dirCount = len(os.listdir(newPath))
         for filename in filenames:
             dirCount = dirCount + 1
             newPath = os.path.join(newPath, label + '_' + str(dirCount) + 'jpeg')
             os.rename(filename, newPath)
-    else:#negative
+    else: #negative feedback -> store images for the respective anti-label 
         existing_labels = os.listdir(app.config['FALSE_POSITIVE_FOLDER'])
         newPath = os.path.join(app.config['FALSE_POSITIVE_FOLDER'], label)
         if label not in existing_labels:
