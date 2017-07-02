@@ -58,7 +58,3 @@ def validate_label():
             createdOn=datetime.now(), createdBy=username
             ).save()
     return jsonify({'msg': 'Done'}), 200
-<<<<<<< HEAD
-
-=======
->>>>>>> 0f75a31eddb71f19cc8bce8b8d4be415158ec4f8
