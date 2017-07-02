@@ -34,6 +34,7 @@ export class Login implements OnInit {
         },
         (error) => {
           console.log(error);
+          console.log("Couldn't get location");
         });
     }
     else {
