@@ -76,7 +76,7 @@ def delete_resource(name):
     return jsonify({'msg': 'Done'}), 200
 
 
-@app.route('/api/resources/', methods=['PUT'])
+@app.route('/api/resources', methods=['PUT'])
 @jwt_required
 def put_resource():
         # Modify label and whatever it is referencing
