@@ -14,6 +14,7 @@ from . import *
 
 
 ALLOWED_EXTENSIONS = set(['jpg', 'jpeg'])
+FILE_LOCK = threading.Lock() 
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
