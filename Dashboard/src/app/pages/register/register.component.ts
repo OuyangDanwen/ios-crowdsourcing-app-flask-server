@@ -15,6 +15,7 @@ export class Register implements OnInit {
   username: AbstractControl;
   password: AbstractControl;
   submitted: boolean = false;
+  location: [number, number];
 
   constructor(fb: FormBuilder) {
     this.lgservice = AppModule.injector.get(LoginService);
@@ -29,13 +30,30 @@ export class Register implements OnInit {
     this.password = this.form.controls['password'];
   }
 
+  setLocation() {
+    if (navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.location = [position.coords.longitude, position.coords.latitude];
+        },
+        (error) => {
+          console.log(error);
+          console.log("Couldn't get location");
+        });
+    }
+  }
+
   ngOnInit() {
-    
+    this.setLocation();
   }
 
   public onSubmit(values: Object): void {
     this.submitted = true;
     if (this.form.valid) {
+      this.setLocation();
+      if (!this.location) 
+        this.location = [11.544736, 48.156332299999995];
+      
       this.lgservice.register(values["name"], values["username"], values["password"])
         .subscribe(
         (response) => {
