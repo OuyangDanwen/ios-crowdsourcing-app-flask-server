@@ -12,33 +12,20 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
   templateUrl: './smartTables.html',
   styleUrls: ['./smartTables.scss'],
 })
-export class SmartTables{
+export class SmartTables {
 
   constructor(private smartTablesService: SmartTablesService, private modalService: NgbModal) {
     this.fillTable();
   }
   data = [];
 
-  //Retrain
-  // retrainModal() {
-    // this.smartTablesService.retrain()
-    // .subscribe((response) => {
-        // console.log("Got " + response);
-      // },
-      // (error) => { console.log(error); }
-      // );
-  // }
-
   settings = {
     mode: 'inline',
     actions: false,
-    // hideSubHeader: true,
     pager: {
       display: true,
       perPage: 50,
     },
-
-
     columns: {
       name: {
         title: 'Name',
@@ -49,14 +36,18 @@ export class SmartTables{
         editable: false,
         width: '10%',
         type: 'html',
-        valuePrepareFunction: (cell, row) => { console.log(row);return `<a href="/#/pages/images?label=${row.name}">${row.images}</a>`; }
+        valuePrepareFunction: (cell, row) => { 
+          return `<a href="/#/pages/images?label=${row.name}">${row.images}</a>`; 
+        }
       },
       resources: {
         title: 'Resources',
         editable: false,
         width: '10%',
         type: 'html',
-        valuePrepareFunction: (cell, row) => { console.log(row);return `<a href="/#/pages/resources?label=${row.name}">${row.resources}</a>`; }
+        valuePrepareFunction: (cell, row) => { 
+          return `<a href="/#/pages/resources?label=${row.name}">${row.resources}</a>`; 
+        }
       },
       createdBy: {
         title: 'Created By',
@@ -65,14 +56,14 @@ export class SmartTables{
       createdOn: {
         title: 'Created On',
         editable: false,
+        filter: false,
         valuePrepareFunction: (createdOn) => {
           let dt = new Date(createdOn.$date);
           let formattedDate = moment(dt).format('Do MMMM YYYY, h:mm:ss a');
-          // console.log(formattedDate);
           return formattedDate;
         },
       },
-            actions: {
+      actions: {
         title: 'Actions',
         type: 'custom',
         renderComponent: ButtonRenderComponent,
@@ -81,13 +72,6 @@ export class SmartTables{
         filter: false,
         hideSubHeader: true,
       },
-    //       dp: {
-    //   title: 'Display Picture',
-    //   filter: false,
-    //   type: 'custom',
-    //   renderComponent: ImageRenderComponent
-    //   // valuePrepareFunction: (dp) => { return `<img scr="dp" />`; }
-    // },
     },
   };
 
@@ -100,7 +84,7 @@ export class SmartTables{
         this.source.load(labels);
       },
       (error) => { console.log(error); },
-      );
+    );
   }
 
   launchAddModal() {
