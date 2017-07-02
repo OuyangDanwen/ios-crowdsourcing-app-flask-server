@@ -14,11 +14,12 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
   styleUrls: ['./resources.component.scss']
 })
 export class ResourcesComponent implements OnInit {
-
+    
+  data = [];
   constructor(private imgService: ResourcesService, private modalService: NgbModal, private activatedRoute: ActivatedRoute) {
     this.fillTable();
   }
-  data = [];
+  
   ngOnInit() {
     // subscribe to router event
     this.activatedRoute.queryParams.subscribe((params: Params) => {

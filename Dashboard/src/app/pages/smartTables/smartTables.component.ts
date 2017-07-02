@@ -75,7 +75,6 @@ export class SmartTables {
     },
   };
 
-
   source: LocalDataSource = new LocalDataSource();
   fillTable() {
     this.smartTablesService.getLabels()

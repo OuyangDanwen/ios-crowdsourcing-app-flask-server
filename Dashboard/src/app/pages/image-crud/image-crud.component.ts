@@ -33,7 +33,6 @@ export class ImageCrudComponent implements OnInit {
   settings = {
     mode: 'inline',
     actions: false,
-    // hideSubHeader: true,
     pager: {
       display: true,
       perPage: 50
@@ -44,18 +43,14 @@ export class ImageCrudComponent implements OnInit {
       filter: false,
       type: 'custom',
       renderComponent: ImageRenderComponent,
-      // width: '300px'
-      // valuePrepareFunction: (dp) => { return `<img scr="dp" />`; }
     },
     label: {
         title: 'Label',
         editable: false,
-        // width: '100px'
       },
       createdBy: {
         title: 'Created By',
         editable: false,
-                // width: '100px'
       },
       createdOn: {
         title: 'Created On',
@@ -64,41 +59,33 @@ export class ImageCrudComponent implements OnInit {
         valuePrepareFunction: (createdOn) => {
           var dt = new Date(createdOn.$date);
           var formattedDate = moment(dt).format('Do MMMM YYYY, h:mm:ss a');
-          // console.log(formattedDate);
           return formattedDate;
         },
-                // width: '100px'
       },
        actions: {
         title: 'Actions',
         type: 'custom',
         renderComponent: DeleteButtonRenderComponent,
-        // valuePrepareFunction: (cell, row) => row,
         filter: false,
         width: '10%',
         hideSubHeader: true
       },
-    }
-    
+    }    
   };
+
   source: LocalDataSource = new LocalDataSource();
+
   fillTable() {
     this.imgService.getImages()
       .subscribe(
       (labels: any[]) => {
-        // // console.log("Going inside shakku");
         for (var i = 0; i < labels.length; i++) {
-        // //   labels[i].id = i;
-        // //   labels[i].button = i;
-        // //   console.log(JSON.stringify(labels[i]));
         labels[i].dp = `http://54.93.252.106:8080/api/images/${labels[i].label}/${labels[i].name}`;
         labels[i].actions = labels[i].dp;
-        // console.log(labels[i].dp);
         }
         this.source.load(labels);
       },
       (error) => { console.log(error); }
       );
   }
-
 }
