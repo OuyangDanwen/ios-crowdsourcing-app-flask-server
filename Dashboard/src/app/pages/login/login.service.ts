@@ -3,10 +3,12 @@ import { Headers, Http, Response, RequestOptions } from '@angular/http';
 import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
+
 @Injectable()
+
 export class LoginService {
   constructor(private http: Http, private router: Router) { }
-  // TODO: Change this to proper route
+
   logIn(username: string, password: string, location: [number, number]) {
     const req = { "username": username, "password": password, "location": location };
     let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -30,9 +32,8 @@ export class LoginService {
     );
   }
 
-  register(name: string, username: string, password: string, location:[number, number]) {
-    //TODO: Handle name in request
-    const req = { "name": name, "username": username, "password": password, "location": location};
+  register(name: string, username: string, password: string, location: [number, number]) {
+    const req = { "name": name, "username": username, "password": password, "location": location };
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
@@ -63,11 +64,7 @@ export class LoginService {
       (response: Response) => {
         const data = response.json();
         localStorage.removeItem('access_token');
-        localStorage.getItem('access_token');
-        console.log("Token is after logout: " + token);
-        console.log("Successfully logged out! Redirecting");
         this.router.navigate(['login']);
-
         return data;
       }
       )

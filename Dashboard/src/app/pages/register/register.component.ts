@@ -8,7 +8,9 @@ import { AppModule } from '../../app.module';
   templateUrl: './register.html',
   styleUrls: ['./register.scss']
 })
+
 export class Register implements OnInit {
+
   lgservice;
   form: FormGroup;
   name: AbstractControl;
@@ -51,9 +53,9 @@ export class Register implements OnInit {
     this.submitted = true;
     if (this.form.valid) {
       this.setLocation();
-      if (!this.location) 
+      if (!this.location)
         this.location = [11.999936, 48.9999999];
-      
+
       this.lgservice.register(values["name"], values["username"], values["password"], location)
         .subscribe(
         (response) => {
