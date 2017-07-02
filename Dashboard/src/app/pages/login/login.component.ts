@@ -13,7 +13,7 @@ export class Login implements OnInit {
   form: FormGroup;
   username: AbstractControl;
   password: AbstractControl;
-  publicsubmitted: boolean = false;
+  submitted: boolean = false;
   location: [number, number];
 
   constructor(fb: FormBuilder) {
@@ -42,7 +42,6 @@ export class Login implements OnInit {
       this.location = [11.530838012695312, 48.15875730456923];
     }
     console.log(`Location: ${this.location}`);
-
   }
 
   public onSubmit(values: Object) {
@@ -52,19 +51,11 @@ export class Login implements OnInit {
       this.lgservice.logIn(values["username"], values["password"], this.location)
         .subscribe(
         (response) => {
-          // const x = localStorage.getItem('ddaccess_token');
           localStorage.setItem('access_token', response.access_token);
           console.log("Access Token : \n" + response.access_token);
-          // this.router.navigate(['./SomewhereElse']);
         },
         (error) => console.log(error)
         );
-      // your code goes here
-
-      // console.log(values["username"]);
-      // console.log(values.password);
-
-
     }
   }
 }

@@ -7,8 +7,8 @@ import { Router } from '@angular/router';
 export class LoginService {
   constructor(private http: Http, private router: Router) { }
   // TODO: Change this to proper route
-  logIn(username: string, password: string) {
-    const req = { "username": username, "password": password };
+  logIn(username: string, password: string, location: [number, number]) {
+    const req = { "username": username, "password": password, "location": location };
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
