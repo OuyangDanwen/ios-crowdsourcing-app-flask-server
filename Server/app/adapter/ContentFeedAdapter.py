@@ -29,3 +29,21 @@ class GoogleContentFeedAdapter(ContentFeedAdapter):
             div = self.construct_divs(item)
             divs.append(div)
         return divs
+
+class WeatherContentFeedAdapter(ContentFeedAdapter):
+    def weatherFeed(self):
+        day_max=[]
+        day_min=[]
+        day_type=[]
+        lat = self.location[1]
+        lon = self.location[0]
+        req = requests.get('http://api.openweathermap.org/data/2.5/forecast/daily?lat=35&lon=139&cnt=3&appid=90e162ad04a530937bc6145440d2f5a7')
+        json_object = req.json()
+	 # jsonObj = json.loads(json_object)
+        for i in range(0,3):
+            temp_max = float(json_object['list'][i]['temp']['max'])
+            temp_min = float(json_object['list'][i]['temp']['min'])
+            day_max.append(format(((temp_max - 273.15) * 1.8 + 32),'.2f'))
+            day_min.append(format(((temp_min - 273.15) * 1.8 + 32),'.2f'))
+            day_type.append((json_object['list'][i]['weather'][0]['main']))
+        return render_template('temperature.html', maxList=day_max, minList=day_min, dayType=day_type)

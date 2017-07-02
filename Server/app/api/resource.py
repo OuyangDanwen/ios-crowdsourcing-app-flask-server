@@ -38,13 +38,13 @@ def get_resources_label(label):
 
 def render_content_feed(rsrc):
     location = get_session_object().location
+    ret = []
     if rsrc.adapterType == "google":
         gcfa = GoogleContentFeedAdapter(rsrc.query, rsrc.maxResults, location)
         divs = gcfa.render_html()
     elif rsrc.adapterType == "weather":
-        # TODO: Implement this
-        pass
-    ret = []
+        wcfa = WeatherContentFeedAdapter(rsrc.query, rsrc.maxResults, location)
+        ret.append({"weather", (wcfa.weatherFeed)})
     for div in divs:
         ret.append({"div": div})
     return {"items": ret}
