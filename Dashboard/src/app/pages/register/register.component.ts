@@ -52,9 +52,9 @@ export class Register implements OnInit {
     if (this.form.valid) {
       this.setLocation();
       if (!this.location) 
-        this.location = [11.544736, 48.156332299999995];
+        this.location = [11.999936, 48.9999999];
       
-      this.lgservice.register(values["name"], values["username"], values["password"])
+      this.lgservice.register(values["name"], values["username"], values["password"], location)
         .subscribe(
         (response) => {
           localStorage.setItem('access_token', response.access_token);

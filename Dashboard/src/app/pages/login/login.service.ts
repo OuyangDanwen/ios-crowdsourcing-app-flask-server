@@ -30,9 +30,9 @@ export class LoginService {
     );
   }
 
-  register(name: string, username: string, password: string) {
+  register(name: string, username: string, password: string, location:[number, number]) {
     //TODO: Handle name in request
-    const req = { "name": name, "username": username, "password": password };
+    const req = { "name": name, "username": username, "password": password, "location": location};
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
