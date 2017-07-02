@@ -1,17 +1,37 @@
 from . import *
 
+# get location from session
+# get min max distance
 
-@app.route('/api/resources', methods=['GET'])
-def get_resources():
-    rsrc = [rs for rs in Resource.objects().order_by("-createdOn")]
+def filter_resources_location(location, min_distance, max_distance):
+    rsrc = [rs for rs in Resource.objects(
+        location__near=location, location__min_distance=min_distance,
+        location__max_distance=max_distance
+    ).order_by("-createdOn")]
     ret = {
         "resources": json.loads(json.dumps(rsrc, cls=MongoEncoder))
     }
-    return jsonify(ret), 200
+    return ret
 
+@app.route('/api/resources', methods=['GET'])
+@jwt_required
+def get_resources():
+    filter = request.args.get("filter", False, bool)
+    if filter:
+        min_distance = request.args.get("min", 0, float)
+        max_distance = request.args.get("max", 100000000, float)
+        near = get_session_object().location
+        return jsonify(filter_resources_location(near, min_distance, max_distance)), 200
+    # rsrc = [rs for rs in Resource.objects(location__near=[40, 5], location__min_distance=100.33).order_by("-createdOn")]
+    # ret = {
+    #     "resources": json.loads(json.dumps(rsrc, cls=MongoEncoder))
+    # }
+    # return jsonify(ret), 200
+    return jsonify({"msg": "asd"}), 200
 
 # Get resources for a particular label
 @app.route('/api/<label>/resources', methods=['GET'])
+@jwt_required
 def get_resources_label(label):
     rsrc = [rs for rs in Resource.objects(label=label).order_by("-createdOn")]
     ret = {
