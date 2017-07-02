@@ -4,7 +4,6 @@ import datetime
 import os
 import random
 
-
 USER_LIST = ['danwen', 'humaira', 'muhammad', 'arvind', 'sebastian', 'daniel', 'rene', 'narin', 'onur', 'yosef', 'rao', 'zardosht']
 
 def getRandomUser():
