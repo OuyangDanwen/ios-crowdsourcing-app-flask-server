@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+# Windows users comment this (config issue)
 import numpy as np
 import tensorflow as tf
 import os

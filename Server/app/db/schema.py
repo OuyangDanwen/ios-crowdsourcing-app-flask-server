@@ -12,9 +12,6 @@ class MongoEncoder(JSONEncoder):
         return default(o)
 
 
-# TODO: Make things required
-# TODO: Corect the structure
-# TODO: Check for uniqueness
 class User(Document):
     # Maybe it's needed in the future? Figure out other roles
     usertype = StringField(required=True)
@@ -56,13 +53,14 @@ class Image(Document):
 
 class Resource(Document):
     name = StringField(required=True, unique=True)
-    path = StringField(required=True, unique=True)  
-    label = StringField(required=True)  
+    path = StringField(required=True)
+    label = StringField(required=True)
+    location = PointField(required=True)
     meta = {'allow_inheritance': True}
     createdOn = DateTimeField(required=True) 
     createdBy = StringField(required=True)
     
-
+# TODO: NAME CLASHES WITH MONGOENGINE CLASS DOCUMENT =/
 class Document(Resource):
     extension = StringField(required=True)
     size = StringField(required=True)
@@ -75,8 +73,14 @@ class Link(Resource):
 class Audio(Resource):
     extension = StringField(required=True)
     size = StringField(required=True)
-    
+
 
 class Video(Resource):
     extension = StringField(required=True)
     size = StringField(required=True)
+
+
+class ContentFeed(Resource):
+    adapterType = StringField(required=True)
+    query = StringField(required=True)
+    maxResults = IntField(required=True)
