@@ -1,7 +1,12 @@
 from . import *
 
 
-def filter_resources_location(location, min_distance, max_distance, label=None):
+def filter_resources_location(label=None):
+    # get location from session
+    # get min max distance from request parameters
+    min_distance = request.args.get("min", 0, float)
+    max_distance = request.args.get("max", 100000000, float)
+    location = get_session_object().location
     if label:
         rsrc = [rs for rs in Resource.objects(
             location__near=location, location__min_distance=min_distance,
@@ -20,22 +25,14 @@ def filter_resources_location(location, min_distance, max_distance, label=None):
 @app.route('/api/resources', methods=['GET'])
 @jwt_required
 def get_resources():
-    # get location from session
-    # get min max distance from request parameters
-    min_distance = request.args.get("min", 0, float)
-    max_distance = request.args.get("max", 100000000, float)
-    location = get_session_object().location
-    ret = filter_resources_location(location, min_distance, max_distance)
+    ret = filter_resources_location()
     return jsonify(ret), 200
 
 # Get resources for a particular label
 @app.route('/api/<label>/resources', methods=['GET'])
 @jwt_required
 def get_resources_label(label):
-    min_distance = request.args.get("min", 0, float)
-    max_distance = request.args.get("max", 100000000, float)
-    location = get_session_object().location
-    ret = filter_resources_location(location, min_distance, max_distance, label=label)
+    ret = filter_resources_location(label=label)
     return jsonify(ret), 200
 
 
