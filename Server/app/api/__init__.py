@@ -12,6 +12,7 @@ from simplekv.db.mongo import MongoStore
 import json
 from ..logic.helper_functions import *
 from ..logic.db_operations import *
+from ..adapter.ContentFeedAdapter import *
 import uuid
 
 connection = MongoClient('localhost', 27017)

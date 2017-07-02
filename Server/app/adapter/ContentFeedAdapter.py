@@ -1,6 +1,6 @@
 import requests
 
-
+# TODO: Add weather CFA here!
 class ContentFeedAdapter:
     def __init__(self, query, max_results, location):
         self.query = query

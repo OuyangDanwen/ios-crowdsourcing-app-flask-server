@@ -60,7 +60,7 @@ class Resource(Document):
     createdOn = DateTimeField(required=True) 
     createdBy = StringField(required=True)
     
-
+# TODO: NAME CLASHES WITH MONGOENGINE CLASS DOCUMENT =/
 class Document(Resource):
     extension = StringField(required=True)
     size = StringField(required=True)
