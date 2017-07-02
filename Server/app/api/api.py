@@ -47,7 +47,7 @@ def validate_label():
             newPath = os.path.join(newPath, label + '_' + str(dirCount) + '.jpeg')
             os.rename(filename, newPath)
         createThumbnail(label, newPath)
-        img = Image(
+        Image(
             name=label + '_' + str(dirCount) + '.jpeg', path=newPath, label=label, 
             createdOn=datetime.datetime.now(), createdBy=username
             ).save()
