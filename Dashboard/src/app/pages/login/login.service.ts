@@ -10,7 +10,7 @@ export class LoginService {
   constructor(private http: Http, private router: Router) { }
 
   logIn(username: string, password: string, location: [number, number]) {
-    const req = { "username": username, "password": password, "location": location };
+    const req = { 'username': username, 'password': password, 'location': location };
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
@@ -33,7 +33,7 @@ export class LoginService {
   }
 
   register(name: string, username: string, password: string, location: [number, number]) {
-    const req = { "name": name, "username": username, "password": password, "location": location };
+    const req = { 'name': name, 'username': username, 'password': password, 'location': location };
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
