@@ -1,6 +1,6 @@
 from datetime import datetime
-from db_operations import insert_training_data_and_create_labels, create_user, create_label, add_label_and_image
-from predict_image import create_graph, predictImage
+from db_operations import *
+from ..tflow.predict_image import create_graph, predictImage
 import os
 from PIL import Image
 from PIL import ImagePath
@@ -11,7 +11,8 @@ UPLOAD_FOLDER = '/home/ec2-user/Server/file_system/train_image/'
 RESOURCE_FOLDER = '/home/ec2-user/Server/file_system/resources'
 THUMBNAIL_FOLDER = '/home/ec2-user/Server/file_system/thumbnails'
 
-#### start of prediction helper functions
+
+# start of prediction helper functions
 def predict_helper(img_path, requestFrom):
     f = open("/home/ec2-user/Server/log.txt", "a+")
     start = datetime.now()
@@ -28,11 +29,11 @@ def predict_helper(img_path, requestFrom):
     f.write("Total time spent: " + str(final_elapsed_time) + ".\n")
     f.close()
     return lbs
-#### end of prediction helper functions
+#  end of prediction helper functions
 
 
-#### strt of addLabel helper functions
-#TODO: handling of single instance of data should be made general later
+# start of addLabel helper functions
+# TODO: handling of single instance of data should be made general later
 def handleLabelForSingleImage(img, label, username, coordinates):
     labels = os.listdir(UPLOAD_FOLDER)
     dirCount = {}
@@ -60,6 +61,7 @@ def handleLabelForSingleImage(img, label, username, coordinates):
         mkdir(os.path.join(THUMBNAIL_FOLDER, label))
         createThumbnail(label, imgName)
 
+
 def saveLabel(label, username):
     labels = os.listdir(UPLOAD_FOLDER)
     if label not in labels:
@@ -67,6 +69,7 @@ def saveLabel(label, username):
         os.mkdir(newdir)
         os.mkdir(os.path.join(THUMBNAIL_FOLDER, label))
         create_label(label, username)
+
 
 def saveLabelPhotos(files, label, username):
     dirCount = {}
@@ -80,7 +83,8 @@ def saveLabelPhotos(files, label, username):
         createThumbnail(label, imgName)
         add_label_and_image(label, imgName, username)
 
-#### start of edit label helper functions
+
+# start of edit label helper functions
 def editLabel(oldLabel, newLabel):
     curLabels = os.listdir(UPLOAD_FOLDER)
     if oldLabel not in curLabels:
@@ -95,9 +99,10 @@ def editLabel(oldLabel, newLabel):
     os.rename(oldThumbnailPath, newThumbnailPath)
     return newPath
 
-#### end of edit label helper functions
+# end of edit label helper functions
 
-#### start of resize helper functions
+
+# start of resize helper functions
 def resize(imgPath, thumbnailPath):
     maxWidth = 640
     maxHeight = 480
@@ -111,7 +116,7 @@ def resize(imgPath, thumbnailPath):
         im.thumbnail(size, Image.ANTIALIAS)
         im.save(thumbnailPath, "JPEG")
         return True
-#### end of resize helper functions
+# end of resize helper functions
 
 
 def normalizeFilename():
@@ -125,7 +130,8 @@ def normalizeFilename():
             os.rename(os.path.join(label_path, file), os.path.join(label_path, filename))
             index = index + 1
 
-#resize all training images
+
+# resize all training images
 def resizeAllImages(width, height):
     maxWidth = width
     maxHeight = height
@@ -145,7 +151,8 @@ def resizeAllImages(width, height):
                 im.thumbnail(size, Image.ANTIALIAS)
                 im.save(imgPath, "JPEG")
 
-#create thumbnails of all existing images to a permanent folder
+
+# create thumbnails of all existing images to a permanent folder
 def createThumbnails():
     shutil.rmtree(THUMBNAIL_FOLDER)
     os.mkdir(THUMBNAIL_FOLDER)
@@ -172,7 +179,8 @@ def createThumbnail(label, imgName):
     newPath = os.path.join(THUMBNAIL_FOLDER, imgPath)
     im.save(newPath, "JPEG")
 
-#crop the image based by reconstructing user tracing with the mobile application
+
+# crop the image based by reconstructing user tracing with the mobile application
 def cropImage(imgPath, label, coordinates):
     if len(coordinates) != 0:
         pixels = []
@@ -185,15 +193,3 @@ def cropImage(imgPath, label, coordinates):
         minimalBound = contour.getbbox()
         im = im.crop(minimalBound)
         im.save(imgPath)
-
-
-
-
-
-
-
-
-
-
-
-
