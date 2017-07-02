@@ -59,6 +59,7 @@ export class ImageCrudComponent implements OnInit {
       },
       createdOn: {
         title: 'Created On',
+        filter: false,
         editable: false,
         valuePrepareFunction: (createdOn) => {
           var dt = new Date(createdOn.$date);
