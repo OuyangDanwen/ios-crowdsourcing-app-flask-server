@@ -29,9 +29,9 @@ def getBackendVersion():
     return jsonify({'version': CURRENT_SERVER_VERSION}), 200
 
 @app.route('/api/mindsight/predictions/validate', methods=['POST'])
+@jwt_required
 def validate_label():
-    #username = get_jwt_identity()
-    username = "danwen"
+    username = get_jwt_identity_override()
     content = request.get_json()
     label = content['label']
     filenames = content['filenames']
