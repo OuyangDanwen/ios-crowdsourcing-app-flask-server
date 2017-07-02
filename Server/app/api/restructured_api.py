@@ -42,13 +42,13 @@ def predict_dashboard():
         return jsonify({'labels': ret}), 200
 
 @app.route('/api/mindsight/predictions', methods=['POST'])
+@jwt_required
 def predict_mindsight():
+    username = get_jwt_identity_override()
     content = request.get_json()
     data = base64.b64decode(content['image'])
     FILE_LOCK.acquire()
     #save to user-specific folder
-    #username = get_jwt_identity()
-    username = "danwen"
     existing_users = os.listdir(app.config['PREDICTION_FOLDER'])
     imgPath = os.path.join(app.config['PREDICTION_FOLDER'], username)
     if username in existing_users:
