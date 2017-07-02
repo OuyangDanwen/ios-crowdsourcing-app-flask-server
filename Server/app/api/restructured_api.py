@@ -44,9 +44,9 @@ def predict_dashboard():
 @app.route('/api/mindsight/predictions', methods=['POST'])
 @jwt_required
 def predict_mindsight():
+    username = get_jwt_identity_override()
     content = request.get_json()
     data = base64.b64decode(content['image'])
-    username = get_jwt_identity_override()
     FILE_LOCK.acquire()
     #save to user-specific folder
     existing_users = os.listdir(app.config['PREDICTION_FOLDER'])
