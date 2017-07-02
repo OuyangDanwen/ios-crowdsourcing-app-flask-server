@@ -26,7 +26,8 @@ export class Login implements OnInit {
     this.username = this.form.controls['username'];
     this.password = this.form.controls['password'];
   }
-  ngOnInit() {
+
+  setLocation() {
     if (navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -37,17 +38,20 @@ export class Login implements OnInit {
           console.log("Couldn't get location");
         });
     }
-    else {
-      // random munich location
-      this.location = [11.530838012695312, 48.15875730456923];
-    }
-    console.log(`Location: ${this.location}`);
+  }
+
+  ngOnInit() {
+    this.setLocation();
   }
 
   public onSubmit(values: Object) {
     this.submitted = true;
     if (this.form.valid) {
-
+      this.setLocation();
+      if (!this.location){
+         this.location = [11.544736, 48.156332299999995];
+      }
+      console.log(`Location: ${this.location}`);
       this.lgservice.logIn(values["username"], values["password"], this.location)
         .subscribe(
         (response) => {
