@@ -41,7 +41,7 @@ def validate_label():
         dirCount = len(os.listdir(newPath))
         for filename in filenames:
             dirCount = dirCount + 1
-            newPath = os.path.join(newPath, label + '_' + str(dirCount) + 'jpeg')
+            newPath = os.path.join(newPath, label + '_' + str(dirCount) + '.jpeg')
             os.rename(filename, newPath)
     else:#negative
         existing_labels = os.listdir(app.config['FALSE_POSITIVE_FOLDER'])
@@ -53,4 +53,8 @@ def validate_label():
             dirCount = dirCount + 1
             newPath = os.path.join(newPath, label + '_' + str(dirCount) + '.jpeg')
             os.rename(filename, newPath)
+            img = schema.Image(
+            name=label + '_' + str(dirCount) + '.jpeg', path=newPath, label=label, 
+            createdOn=datetime.now(), createdBy=username
+            ).save()
     return jsonify({'msg': 'Done'}), 200
