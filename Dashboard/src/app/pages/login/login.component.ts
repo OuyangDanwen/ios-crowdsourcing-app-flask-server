@@ -48,8 +48,8 @@ export class Login implements OnInit {
     this.submitted = true;
     if (this.form.valid) {
       this.setLocation();
-      if (!this.location){
-         this.location = [11.544736, 48.156332299999995];
+      if (!this.location) {
+        this.location = [11.544736, 48.156332299999995];
       }
       console.log(`Location: ${this.location}`);
       this.lgservice.logIn(values["username"], values["password"], this.location)
