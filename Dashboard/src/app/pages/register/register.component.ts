@@ -11,14 +11,14 @@ import { AppModule } from '../../app.module';
 })
 export class Register {
   lgservice;
-  public form: FormGroup;
-  public name: AbstractControl;
-  public username: AbstractControl;
-  public password: AbstractControl;
+  form: FormGroup;
+  name: AbstractControl;
+  username: AbstractControl;
+  password: AbstractControl;
   // public repeatPassword:AbstractControl;
   // public passwords:FormGroup;
 
-  public submitted: boolean = false;
+  submitted: boolean = false;
 
   constructor(fb: FormBuilder) {
     this.lgservice = AppModule.injector.get(LoginService);
