@@ -46,30 +46,23 @@ def predict_mindsight():
 	content = request.get_json()
 	data = base64.b64decode(content['image'])
 	FILE_LOCK.acquire()
-	filename = os.path.join(app.config['PREDICTION_FOLDER'], 
-		str(len(os.listdir(app.config['PREDICTION_FOLDER'])) + 1) + '.jpeg')
-	with open(filename, 'wb') as f:
+	save to user-specific folder
+	username = get_jwt_identity()
+	existing_users = os.listdir(app.config['PREDICTION_FOLDER'])
+	imgPath = os.path.join(app.config['PREDICTION_FOLDER'], username)
+	if username in existing_users:
+		imgPath = os.path.join(imgPath, str(len(os.listdir(app.config['PREDICTION_FOLDER'])) + 1) + '.jpeg')
+	else:
+		os.mkdir(imgPath)
+		imgPath = os.path.join(imgPath, '1.jpeg')
+	with open(imgPath, 'wb') as f:
 		f.write(data)
-	#save to user-specific folder
-	# username = get_jwt_identity()
-	# existing_users = os.listdir(app.config['PREDICTION_FOLDER'])
-	# imgPath = os.path.join(app.config['PREDICTION_FOLDER'], username)
-	# if username in existing_users:
-	# 	imgPath = os.path.join(imgPath, str(len(os.listdir(app.config['PREDICTION_FOLDER'])) + 1) + '.jpeg')
-	# else:
-	# 	os.mkdir(imgPath)
-	# 	imgPath = os.path.join(imgPath, '1.jpeg')
-	# with open(imgPath, 'wb') as f:
-	# 	f.write(data)
 	f.close()
 	FILE_LOCK.release()
-	ret = predict_helper(filename, "mobile")
-	os.remove(filename)
-	#predict
-	# labels = predict_helper(imgPath, "mobile")
-	# filename = 
-	# ret = {'labels': labels, 'filename': imgPath}
-	# return jsonify(ret), 200
+	predict
+	labels = predict_helper(imgPath, "mobile")
+	filename = 
+	ret = {'labels': labels, 'filename': imgPath}
 	return jsonify(ret), 200
 
 
