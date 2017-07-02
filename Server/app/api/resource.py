@@ -44,7 +44,6 @@ def render_content_feed(rsrc):
     elif rsrc.adapterType == "weather":
         # TODO: Implement this
         pass
-
     ret = []
     for div in divs:
         ret.append({"div": div})
@@ -57,7 +56,6 @@ def get_resource(name):
     rsrc = Resource.objects(name=name).first()
     if isinstance(rsrc, ContentFeed):
         ret = render_content_feed(rsrc)
-
     return jsonify(ret), 200
 
 
