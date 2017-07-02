@@ -13,20 +13,20 @@ def getRandomUser():
 # TODO: Figure out a way to seed database when app starts, and only ONCE
 def insert_training_data_and_create_labels():
     cwd = os.listdir(app.config['UPLOAD_FOLDER'])
-    # user = None
-    # for username in USER_LIST:
-    #     user = schema.User(
-    #         usertype="admin", name="admin", username= username, 
-    #         password="password", createdOn=datetime.now(), 
-    #         lastLogin=datetime.now()
-    #     )
-    #     user.save()
+    user = None
+    for username in USER_LIST:
+        user = User(
+            usertype="admin", name="admin", username= username, 
+            password="password", createdOn=datetime.datetime.now(), 
+            lastLogin=datetime.datetime.now()
+        )
+        user.save()
         
     # if schema.User.objects(username="dummy").count() == 0:
         # user = schema.User(
         #     usertype="admin", name="admin", username="dummy", 
-        #     password="test", createdOn=datetime.now(), 
-        #     lastLogin=datetime.now()
+        #     password="test", createdOn=datetime.datetime.now(), 
+        #     lastLogin=datetime.datetime.now()
         # )
         # user.save()
     # else:
@@ -36,7 +36,7 @@ def insert_training_data_and_create_labels():
         label_path = os.path.join(app.config['UPLOAD_FOLDER'], dir)
         lb = Label(
                 name=dir, path=label_path,
-                createdOn=datetime.now(), createdBy=getRandomUser()
+                createdOn=datetime.datetime.now(), createdBy=getRandomUser()
             )
         lb.save()
         files = os.listdir(label_path)
@@ -44,15 +44,15 @@ def insert_training_data_and_create_labels():
             file_path = os.path.join(label_path, file)
             Image(
                 name=file, path=file_path, label=lb.name, 
-                createdOn=datetime.now(), createdBy=getRandomUser()
+                createdOn=datetime.datetime.now(), createdBy=getRandomUser()
             ).save()        
 
 def create_user(username):
     if User.objects(username=username).count() == 0:
         User(
             usertype="admin", name="admin", username=username, 
-            password="test", createdOn=datetime.now(),
-            lastLogin=datetime.now()
+            password="test", createdOn=datetime.datetime.now(),
+            lastLogin=datetime.datetime.now()
         ).save() 
 
 def create_label(label_name, username="dummy"):
@@ -63,7 +63,7 @@ def create_label(label_name, username="dummy"):
         # user = schema.User.objects.get(username=username)
         lb = Label(
             name=label_name, path=label_path,
-            createdOn=datetime.now(), createdBy=username
+            createdOn=datetime.datetime.now(), createdBy=username
         ).save()        
     
 def add_label_and_image(label_name, image_name, username="dummy"):
@@ -76,7 +76,7 @@ def add_label_and_image(label_name, image_name, username="dummy"):
     user = User.objects.get(username=username)
     img = Image(
         name=image_name, path=file_path, label=lb.name, 
-        createdOn=datetime.now(), createdBy=username
+        createdOn=datetime.datetime.now(), createdBy=username
     ).save()
 
 def add_random_resources():
@@ -84,7 +84,7 @@ def add_random_resources():
         name="A-23 Features",
         path="http://ec2-23213-das.mic.com/a23-specs/",
         label="microwave",
-        createdOn=datetime.now(),
+        createdOn=datetime.datetime.now(),
         createdBy="Zichstopher",
         url="http://ec2-23213-das.mic.com/a23-specs/"
     ).save()
@@ -92,7 +92,7 @@ def add_random_resources():
         name="A-23 Features",
         path="/ec2-user/resources/document/microwave-features.pdf",
         label="microwave",
-        createdOn=datetime.now(),
+        createdOn=datetime.datetime.now(),
         createdBy="Zichstopher",
         extension="pdf",
         size="1012392"
@@ -101,7 +101,7 @@ def add_random_resources():
         name="A-23 Alarm",
         path="/ec2-user/resources/document/microwave-Alarm.mp3",
         label="microwave",
-        createdOn=datetime.now(),
+        createdOn=datetime.datetime.now(),
         createdBy="Zichstopher",
         extension="mp3",
         size="1012392",
@@ -110,7 +110,7 @@ def add_random_resources():
         name="A-23 Spinning",
         path="/ec2-user/resources/document/microwave-spin.mp4",
         label="microwave",
-        createdOn=datetime.now(),
+        createdOn=datetime.datetime.now(),
         createdBy="Zichstopher",
         extension="mp4",
         size="1012392222",
