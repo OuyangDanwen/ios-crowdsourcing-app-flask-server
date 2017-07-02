@@ -1,5 +1,5 @@
 *.pyc
-
+.idea/
 #Node.js ignore
 # Logs
 logs
