@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { LoginService } from '../login/login.service';
 import { AppModule } from '../../app.module';
@@ -8,7 +8,7 @@ import { AppModule } from '../../app.module';
   templateUrl: './register.html',
   styleUrls: ['./register.scss']
 })
-export class Register {
+export class Register implements OnInit {
   lgservice;
   form: FormGroup;
   name: AbstractControl;
@@ -27,6 +27,10 @@ export class Register {
     this.name = this.form.controls['name'];
     this.username = this.form.controls['username'];
     this.password = this.form.controls['password'];
+  }
+
+  ngOnInit() {
+    
   }
 
   public onSubmit(values: Object): void {
