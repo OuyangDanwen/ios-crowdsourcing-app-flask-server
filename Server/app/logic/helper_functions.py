@@ -1,4 +1,3 @@
-from datetime import datetime
 from db_operations import *
 from ..tflow.predict_image import create_graph, predictImage
 import os
@@ -15,6 +14,7 @@ THUMBNAIL_FOLDER = '/home/ec2-user/Server/file_system/thumbnails'
 # start of prediction helper functions
 def predict_helper(img_path, requestFrom):
     f = open("/home/ec2-user/Server/log.txt", "a+")
+    from datetime import datetime	
     start = datetime.now()
     global isGraphCreated
     if not isGraphCreated:

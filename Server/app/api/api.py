@@ -1,5 +1,7 @@
 from . import *
+import threading
 
+FILE_LOCK = threading.Lock() 
 
 # Route for testing if auth works
 @app.route('/api/protected', methods=['GET'])
@@ -36,6 +38,7 @@ def validate_label():
     label = content['label']
     filenames = content['filenames']
     validation = content['validation']
+    FILE_LOCK.acquire()
     if validation:#positive
         newPath = os.path.join(app.config['UPLOAD_FOLDER'], label)
         dirCount = len(os.listdir(newPath))
@@ -43,6 +46,11 @@ def validate_label():
             dirCount = dirCount + 1
             newPath = os.path.join(newPath, label + '_' + str(dirCount) + '.jpeg')
             os.rename(filename, newPath)
+        createThumbnail(label, newPath)
+        img = Image(
+            name=label + '_' + str(dirCount) + '.jpeg', path=newPath, label=label, 
+            createdOn=datetime.datetime.now(), createdBy=username
+            ).save()
     else:#negative
         existing_labels = os.listdir(app.config['FALSE_POSITIVE_FOLDER'])
         newPath = os.path.join(app.config['FALSE_POSITIVE_FOLDER'], label)
@@ -53,8 +61,5 @@ def validate_label():
             dirCount = dirCount + 1
             newPath = os.path.join(newPath, label + '_' + str(dirCount) + '.jpeg')
             os.rename(filename, newPath)
-            img = schema.Image(
-            name=label + '_' + str(dirCount) + '.jpeg', path=newPath, label=label, 
-            createdOn=datetime.now(), createdBy=username
-            ).save()
+    FILE_LOCK.release()
     return jsonify({'msg': 'Done'}), 200

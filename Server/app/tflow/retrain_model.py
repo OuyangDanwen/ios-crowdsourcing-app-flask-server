@@ -1,9 +1,7 @@
-#!/usr/bin/python
 import subprocess
 import os
 import shutil
 from datetime import datetime
-from app import schema, app
 
 TRAIN_STATS_FILE = "/home/ec2-user/Server/tensorflow/training_stats/time.txt"
 CWD = "/home/ec2-user/Server/tensorflow/tensorflow/"

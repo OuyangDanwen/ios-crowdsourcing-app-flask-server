@@ -8,13 +8,12 @@ from ..logic.db_operations import  *
 from ..tflow.predict_image import *
 from ..logic.helper_functions import *
 from flask_jwt_extended import JWTManager, jwt_required, \
-    get_jwt_identity, revoke_token, create_access_token, \
+    revoke_token, create_access_token, \
     get_raw_jwt
+from . import *
 
 
 ALLOWED_EXTENSIONS = set(['jpg', 'jpeg'])
-#a preliminary lock to prevent possible race conditions in saving and removal of images for prediction in the temp folder
-FILE_LOCK = threading.Lock() 
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -47,19 +46,17 @@ def predict_mindsight():
     username = get_jwt_identity_override()
     content = request.get_json()
     data = base64.b64decode(content['image'])
-    FILE_LOCK.acquire()
     #save to user-specific folder
     existing_users = os.listdir(app.config['PREDICTION_FOLDER'])
     imgPath = os.path.join(app.config['PREDICTION_FOLDER'], username)
     if username in existing_users:
-        imgPath = os.path.join(imgPath, str(len(os.listdir(app.config['PREDICTION_FOLDER'])) + 1) + '.jpeg')
+        imgPath = os.path.join(imgPath, str(len(os.listdir(imgPath)) + 1) + '.jpeg')
     else:
         os.mkdir(imgPath)
         imgPath = os.path.join(imgPath, '1.jpeg')
     with open(imgPath, 'wb') as f:
         f.write(data)
     f.close()
-    FILE_LOCK.release()
     labels = predict_helper(imgPath, "mobile") 
     ret = {'labels': labels, 'filename': imgPath}
     return jsonify(ret), 200
