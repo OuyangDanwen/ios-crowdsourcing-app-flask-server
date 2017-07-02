@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
 import {LoginService } from './login.service';
 import {AppModule} from '../../app.module';
@@ -8,7 +8,7 @@ import {AppModule} from '../../app.module';
   templateUrl: './login.html',
   styleUrls: ['./login.scss'],
 })
-export class Login {
+export class Login implements OnInit{
   lgservice;
   public form:FormGroup;
   public username:AbstractControl;
@@ -25,10 +25,17 @@ export class Login {
     this.username = this.form.controls['username'];
     this.password = this.form.controls['password'];
   }
+  ngOnInit() {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+      navigator.geolocation.getCurrentPosition((position)=>{console.log(`${position.coords.longitude} ${position.coords.latitude}`);}, (error)=>{console.log(error);});
+    
+  }
 
-  public onSubmit(values:Object) {
+  public onSubmit(values: Object) {
     this.submitted = true;
     if (this.form.valid) {
+
      this.lgservice.logIn(values["username"], values["password"])
      .subscribe(
         (response) => {
