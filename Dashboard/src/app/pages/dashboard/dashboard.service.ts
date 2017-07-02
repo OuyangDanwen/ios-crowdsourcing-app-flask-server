@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
 import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
+
 @Injectable()
 export class DashboardService {
+
   metricsTableData = [];
   constructor(private http: Http) { }
   upload(file: File) {
@@ -28,6 +30,7 @@ export class DashboardService {
       }
       );
   }
+
   // WE UPLOAD A SINGLE RESOURCE INSTEAD OF MULTIPLES!!!
   // Maybe in future add support for multiple
   uploadRes(file: File) {
@@ -36,11 +39,11 @@ export class DashboardService {
     const resName: string = "A-23";
     const resLabel: string = "microwave";
     const resUrl: string = "http://54.93.252.106:8080/api/resources";
+    
     formData.append("file", file);
     formData.append("name", resName);
     formData.append("type", resType);
     formData.append("label", resLabel);
- 
 
     switch (resType) {
       case 'link':
@@ -57,7 +60,7 @@ export class DashboardService {
     }
     const headers = new Headers();
     const token = localStorage.getItem('access_token');
-    
+
     headers.append('Authorization', 'Bearer ' + token);
     let options = new RequestOptions({ headers });
 
@@ -86,7 +89,7 @@ export class DashboardService {
     for (var i = 0; i < files.length; i++) {
       formData.append('files[]', files[i]);
     }
-    if(saveFiles){
+    if (saveFiles) {
       formData.append('hasFiles', "True");
     }
     else {
@@ -154,7 +157,7 @@ export class DashboardService {
       );
   }
 
-    showRepoVersion() {
+  showRepoVersion() {
     const token = localStorage.getItem('access_token');
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);
@@ -190,5 +193,5 @@ export class DashboardService {
       }
       );
   }
-  
+
 }
