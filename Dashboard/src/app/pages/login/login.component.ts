@@ -31,11 +31,16 @@ export class Login implements OnInit {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           this.location = [position.coords.longitude, position.coords.latitude];
-        }
+        },
         (error) => {
           console.log(error);
         });
     }
+    else {
+      // random munich location
+      this.location = [11.530838012695312, 48.15875730456923];
+    }
+    console.log(`Location: ${this.location}`);
 
   }
 
