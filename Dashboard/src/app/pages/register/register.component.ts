@@ -26,18 +26,11 @@ export class Register {
       'name': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
       'username': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
       'password': ['', Validators.compose([Validators.required, Validators.minLength(2)])]
-      // 'passwords': fb.group({
-      //   'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-      //   'repeatPassword': ['', Validators.compose([Validators.required, Validators.minLength(4)])]
-      // }, {validator: EqualPasswordsValidator.validate('password', 'repeatPassword')})
     });
 
     this.name = this.form.controls['name'];
     this.username = this.form.controls['username'];
     this.password = this.form.controls['password'];
-    // this.passwords = <FormGroup> this.form.controls['passwords'];
-    // this.password = this.passwords.controls['password'];
-    // this.repeatPassword = this.passwords.controls['repeatPassword'];
   }
 
   public onSubmit(values: Object): void {
@@ -46,15 +39,11 @@ export class Register {
       this.lgservice.register(values["name"], values["username"], values["password"])
         .subscribe(
         (response) => {
-          // const x = localStorage.getItem('ddaccess_token');
           localStorage.setItem('access_token', response.access_token);
           console.log("Access Token : \n" + response.access_token);
-          // this.router.navigate(['./SomewhereElse']);
         },
         (error) => console.log(error)
         );
-      // your code goes here
-      // console.log(values);
     }
   }
 }
