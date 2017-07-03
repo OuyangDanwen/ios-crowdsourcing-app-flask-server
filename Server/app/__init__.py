@@ -3,7 +3,7 @@ from flask_restful import reqparse, abort, Api, Resource
 from werkzeug.utils import secure_filename
 import os
 import logging
-from mongoengine import *
+from mongoengine import connect
 from flask_cors import CORS, cross_origin
 
 UPLOAD_FOLDER = '/home/ec2-user/Server/file_system/train_image/'
