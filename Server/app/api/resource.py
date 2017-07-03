@@ -55,7 +55,6 @@ def render_content_feed(rsrc):
 
 # Get resources for a particular label
 @app.route('/api/resources/<name>', methods=['GET'])
-@jwt_required
 def get_resource(name):
     attach_name = "{0}.{1}"
     rsrc = Resource.objects(name=name).first()
