@@ -16,10 +16,12 @@ from . import *
 ALLOWED_EXTENSIONS = set(['jpg', 'jpeg'])
 FILE_LOCK = threading.Lock() 
 
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-#TODO: should conform to json request too --> currently no implementations on dashboard
+
+# TODO: should conform to json request too --> currently no implementations on dashboard
 @app.route('/api/dashboard/predictions', methods=['POST'])
 def predict_dashboard():
     file = request.files["file[]"]
@@ -65,7 +67,7 @@ def predict_mindsight():
 
 @app.route('/api/retrain', methods=["GET"])
 def retrain():
-    from retrain_model import retrain
+    from ..tflow.retrain_model import retrain
     retrainer = threading.Thread(target=retrain, args=())
     retrainer.setDaemon(True)
     retrainer.start()
