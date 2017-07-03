@@ -14,6 +14,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
   styleUrls: ['./resources.component.scss']
 })
 export class ResourcesComponent implements OnInit {
+  // DO NOT REMOVE
   resourceSource: File;
   data = [];
 
@@ -32,9 +33,11 @@ export class ResourcesComponent implements OnInit {
         this.source.setFilter([{ field: 'label', search: filter }]);
       }
     });
-    // this.resService.getResourceContent("xylophone")
+    // DO NOT REMOVE
+    // this.resService.getResourceContent("alarm")
     //   .subscribe(
     //   (resources: any) => {
+    //     console.log("FIELD: ");
     //     console.log(resources);
     //     this.resourceSource = resources;
     //   },

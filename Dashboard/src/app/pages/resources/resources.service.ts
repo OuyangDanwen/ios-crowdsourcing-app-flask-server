@@ -8,6 +8,7 @@ export class ResourcesService {
 
   constructor(private http: Http) { }
 
+  // DO NOT REMOVE. MIGHT NEED IN FUTURE
   // getResourceContent(name: string){
   //   console.log(name);
   //   const token = localStorage.getItem('access_token');
@@ -17,7 +18,7 @@ export class ResourcesService {
   //   return this.http.get(`http://54.93.252.106:8080/api/resources/${name}`, { headers: headers })
   //     .map(
   //     (response: Response) => {
-  //       var blob = new Blob([response.arrayBuffer()], { type: 'video/mp4' });
+  //       var blob = new Blob([response.arrayBuffer()], { type: 'audio/mpeg' });
   //       console.log(blob);
   //       return blob;
   //     }
