@@ -15,7 +15,7 @@ import { DeleteResourceModalComponent } from './delete-resource-modal/delete-res
 import { AddResourceModalComponent } from './add-resource-modal/add-resource-modal.component';
 import { EditResourceModalComponent } from './edit-resource-modal/edit-resource-modal.component';
 import { SaveResourceModalComponent } from './save-resource-modal/save-resource-modal.component';
-
+import { ViewResourceModalComponent } from './view-resource-modal/view-resource-modal.component';
 
 
 @NgModule({
@@ -35,6 +35,7 @@ import { SaveResourceModalComponent } from './save-resource-modal/save-resource-
     AddResourceModalComponent,
     EditResourceModalComponent,
     SaveResourceModalComponent,
+    ViewResourceModalComponent
  ],
    entryComponents: [
     ActionRenderComponent,
@@ -42,6 +43,7 @@ import { SaveResourceModalComponent } from './save-resource-modal/save-resource-
     AddResourceModalComponent,
     EditResourceModalComponent,
     SaveResourceModalComponent,
+    ViewResourceModalComponent
   ],
   providers: [
     ResourcesService,

@@ -16,7 +16,7 @@ import { AppState, InternalStateType } from './app.service';
 import { GlobalState } from './global.state';
 import { NgaModule } from './theme/nga.module';
 import { PagesModule } from './pages/pages.module';
-import {LoginService} from './pages/login/login.service';
+import { LoginService } from './pages/login/login.service';
 
 
 // Application wide providers
@@ -61,10 +61,10 @@ export class AppModule {
      * Allows for retrieving singletons using `AppModule.injector.get(MyService)`
      * This is good to prevent injecting the service as constructor parameter.
      */
-    static injector: Injector;
-    constructor(injector: Injector, public appState: AppState) {
-        AppModule.injector = injector;
-    }
+  static injector: Injector;
+  constructor(injector: Injector, public appState: AppState) {
+    AppModule.injector = injector;
+  }
   // constructor(public appState: AppState) {
   // }
 }

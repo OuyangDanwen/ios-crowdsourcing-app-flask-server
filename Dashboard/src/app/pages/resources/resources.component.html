@@ -13,7 +13,7 @@
     <br>
     <div class="row">
         <ba-card title="MINDSIGHT RESOURCES" baCardClass="with-scroll" class="smart-table-container">
-            <ng2-smart-table [settings]="settings" [source]="source"></ng2-smart-table>
+            <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="onSelect($event)"></ng2-smart-table>
         </ba-card>
     </div>
 </div>
