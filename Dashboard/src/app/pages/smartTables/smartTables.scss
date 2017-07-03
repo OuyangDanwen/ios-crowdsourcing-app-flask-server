@@ -32,6 +32,12 @@
                 background: rgba(0, 0, 0, 0.03);
             }
         }
+        tbody>tr>td:nth-child(2) {
+            text-align: right;
+        }
+        tbody>tr>td:nth-child(3) {
+            text-align: right;
+        }
         a.ng2-smart-sort-link {
             font-size: 14px !important;
             color: $default-text;
