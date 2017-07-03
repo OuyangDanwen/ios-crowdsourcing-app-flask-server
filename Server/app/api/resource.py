@@ -59,6 +59,12 @@ def get_resource(name):
     rsrc = Resource.objects(name=name).first()
     if isinstance(rsrc, ContentFeed):
         ret = render_content_feed(rsrc)
+    if isinstance(rsrc, PDFDocument):
+        pass
+    if isinstance(rsrc, Audio):
+        pass
+    if isinstance(rsrc, Video):
+        pass
     return jsonify(ret), 200
 
 
@@ -82,7 +88,7 @@ def delete_resource(name):
 @app.route('/api/resources', methods=['PUT'])
 @jwt_required
 def put_resource():
-        # Modify label and whatever it is referencing
+    # Modify label and whatever it is referencing
     old_label = request.json.get('name', None)
     new_label = request.json.get('newname', None)
     if not len(old_label) > 0:
