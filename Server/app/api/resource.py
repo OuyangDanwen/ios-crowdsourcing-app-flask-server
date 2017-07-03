@@ -22,11 +22,13 @@ def filter_resources_location(label=None):
     }
     return ret
 
+
 @app.route('/api/resources', methods=['GET'])
 @jwt_required
 def get_resources():
     ret = filter_resources_location()
     return jsonify(ret), 200
+
 
 # Get resources for a particular label
 @app.route('/api/<label>/resources', methods=['GET'])
@@ -48,6 +50,7 @@ def render_content_feed(rsrc):
     for div in divs:
         ret.append({"div": div})
     return {"items": ret}
+
 
 # Get resources for a particular label
 @app.route('/api/resources/<name>', methods=['GET'])
