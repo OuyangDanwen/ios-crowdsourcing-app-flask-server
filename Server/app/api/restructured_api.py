@@ -43,13 +43,14 @@ def predict_dashboard():
         os.remove(img_path)
         return jsonify({'labels': ret}), 200
 
+
 @app.route('/api/mindsight/predictions', methods=['POST'])
 @jwt_required
 def predict_mindsight():
     username = get_jwt_identity_override()
     content = request.get_json()
     data = base64.b64decode(content['image'])
-    #save to user-specific folder
+    # save to user-specific folder
     existing_users = os.listdir(app.config['PREDICTION_FOLDER'])
     imgPath = os.path.join(app.config['PREDICTION_FOLDER'], username)
     if username in existing_users:
@@ -72,6 +73,7 @@ def retrain():
     retrainer.setDaemon(True)
     retrainer.start()
     return jsonify({'msg': 'success'}), 200
+
 
 @app.route('/api/mindsight/labels', methods=['POST'])
 def addLabel_mindsight():

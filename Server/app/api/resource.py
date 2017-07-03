@@ -1,16 +1,17 @@
 from . import *
 
 
-def filter_resources_location(label=None):
+def filter_resources_location():
     # get location from session
     # get min max distance from request parameters
+    label_name = request.args.get("label", None)
     min_distance = request.args.get("min", 0, float)
     max_distance = request.args.get("max", 100000000, float)
     location = get_session_object().location
-    if label:
+    if label_name:
         rsrc = [rs for rs in Resource.objects(
             location__near=location, location__min_distance=min_distance,
-            location__max_distance=max_distance, label=label
+            location__max_distance=max_distance, label=label_name
         ).order_by("-createdOn")]
     else:
         rsrc = [rs for rs in Resource.objects(
@@ -23,18 +24,11 @@ def filter_resources_location(label=None):
     return ret
 
 
+# Get resources (all or for a particular label)
 @app.route('/api/resources', methods=['GET'])
 @jwt_required
 def get_resources():
     ret = filter_resources_location()
-    return jsonify(ret), 200
-
-
-# Get resources for a particular label
-@app.route('/api/<label>/resources', methods=['GET'])
-@jwt_required
-def get_resources_label(label):
-    ret = filter_resources_location(label=label)
     return jsonify(ret), 200
 
 
