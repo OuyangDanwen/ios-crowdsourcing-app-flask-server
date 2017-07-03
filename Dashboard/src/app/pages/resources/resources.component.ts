@@ -13,23 +13,25 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
   templateUrl: './resources.component.html',
   styleUrls: ['./resources.component.scss']
 })
-export class ResourcesComponent implements OnInit{
-
+export class ResourcesComponent implements OnInit {
+    
+  data = [];
   constructor(private imgService: ResourcesService, private modalService: NgbModal, private activatedRoute: ActivatedRoute) {
     this.fillTable();
   }
-    data = [];
+  
   ngOnInit() {
     // subscribe to router event
     this.activatedRoute.queryParams.subscribe((params: Params) => {
-        const filter: string = params['label'];
-        console.log(filter);        
-        if (filter){
-          this.source.setFilter([{ field: 'label', search: filter }]);
-        }
-      });
+      const filter: string = params['label'];
+      console.log(filter);
+      if (filter) {
+        this.source.setFilter([{ field: 'label', search: filter }]);
+      }
+    });
   }
- settings = {
+
+  settings = {
     mode: 'inline',
     actions: false,
     pager: {
@@ -51,7 +53,7 @@ export class ResourcesComponent implements OnInit{
         valuePrepareFunction: (_cls) => {
           var type = _cls.slice(9);
           return type;
-      }
+        }
       },
       createdBy: {
         title: 'Created By',
@@ -60,37 +62,30 @@ export class ResourcesComponent implements OnInit{
       createdOn: {
         title: 'Created On',
         editable: false,
+        filter: false,
         valuePrepareFunction: (createdOn) => {
           var dt = new Date(createdOn.$date);
           var formattedDate = moment(dt).format('Do MMMM YYYY, h:mm:ss a');
-          // console.log(formattedDate);
           return formattedDate;
         }
       },
-       actions: {
+      actions: {
         title: 'Actions',
         type: 'custom',
         renderComponent: ActionRenderComponent,
         valuePrepareFunction: (cell, row) => row,
         width: '80px',
-        filter: false ,
+        filter: false,
         hideSubHeader: true
       },
     }
   };
+
   source: LocalDataSource = new LocalDataSource();
   fillTable() {
     this.imgService.getResources()
       .subscribe(
       (resources: any[]) => {
-        // // console.log("Going inside shakku");
-        // for (var i = 0; i < labels.length; i++) {
-        // //   labels[i].id = i;
-        // //   labels[i].button = i;
-        // //   console.log(JSON.stringify(labels[i]));
-     //   labels[i].dp = `http://54.93.252.106:8080/api/images/${labels[i].label}/${labels[i].name}`;
-       // console.log(labels[i].dp);
-        // }
         console.log(resources);
         this.source.load(resources);
       },

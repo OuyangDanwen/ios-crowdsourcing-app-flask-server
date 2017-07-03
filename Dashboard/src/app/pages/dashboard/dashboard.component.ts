@@ -20,9 +20,9 @@ export class Dashboard {
     this.myFunc();
     this.showRetrainingInfo();
     this.showBackendVersion();
-   }
-   
-   public uploaderOptions: NgUploaderOptions = {
+  }
+
+  public uploaderOptions: NgUploaderOptions = {
     url: '',
   };
 
@@ -47,16 +47,16 @@ export class Dashboard {
       );
   }
 
-//Retrain
+  //Retrain
   retrainModal() {
     this.dashboardService.retrain()
-    .subscribe((response) => {
+      .subscribe((response) => {
         console.log("Got " + response);
       },
       (error) => { console.log(error); }
       );
   }
-  
+
   onChange(event: EventTarget) {
     let eventObj: MSInputMethodContext = <MSInputMethodContext>event;
     let target: HTMLInputElement = <HTMLInputElement>eventObj.target;
@@ -81,7 +81,7 @@ export class Dashboard {
   myFunc() {
     this.dashboardService.showVersion()
       .subscribe(
-      (version: any) => { console.log("Version : " + version); this.version = version; },
+      (version: any) => { this.version = version; },
       (error) => console.log(error)
       );
   }
@@ -90,22 +90,22 @@ export class Dashboard {
     this.dashboardService.showRetrainingInfo()
       .subscribe(
       (response) => { //console.log("Version : " + response.training_time); 
-      console.log(response.training_time);
-      this.training_time = response.training_time.slice(0,19);
-      this.training_duration = response.training_duration;
-      this.num_labels = response.num_labels[1];
-      this.num_images = response.num_images;
- },
+        console.log(response.training_time);
+        this.training_time = response.training_time.slice(0, 19);
+        this.training_duration = response.training_duration;
+        this.num_labels = response.num_labels[1];
+        this.num_images = response.num_images;
+      },
       (error) => console.log(error)
       );
   }
 
   showBackendVersion() {
-      this.dashboardService.showRepoVersion()
+    this.dashboardService.showRepoVersion()
       .subscribe(
-      (response) => { console.log("Version : " + response); 
-      this.repoVersion = response.version;
- },
+      (response) => {
+        this.repoVersion = response.version;
+      },
       (error) => console.log(error)
       );
   }

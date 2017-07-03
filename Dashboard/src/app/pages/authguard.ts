@@ -3,7 +3,7 @@ import { Router, CanActivate } from '@angular/router';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   canActivate() {
     // Check to see if a user has a valid JWT
@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivate {
     }
 
     // If not, they redirect them to the login page
-    
+
     return true;
   }
 }
