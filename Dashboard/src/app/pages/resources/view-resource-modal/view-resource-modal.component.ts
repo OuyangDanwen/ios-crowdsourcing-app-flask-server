@@ -8,14 +8,37 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 
 export class ViewResourceModalComponent implements OnInit {
-
+  isVideo: boolean = false;
+  isPDF: boolean = false;
+  isAudio: boolean = false;
+  baseURL: string = 'http://54.93.252.106:8080/api/resources/';
+  resourceURL: string = '';
   modalHeader: string;
-  modalContent: string = `Saved Successfully`;
 
   constructor(private activeModal: NgbActiveModal) {}
   
   onModalLaunch(rowData) {
     console.log(rowData);
+    if (rowData._cls == 'Resource.PDFDocument') {
+      console.log('Found the Document');
+      this.isPDF = true;
+    }
+    else if (rowData._cls == 'Resource.Video') {
+      console.log('Found the Video');
+      this.isVideo = true;
+    }
+    else if (rowData._cls == 'Resource.Audio') {
+      console.log('Found the Audio');
+      this.isAudio = true;
+    }
+    else {
+      this.modalHeader = 'Invalid resource extenstion (only mp3/pdf/mp4 supported)';
+      console.log(this.modalHeader);
+      return;
+    }
+    this.resourceURL = this.baseURL + rowData.name;
+
+
   }
 
   ngOnInit() { }
