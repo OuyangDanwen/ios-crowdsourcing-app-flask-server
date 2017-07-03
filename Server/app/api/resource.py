@@ -49,23 +49,26 @@ def render_content_feed(rsrc):
         ret.append({"weather", (wcfa.weatherFeed)})
     for div in divs:
         ret.append({"div": div})
-    return {"items": ret}
+    return jsonify({"items": ret}), 200
 
 
 # Get resources for a particular label
 @app.route('/api/resources/<name>', methods=['GET'])
 @jwt_required
 def get_resource(name):
+    attach_name = "{0}.{1}"
     rsrc = Resource.objects(name=name).first()
     if isinstance(rsrc, ContentFeed):
-        ret = render_content_feed(rsrc)
-    if isinstance(rsrc, PDFDocument):
-        pass
-    if isinstance(rsrc, Audio):
-        pass
-    if isinstance(rsrc, Video):
-        pass
-    return jsonify(ret), 200
+        return render_content_feed(rsrc)
+    elif isinstance(rsrc, Link):
+        return jsonify({"Some": "link"}), 200
+    elif isinstance(rsrc, PDFDocument) or \
+            isinstance(rsrc, Audio) or \
+            isinstance(rsrc, Video):
+        return send_file(
+            rsrc.path, attachment_filename=attach_name.format(rsrc.name, rsrc.extension)
+        )
+    return jsonify({"msg": "Unknown resource type"}), 400
 
 
 # TODO: delete the resource from file system
