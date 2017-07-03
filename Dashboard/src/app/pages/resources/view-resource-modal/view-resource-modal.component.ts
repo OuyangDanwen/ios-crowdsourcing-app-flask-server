@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserModule } from '@angular/platform-browser'
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'view-resource-modal',
@@ -12,10 +14,10 @@ export class ViewResourceModalComponent implements OnInit {
   isPDF: boolean = false;
   isAudio: boolean = false;
   baseURL: string = 'http://54.93.252.106:8080/api/resources/';
-  resourceURL: string = '';
+  resourceURL;
   modalHeader: string;
 
-  constructor(private activeModal: NgbActiveModal) {}
+  constructor(private activeModal: NgbActiveModal, private domSanitizer : DomSanitizer) {}
   
   onModalLaunch(rowData) {
     console.log(rowData);
@@ -36,9 +38,8 @@ export class ViewResourceModalComponent implements OnInit {
       console.log(this.modalHeader);
       return;
     }
-    this.resourceURL = this.baseURL + rowData.name;
-
-
+    this.resourceURL = this.domSanitizer.
+    bypassSecurityTrustResourceUrl(this.baseURL + rowData.name);
   }
 
   ngOnInit() { }

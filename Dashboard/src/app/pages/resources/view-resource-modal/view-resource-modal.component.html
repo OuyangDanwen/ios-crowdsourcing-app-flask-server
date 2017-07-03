@@ -11,6 +11,14 @@
                 <source [src]="resourceURL" type="video/mp4">
             </video>
         </div>
+        <div *ngIf="isPDF">
+            <embed class="col-md-12" [src]="resourceURL" width="500" height="500" type='application/pdf'>
+        </div>
+        <div *ngIf="isAudio">
+            <audio class="col-md-12" controls>
+                <source [src]="resourceURL"type="audio/mpeg">
+            </audio>
+        </div>
     </div>
     <div class="modal-footer col-md-12">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Close</button>
