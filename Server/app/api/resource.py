@@ -58,6 +58,8 @@ def render_content_feed(rsrc):
 def get_resource(name):
     attach_name = "{0}.{1}"
     rsrc = Resource.objects(name=name).first()
+    if not rsrc:
+        return jsonify({"msg": "Resource doesn't exist"}), 400
     if isinstance(rsrc, ContentFeed):
         return render_content_feed(rsrc)
     elif isinstance(rsrc, Link):
