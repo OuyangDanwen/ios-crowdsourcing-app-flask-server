@@ -3,6 +3,7 @@ import threading
 
 FILE_LOCK = threading.Lock() 
 
+
 # Route for testing if auth works
 @app.route('/api/protected', methods=['GET'])
 @jwt_required
@@ -10,10 +11,12 @@ def protected():
     sess = get_session_object()
     return jsonify({'Your location : ': sess.location}), 200
 
+
 @app.route('/api/version', methods=['GET'])
 @jwt_required
 def version():
     return jsonify({'version': "1.1.0"}), 200
+
 
 @app.route('/api/retraining_info', methods=['GET'])
 @jwt_required
@@ -25,10 +28,12 @@ def getRetrainingInfo():
         'num_labels': training_info[2].split(': '), 'num_images': training_info[3].split(': ')}
     return jsonify(ret), 200
 
+
 @app.route('/api/backend_version', methods=['GET'])
 @jwt_required
 def getBackendVersion():
     return jsonify({'version': CURRENT_SERVER_VERSION}), 200
+
 
 @app.route('/api/mindsight/predictions/validate', methods=['POST'])
 @jwt_required
