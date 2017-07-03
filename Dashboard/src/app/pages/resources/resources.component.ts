@@ -14,9 +14,12 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
   styleUrls: ['./resources.component.scss']
 })
 export class ResourcesComponent implements OnInit {
-    
+  resourceSource: File;
   data = [];
-  constructor(private imgService: ResourcesService, private modalService: NgbModal, private activatedRoute: ActivatedRoute) {
+
+  constructor(
+    private resService: ResourcesService, private modalService: NgbModal, 
+    private activatedRoute: ActivatedRoute) {
     this.fillTable();
   }
   
@@ -29,6 +32,14 @@ export class ResourcesComponent implements OnInit {
         this.source.setFilter([{ field: 'label', search: filter }]);
       }
     });
+    // this.resService.getResourceContent("xylophone")
+    //   .subscribe(
+    //   (resources: any) => {
+    //     console.log(resources);
+    //     this.resourceSource = resources;
+    //   },
+    //   (error) => { console.log(error); }
+    //   );
   }
 
   settings = {
@@ -83,7 +94,7 @@ export class ResourcesComponent implements OnInit {
 
   source: LocalDataSource = new LocalDataSource();
   fillTable() {
-    this.imgService.getResources()
+    this.resService.getResources()
       .subscribe(
       (resources: any[]) => {
         console.log(resources);
