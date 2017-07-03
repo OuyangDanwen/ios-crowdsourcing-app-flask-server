@@ -31,5 +31,9 @@
                 </div>
             </div>
         </form>
+        <br>
+        <div *ngIf="registerFailed" class="auth-link">
+            Username already exists!
+        </div>
     </div>
 </div>

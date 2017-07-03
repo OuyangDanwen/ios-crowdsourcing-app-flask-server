@@ -49,7 +49,7 @@ export class LoginService {
       (error: Response) => {
         const data = error.json();
         console.log(data);
-        return Observable.throw('Failed@\n/register');
+        return Observable.throw(error.status);
       },
     );
   }

@@ -10,7 +10,7 @@ import { AppModule } from '../../app.module';
 })
 
 export class Register implements OnInit {
-
+  registerFailed: boolean = false;
   lgservice;
   form: FormGroup;
   name: AbstractControl;
@@ -62,7 +62,11 @@ export class Register implements OnInit {
           localStorage.setItem('access_token', response.access_token);
           console.log("Access Token : \n" + response.access_token);
         },
-        (error) => console.log(error)
+        (error) => {
+          if(error.toString() == "401"){
+            this.registerFailed = true;
+          }
+        }
         );
     }
   }
