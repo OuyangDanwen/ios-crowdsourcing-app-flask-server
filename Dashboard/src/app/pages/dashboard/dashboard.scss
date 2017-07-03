@@ -1,32 +1,35 @@
 @media screen and (min-width: 1620px) {
-  .row.shift-up {
-    > * {
-      margin-top: -573px;
+    .row.shift-up {
+        >* {
+            margin-top: -573px;
+        }
     }
-  }
 }
 
 @media screen and (max-width: 1620px) {
-  .card.feed-panel.large-card {
-    height: 824px;
-  }
+    .card.feed-panel.large-card {
+        height: 824px;
+    }
 }
 
 .user-stats-card {
-  .card-title {
-    padding: 0 0 15px;
-  }
+    .card-title {
+        padding: 0 0 15px;
+    }
 }
 
 .blurCalendar {
-  height: 475px;
+    height: 475px;
 }
+
 input[type="file"] {
-  display: none;
+    display: none;
 }
-input[type=submit]{
-  display: none;
+
+input[type=submit] {
+    display: none;
 }
+
 // .custom-file-upload {
 //     display: inline-block;
 //     cursor: pointer;

@@ -9,6 +9,7 @@ import { AppModule } from '../../app.module';
   styleUrls: ['./login.scss'],
 })
 export class Login implements OnInit {
+  loginFailed: boolean = false;
   lgservice;
   form: FormGroup;
   username: AbstractControl;
@@ -58,7 +59,12 @@ export class Login implements OnInit {
           localStorage.setItem('access_token', response.access_token);
           console.log("Access Token : \n" + response.access_token);
         },
-        (error) => console.log(error)
+        (error) => {
+          if(error.toString() == "401"){
+            this.loginFailed = true;
+            console.log("WAOW");
+          }
+        }
         );
     }
   }

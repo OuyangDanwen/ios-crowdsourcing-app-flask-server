@@ -39,7 +39,7 @@ export class DashboardService {
     const resName: string = "A-23";
     const resLabel: string = "microwave";
     const resUrl: string = "http://54.93.252.106:8080/api/resources";
-    
+
     formData.append("file", file);
     formData.append("name", resName);
     formData.append("type", resType);
@@ -118,8 +118,6 @@ export class DashboardService {
       }
       );
   }
-
-
 
   showVersion() {
     const token = localStorage.getItem('access_token');

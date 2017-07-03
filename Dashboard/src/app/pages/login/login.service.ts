@@ -3,7 +3,6 @@ import { Headers, Http, Response, RequestOptions } from '@angular/http';
 import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
-
 @Injectable()
 
 export class LoginService {
@@ -27,7 +26,7 @@ export class LoginService {
       (error: Response) => {
         const data = error.json();
         console.log(data);
-        return Observable.throw('Failed@\n/login');
+        return Observable.throw(error.status);
       },
     );
   }
