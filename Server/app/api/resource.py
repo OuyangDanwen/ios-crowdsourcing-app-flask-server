@@ -117,7 +117,7 @@ def post_resource():
         res_createdBy = get_jwt_identity_override()  # Get username from auth
         # Fail early and often ;)
         allowed_res_list = ["document", "link", "video", "audio", "contentfeed"]
-        if not any(s is res_type for s in allowed_res_list):
+        if not any(s == res_type for s in allowed_res_list):
             return jsonify({'msg': 'Invalid resource type'}), 400
         if res_type == "link":
             res_url = request.form["url"]
