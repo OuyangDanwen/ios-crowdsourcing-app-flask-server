@@ -138,7 +138,7 @@ def post_resource():
         # save file
         file.save(res_path)
         if res_type == "document":
-            Document(
+            PDFDocument(
                 name=res_name, path=res_path, label=res_label,
                 createdBy=res_createdBy, createdOn=datetime.datetime.now(),
                 extension=res_extension, size=res_size, location=res_location
