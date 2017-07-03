@@ -5,7 +5,10 @@
           <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="modal-body">
+    <div class="modal-body col-md-12">
+        <video controls>
+        <source src="http://54.93.252.106:8080/api/resources/demo" type="video/mp4">
+        </video>
         <!--<form enctype="multipart/form-data" class="form-horizontal">
             <div class="form-group col-md-12">
                 <label for="recipient-name">Resource</label><br>
@@ -17,7 +20,7 @@
             </div>
         </form>-->
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer col-md-12">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Close</button>
     </div>
 </div>
