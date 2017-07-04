@@ -9,7 +9,7 @@ FILE_LOCK = threading.Lock()
 @jwt_required
 def protected():
     sess = get_session_object()
-    return jsonify({'Your location : ': sess.location}), 200
+    return jsonify({'username': sess.username, 'location': sess.location}), 200
 
 
 @app.route('/api/version', methods=['GET'])
