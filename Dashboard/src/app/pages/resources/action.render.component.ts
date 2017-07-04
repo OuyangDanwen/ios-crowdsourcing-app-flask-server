@@ -7,8 +7,8 @@ import { DeleteResourceModalComponent } from './delete-resource-modal/delete-res
 
 @Component({
   template: `
-  <i (click)="launchEditModal()" class="ion-edit"></i>
-  <i (click)="launchDeleteModal()" class="ion-trash-a"></i>
+  <i (click)="launchEditModal($event)" class="ion-edit"></i>
+  <i (click)="launchDeleteModal($event)" class="ion-trash-a"></i>
    `,
 })
 export class ActionRenderComponent implements OnInit {
@@ -26,13 +26,15 @@ export class ActionRenderComponent implements OnInit {
     this.rowData = this.value;
   }
 
-  launchEditModal() {
+  launchEditModal(event) {
+    event.stopPropagation();
     const activeModal = this.modalService.open(EditResourceModalComponent, { size: 'sm' });
     activeModal.componentInstance.modalHeader = 'Edit Resource';
     console.log(this.rowData);
     activeModal.componentInstance.onModalLaunch(this.rowData);
   }
-  launchDeleteModal() {
+  launchDeleteModal(event) {
+    event.stopPropagation();
     const activeModal = this.modalService.open(DeleteResourceModalComponent, { size: 'sm' });
     activeModal.componentInstance.modalHeader = 'Delete Resource';
     activeModal.componentInstance.onModalLaunch(this.rowData);

@@ -9,6 +9,7 @@ def create_session(username, location):
     localSessionStorage.put(session_key, sess)
     return create_access_token(identity=sess)
 
+
 @app.route('/api/register', methods=['POST'])
 def register():
     name = request.json.get('name', None)
@@ -30,6 +31,7 @@ def register():
     }
     return jsonify(ret), 200
 
+
 # Standard login endpoint
 @app.route('/api/login', methods=['POST'])
 def login():
@@ -49,6 +51,7 @@ def login():
         'access_token': create_session(username, location)
     }
     return jsonify(ret), 200
+
 
 # Endpoint for revoking the current users access token
 @app.route('/api/logout', methods=['GET'])

@@ -1,13 +1,11 @@
 <div class="widgets">
-    <!--<div class="row">-->
     <div class="col-2">
         <button class="btn btn-success" (click)="launchAddResourceModal()">Add Resource</button>
     </div>
-    <!--</div>-->
     <br>
     <div class="row">
         <ba-card title="MINDSIGHT RESOURCES" baCardClass="with-scroll" class="smart-table-container">
-            <ng2-smart-table [settings]="settings" [source]="source" style="text-align:right"></ng2-smart-table>
+            <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="onSelect($event)"></ng2-smart-table>
         </ba-card>
     </div>
 </div>

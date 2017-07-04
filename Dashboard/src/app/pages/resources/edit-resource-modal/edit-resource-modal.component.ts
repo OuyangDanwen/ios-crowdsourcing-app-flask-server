@@ -14,11 +14,9 @@ export class EditResourceModalComponent implements OnInit {
   rowData;
   modalHeader: string;
 
-  constructor(private stService: ResourcesService, private activeModal: NgbActiveModal) {}
+  constructor(private stService: ResourcesService, private activeModal: NgbActiveModal) { }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   onModalLaunch(rowData) {
     this.oldName = rowData.name;
@@ -32,14 +30,16 @@ export class EditResourceModalComponent implements OnInit {
       .subscribe(
       (response) => {
         console.log(response);
-        setTimeout(() => {this.closeModal();}, 2000);
+        setTimeout(() => { this.closeModal(); }, 2000);
       },
       (error) => console.log(error)
       );
   }
-isLabelValid(){
-  return this.newName.length > 3;
-}
+
+  isLabelValid() {
+    return this.newName.length > 3;
+  }
+
   closeModal() {
     this.activeModal.close();
   }

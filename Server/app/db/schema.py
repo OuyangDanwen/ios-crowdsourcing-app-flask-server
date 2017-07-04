@@ -1,13 +1,13 @@
 from mongoengine import *
 from json import JSONEncoder
 from bson.json_util import default
-from mongoengine import Document
 
 
 # For serializing classes that don't inherit directly from Document, add statement in if condition
 class MongoEncoder(JSONEncoder):
     def default(self, o):
-        if isinstance(o, Document) or isinstance(o, Resource) or isinstance(o, Label) or isinstance(o, Image) or isinstance(o, User):
+        if isinstance(o, Document) or isinstance(o, Resource) or isinstance(o, Label) \
+                or isinstance(o, Image) or isinstance(o, User):
             return o.to_mongo()
         return default(o)
 
@@ -59,9 +59,10 @@ class Resource(Document):
     meta = {'allow_inheritance': True}
     createdOn = DateTimeField(required=True) 
     createdBy = StringField(required=True)
-    
+
+
 # TODO: NAME CLASHES WITH MONGOENGINE CLASS DOCUMENT =/
-class Document(Resource):
+class PDFDocument(Resource):
     extension = StringField(required=True)
     size = StringField(required=True)
     

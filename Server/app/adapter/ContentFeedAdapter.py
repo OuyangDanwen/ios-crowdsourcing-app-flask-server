@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 import requests
 
-# TODO: Add weather CFA here!
+
 class ContentFeedAdapter:
     def __init__(self, query, max_results, location):
         self.query = query
@@ -31,16 +31,17 @@ class GoogleContentFeedAdapter(ContentFeedAdapter):
             divs.append(div)
         return divs
 
+
 class WeatherContentFeedAdapter(ContentFeedAdapter):
     def weatherFeed(self):
-        day_max=[]
-        day_min=[]
-        day_type=[]
+        day_max = []
+        day_min = []
+        day_type = []
         lat = self.location[1]
         lon = self.location[0]
         req = requests.get('http://api.openweathermap.org/data/2.5/forecast/daily?lat=35&lon=139&cnt=3&appid=90e162ad04a530937bc6145440d2f5a7')
         json_object = req.json()
-	 # jsonObj = json.loads(json_object)
+        # jsonObj = json.loads(json_object)
         for i in range(0,3):
             temp_max = float(json_object['list'][i]['temp']['max'])
             temp_min = float(json_object['list'][i]['temp']['min'])

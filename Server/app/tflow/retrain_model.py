@@ -25,14 +25,14 @@ def fileCount(folder):
 def retrain():
 
     os.chdir(CWD)
-    #clear new_model dir
+    # clear new_model dir
     if os.path.exists(NEW_MODEL_DIR):
         return
     os.makedirs(NEW_MODEL_DIR)
 
     start = datetime.now()
 
-    #if other errors persist, try to run ./configure in terminal
+    # if other errors persist, try to run ./configure in terminal
     try:
         run_retrainer = subprocess.check_call("python tensorflow/examples/image_retraining/retrain.py", shell=True)
     except Exception:
@@ -52,8 +52,8 @@ def retrain():
         f.write("Number of images trained: " + str(fileCount(TRAIN_IMAGE_DIR)))
         f.write("\n")
 
-    #remove the old model dir "retrained_model"
-    #rename the new model dir to "retrained_model" for convenience
+    # remove the old model dir "retrained_model"
+    # rename the new model dir to "retrained_model" for convenience
     if os.path.exists(RETRAINED_MODEL_DIR):
         shutil.rmtree(RETRAINED_MODEL_DIR)
     os.rename(NEW_MODEL_DIR,RETRAINED_MODEL_DIR)

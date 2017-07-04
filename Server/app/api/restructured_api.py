@@ -16,10 +16,12 @@ from . import *
 ALLOWED_EXTENSIONS = set(['jpg', 'jpeg'])
 FILE_LOCK = threading.Lock() 
 
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-#TODO: should conform to json request too --> currently no implementations on dashboard
+
+# TODO: should conform to json request too --> currently no implementations on dashboard
 @app.route('/api/dashboard/predictions', methods=['POST'])
 def predict_dashboard():
     file = request.files["file[]"]
@@ -41,13 +43,14 @@ def predict_dashboard():
         os.remove(img_path)
         return jsonify({'labels': ret}), 200
 
+
 @app.route('/api/mindsight/predictions', methods=['POST'])
 @jwt_required
 def predict_mindsight():
     username = get_jwt_identity_override()
     content = request.get_json()
     data = base64.b64decode(content['image'])
-    #save to user-specific folder
+    # save to user-specific folder
     existing_users = os.listdir(app.config['PREDICTION_FOLDER'])
     imgPath = os.path.join(app.config['PREDICTION_FOLDER'], username)
     if username in existing_users:
@@ -65,11 +68,12 @@ def predict_mindsight():
 
 @app.route('/api/retrain', methods=["GET"])
 def retrain():
-    from retrain_model import retrain
+    from ..tflow.retrain_model import retrain
     retrainer = threading.Thread(target=retrain, args=())
     retrainer.setDaemon(True)
     retrainer.start()
     return jsonify({'msg': 'success'}), 200
+
 
 @app.route('/api/mindsight/labels', methods=['POST'])
 def addLabel_mindsight():

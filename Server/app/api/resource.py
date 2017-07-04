@@ -1,16 +1,17 @@
 from . import *
 
 
-def filter_resources_location(label=None):
+def filter_resources_location():
     # get location from session
     # get min max distance from request parameters
+    label_name = request.args.get("label", None)
     min_distance = request.args.get("min", 0, float)
     max_distance = request.args.get("max", 100000000, float)
     location = get_session_object().location
-    if label:
+    if label_name:
         rsrc = [rs for rs in Resource.objects(
             location__near=location, location__min_distance=min_distance,
-            location__max_distance=max_distance, label=label
+            location__max_distance=max_distance, label=label_name
         ).order_by("-createdOn")]
     else:
         rsrc = [rs for rs in Resource.objects(
@@ -22,41 +23,48 @@ def filter_resources_location(label=None):
     }
     return ret
 
+
+# Get resources (all or for a particular label)
 @app.route('/api/resources', methods=['GET'])
 @jwt_required
 def get_resources():
     ret = filter_resources_location()
     return jsonify(ret), 200
 
-# Get resources for a particular label
-@app.route('/api/<label>/resources', methods=['GET'])
-@jwt_required
-def get_resources_label(label):
-    ret = filter_resources_location(label=label)
-    return jsonify(ret), 200
 
-
+# disabled location
 def render_content_feed(rsrc):
-    location = get_session_object().location
+    # location = get_session_object().location
     ret = []
     if rsrc.adapterType == "google":
         gcfa = GoogleContentFeedAdapter(rsrc.query, rsrc.maxResults, location)
         divs = gcfa.render_html()
     elif rsrc.adapterType == "weather":
-        wcfa = WeatherContentFeedAdapter(rsrc.query, rsrc.maxResults, location)
+        wcfa = WeatherContentFeedAdapter(rsrc.query, rsrc.maxResults, rsrc.location)
         ret.append({"weather", (wcfa.weatherFeed)})
     for div in divs:
         ret.append({"div": div})
-    return {"items": ret}
+    return jsonify({"items": ret}), 200
+
 
 # Get resources for a particular label
 @app.route('/api/resources/<name>', methods=['GET'])
-@jwt_required
 def get_resource(name):
+    attach_name = "{0}.{1}"
     rsrc = Resource.objects(name=name).first()
+    if not rsrc:
+        return jsonify({"msg": "Resource doesn't exist"}), 400
     if isinstance(rsrc, ContentFeed):
-        ret = render_content_feed(rsrc)
-    return jsonify(ret), 200
+        return render_content_feed(rsrc)
+    elif isinstance(rsrc, Link):
+        return jsonify({"Some": "link"}), 200
+    elif isinstance(rsrc, PDFDocument) or \
+            isinstance(rsrc, Audio) or \
+            isinstance(rsrc, Video):
+        return send_file(
+            rsrc.path, attachment_filename=attach_name.format(rsrc.name, rsrc.extension)
+        )
+    return jsonify({"msg": "Unknown resource type"}), 400
 
 
 # TODO: delete the resource from file system
@@ -79,7 +87,7 @@ def delete_resource(name):
 @app.route('/api/resources', methods=['PUT'])
 @jwt_required
 def put_resource():
-        # Modify label and whatever it is referencing
+    # Modify label and whatever it is referencing
     old_label = request.json.get('name', None)
     new_label = request.json.get('newname', None)
     if not len(old_label) > 0:
@@ -103,7 +111,7 @@ def post_resource():
         res_createdBy = get_jwt_identity_override()  # Get username from auth
         # Fail early and often ;)
         allowed_res_list = ["document", "link", "video", "audio", "contentfeed"]
-        if not any(s in res_type for s in allowed_res_list):
+        if not any(s == res_type for s in allowed_res_list):
             return jsonify({'msg': 'Invalid resource type'}), 400
         if res_type == "link":
             res_url = request.form["url"]
@@ -135,7 +143,7 @@ def post_resource():
         # save file
         file.save(res_path)
         if res_type == "document":
-            Document(
+            PDFDocument(
                 name=res_name, path=res_path, label=res_label,
                 createdBy=res_createdBy, createdOn=datetime.datetime.now(),
                 extension=res_extension, size=res_size, location=res_location

@@ -30,6 +30,7 @@ jwt = JWTManager(app)
 # Store session data
 localSessionStorage = MongoStore(db, 'session')
 
+
 # Return true if so
 def user_exists(username):
     user = User.objects(username=username)
@@ -37,15 +38,18 @@ def user_exists(username):
         return True
     return False
 
+
 def get_jwt_identity_override():
     key = get_jwt_identity()
     username = key.split('.')[1]
     return username
 
+
 def get_session_object():
     key = get_jwt_identity()
     sess = localSessionStorage.get(key)
     return sess
+
 
 # Key is the identity encapsulated in JWT
 @jwt.user_identity_loader
@@ -61,6 +65,7 @@ class UserSession:
         # longitude, latitude
         # coordinates : [34.444 ,  34.444]
         self.location = location
+
 
 def revoke_current_token():
     current_token = get_raw_jwt()
