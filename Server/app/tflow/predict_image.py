@@ -1,7 +1,10 @@
 #!/usr/bin/python
 # Windows users comment this (config issue)
-import numpy as np
-import tensorflow as tf
+try:
+    import numpy as np
+    import tensorflow as tf
+except ImportError:
+    print "Error while importing tf,np"
 import os
 from datetime import datetime
 
