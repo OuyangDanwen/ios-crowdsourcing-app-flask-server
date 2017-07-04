@@ -44,13 +44,16 @@ export class ResourcesService {
       );
   }
 
-    uploadResource(resName: string, resLabel: string, resType: string, resUrl: string, file: File) {
+    uploadResource(resName: string, resLabel: string, resType: string, resUrl: string, file: File, locationLatitude: number, locationLongitude: number, adapterType: string, maxResults: number) {
     const formData = new FormData();
     // Attach data 
     formData.append("name", resName);
     formData.append("type", resType);
     formData.append("label", resLabel);
-  
+    formData.append('location', String(locationLongitude));
+    formData.append('location', String(locationLatitude));
+    console.log("Test "+String(locationLongitude)+","+String(locationLatitude))
+    debugger;
     // console.log("\n\n\ TSTST: " + resType.toLowerCase());
     switch (resType) {
       case 'link':
@@ -61,6 +64,11 @@ export class ResourcesService {
       case 'document':
         formData.append("file", file);      
         formData.append("size", String(file.size));
+        break;
+      case 'contentfeed':
+        formData.append("adapterType", adapterType.toLowerCase());     
+        formData.append("query", resLabel);    
+        formData.append("maxResults", String(maxResults));  
         break;
       default:
         console.log("Invalid Resource type @ uploading resource")
