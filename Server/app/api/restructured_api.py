@@ -82,5 +82,7 @@ def addLabel_mindsight():
     label = content['label'].lower()
     username = content['username']
     coordinates = content['coordinates']
-    handleLabelForSingleImage(img, label, username, coordinates)
+    uploadLabel = threading.Thread(target=handleLabelForSingleImage, args=(img, label, username, coordinates))
+    uploadLabel.setDaemon(True)
+    uploadLabel.start()
     return jsonify({'msg': 'success'}), 201

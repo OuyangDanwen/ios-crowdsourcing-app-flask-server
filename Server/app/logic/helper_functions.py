@@ -4,6 +4,9 @@ import os
 from PIL import Image
 from PIL import ImagePath
 import shutil
+import numpy as np
+from shapely.geometry import Point
+from shapely.geometry import Polygon
 
 isGraphCreated = False
 UPLOAD_FOLDER = '/home/ec2-user/Server/file_system/train_image/'
@@ -44,7 +47,7 @@ def handleLabelForSingleImage(img, label, username, coordinates):
         imgPath = os.path.join(UPLOAD_FOLDER, imgPath)
         with open(imgPath, 'wb') as f:
             f.write(img)
-        cropImage(imgPath, label, coordinates)
+        cropImageExact(imgPath, label, coordinates)
         add_label_and_image(label, imgName, username)
         resize(imgPath, imgPath)
         createThumbnail(label, imgName)
@@ -55,7 +58,7 @@ def handleLabelForSingleImage(img, label, username, coordinates):
         imgPath = os.path.join(newdir, imgName)
         with open(imgPath, 'wb') as f:
             f.write(img)
-        cropImage(imgPath, label, coordinates)
+        cropImageExact(imgPath, label, coordinates)
         add_label_and_image(label, imgName, username)
         resize(imgPath, imgPath)
         mkdir(os.path.join(THUMBNAIL_FOLDER, label))
@@ -193,3 +196,31 @@ def cropImage(imgPath, label, coordinates):
         minimalBound = contour.getbbox()
         im = im.crop(minimalBound)
         im.save(imgPath)
+
+def cropImageExact(imgPath, label, coordinates):
+    if len(coordinates) == 0:
+        return
+    points = []
+    for coordinate in coordinates:
+        x = (float)(coordinate.split(',')[0])
+        y = (float)(coordinate.split(',')[1])
+        points.append((y,x))
+    im = Image.open(imgPath).convert('RGBA')
+    pixels = np.array(im)
+    im_copy = np.array(im)
+    region = Polygon(points)
+
+    for index, pixel in np.ndenumerate(pixels):
+        row, col, channel = index
+        if channel != 0:
+            continue
+        point = Point(row, col)
+        if not region.contains(point):
+            im_copy[(row, col, 0)] = 255
+            im_copy[(row, col, 1)] = 255
+            im_copy[(row, col, 2)] = 255
+            im_copy[(row, col, 3)] = 0
+
+    cut_image = Image.fromarray(im_copy)
+    cut_image.save(imgPath)
+
