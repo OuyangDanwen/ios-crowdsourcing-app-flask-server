@@ -112,7 +112,6 @@ export class AddResourceModalComponent implements OnInit {
 
 
   isValidCoordinate(coordinate: number){
-    debugger;
     if( coordinate!=0 && ( (coordinate % 1 === 0) || (coordinate === +coordinate && coordinate!== (coordinate|0)) ) ){
       return true;
     }
@@ -120,10 +119,8 @@ export class AddResourceModalComponent implements OnInit {
   }
 
   disableButton(){
-  debugger;
 
     if (this.resName.length > 0 && this.labelTxt.length > 0 && this.isValidCoordinate(this.locationLatitude) && this.isValidCoordinate(this.locationLongitude) ){
-      debugger;
       if ((this.resType === "Link" && this.url.length > 0) || (this.resFile) || (this.resType === "Contentfeed" && (this.maxResults > 0 && this.maxResults < 11) && (this.adapterType === "Google" || this.adapterType === "Weather") ) ) {
         console.log("best best");
         return false;

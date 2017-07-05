@@ -78,11 +78,9 @@ export class ResourcesService {
     formData.append("name", resName);
     formData.append("type", resType);
     formData.append("label", resLabel);
-
     formData.append('location', String(locationLongitude));
     formData.append('location', String(locationLatitude));
     console.log("Test "+String(locationLongitude)+","+String(locationLatitude))
-    debugger;
     // console.log("\n\n\ TSTST: " + resType.toLowerCase());
     switch (resType) {
       case 'link':
