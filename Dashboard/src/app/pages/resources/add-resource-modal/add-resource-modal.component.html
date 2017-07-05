@@ -21,16 +21,32 @@
                 <label for="recipient-name">Label</label><br>
                 <input class="col-md-12" type="text" name="text" [(ngModel)]="labelTxt">
             </div>
-
+            <div class="form-group col-md-12">
+                <label>Latitude:</label>
+                <input class="col-md-12" type="number" step="any" name="text" [(ngModel)]="locationLatitude">
+                <label>Longitude:</label>
+                <input class="col-md-12" type="number" step="any" name="text" [(ngModel)]="locationLongitude">
+            </div>
             <div *ngIf="isLink" class="form-group col-md-12">
                 <label class="form-control-label" for="recipient-name">URL</label><br>
                 <input class="col-md-12" type="text" name="text" [(ngModel)]="url">
             </div>
             <br *ngIf="isLink">
-            <div *ngIf="!isLink">
+            <div *ngIf="notLinkAndContentfeed">
                 <label for="recipient-name" class="form-control-label col-md-12">Files</label>
                 <input class="col-md-12" id="file-upload2" type="file" name="photo" (change)="onLabel($event)">
             </div>
+            <div *ngIf="isContentFeed" class="form-group col-md-12">
+                <label for="recipient-name">Adapter</label><br>
+                <select class="col-md-12" (change)="onSelectContentFeedChange($event.target.value)">
+                        <option *ngFor="let r of contentFeedTypes">{{r}}</option>
+                    </select>
+            </div>
+            <div *ngIf="isContentFeed" class="form-group col-md-12">
+                <label class="form-control-label" for="recipient-name"># Results</label><br>
+                <input class="col-md-12" type="number" name="searchResult"  value="3" min="1" max="10" [(ngModel)]="maxResults">
+            </div>
+
         </form>
         <p class="col-md-12" *ngFor="let file of filesLst">
             {{file.name}}
