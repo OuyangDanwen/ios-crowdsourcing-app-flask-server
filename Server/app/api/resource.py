@@ -8,6 +8,10 @@ def filter_resources_location():
     min_distance = request.args.get("min", 0, float)
     max_distance = request.args.get("max", 100000000, float)
     location = get_session_object().location
+    res_longitude = request.args.get("longitude", None, float)
+    res_latitude = request.args.get("latitude", None, float)
+    if res_latitude and res_latitude:
+        location = [res_longitude, res_latitude]
     if label_name:
         rsrc = [rs for rs in Resource.objects(
             location__near=location, location__min_distance=min_distance,
@@ -37,7 +41,7 @@ def render_content_feed(rsrc):
     # location = get_session_object().location
     ret = []
     if rsrc.adapterType == "google":
-        gcfa = GoogleContentFeedAdapter(rsrc.query, rsrc.maxResults, location)
+        gcfa = GoogleContentFeedAdapter(rsrc.query, rsrc.maxResults, rsrc.location)
         divs = gcfa.render_html()
     elif rsrc.adapterType == "weather":
         wcfa = WeatherContentFeedAdapter(rsrc.query, rsrc.maxResults, rsrc.location)
@@ -107,7 +111,9 @@ def post_resource():
         res_type = request.form["type"]
         res_name = request.form["name"]
         res_label = request.form["label"]
-        res_location = [float(i) for i in request.form.getlist("location")]
+        res_longitude = float(request.form["longitude"])
+        res_latitude = float(request.form["latitude"])
+        res_location = [res_longitude, res_latitude]
         res_createdBy = get_jwt_identity_override()  # Get username from auth
         # Fail early and often ;)
         allowed_res_list = ["document", "link", "video", "audio", "contentfeed"]

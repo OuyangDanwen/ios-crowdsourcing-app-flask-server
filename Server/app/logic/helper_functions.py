@@ -4,9 +4,12 @@ import os
 from PIL import Image
 from PIL import ImagePath
 import shutil
-import numpy as np
-from shapely.geometry import Point
-from shapely.geometry import Polygon
+try:
+    import numpy as np
+    from shapely.geometry import Point
+    from shapely.geometry import Polygon
+except ImportError:
+    print "Cannot import numpy in helper_functions.py"
 
 isGraphCreated = False
 UPLOAD_FOLDER = '/home/ec2-user/Server/file_system/train_image/'
