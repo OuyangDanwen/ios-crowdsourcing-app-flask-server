@@ -40,6 +40,7 @@ def get_resources():
 def render_content_feed(rsrc):
     # location = get_session_object().location
     ret = []
+    divs = []
     if rsrc.adapterType == "google":
         gcfa = GoogleContentFeedAdapter(rsrc.query, rsrc.maxResults, rsrc.location)
         divs = gcfa.render_html()
@@ -142,7 +143,7 @@ def post_resource():
         file = request.files["file"]
         res_size = request.form["size"]
         # Get file extension
-        res_extension = file.filename.rsplit('.', 1)[1].lower()
+        res_extension = file.filename.rsplit('.', 1)[-1].lower()
         # Assign random name
         unique_filename = str(uuid.uuid4()) + '.' + str(res_extension)
         res_path = os.path.join(app.config['RESOURCE_FOLDER'], unique_filename)
