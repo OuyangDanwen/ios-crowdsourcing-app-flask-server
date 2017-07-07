@@ -42,10 +42,10 @@ def render_content_feed(rsrc):
     ret = []
     divs = []
     if rsrc.adapterType == "google":
-        gcfa = GoogleContentFeedAdapter(rsrc.query, rsrc.maxResults, rsrc.location)
+        gcfa = GoogleContentFeedAdapter(rsrc.query, rsrc.maxResults, rsrc.location["coordinates"])
         divs = gcfa.render_html()
     elif rsrc.adapterType == "weather":
-        wcfa = WeatherContentFeedAdapter(rsrc.query, rsrc.maxResults, rsrc.location)
+        wcfa = WeatherContentFeedAdapter(rsrc.query, rsrc.maxResults, rsrc.location["coordinates"])
         ret.append({"div", wcfa.weatherFeed()})
     for div in divs:
         ret.append({"div": div})
