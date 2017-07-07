@@ -39,6 +39,7 @@ class WeatherContentFeedAdapter(ContentFeedAdapter):
         "Clouds": "http://www.quilpieweather.net/Content/Images/WeatherIcons/Forecast/partly-cloudy.svg",
         "Rain": "http://www.quilpieweather.net/Content/Images/WeatherIcons/Forecast/showers.svg"
     }
+
     def render_html(self):
         req = requests.get("{0}&lat={1}&lon={2}".format(self.url, self.location[0], self.location[1]))
         json_object = req.json()
