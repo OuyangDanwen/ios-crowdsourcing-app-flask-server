@@ -48,18 +48,3 @@ class WeatherContentFeedAdapter(ContentFeedAdapter):
         # img = '<img src="/static/{0}.png" class="img-responsive img-thumbnail" alt="Responsive image" style="width: 100%; display: block;" />'.format(day['weather'][0]['main'])
         name = '<div class="member" style=" display: inline-block;width: 150px;height: 200px;vertical-align: top;text-align:center;">{0}</div>'.format(temp)
         return name
-
-    def constructDiv(self,day_type1, day_max1, day_min1,day_type2, day_max2, day_min2, day_type3, day_max3, day_min3):
-        day1Name = '<div class="name" style="display: inline;">Max :{0} <br /> Min :{1} </div>'.format(day_max1 , day_min1)
-        day1Img = '<img src="/static/{0}.png" class="img-responsive img-thumbnail" alt="Responsive image" style="width: 100%; display: block;" />'.format(day_type1)
-        day1Div = '<div class="member" style=" display: inline-block;width: 150px;height: 200px;vertical-align: top;text-align:center;">{0}{1}</div>'.format(day1Name,day1Img)
-
-        day2Name = '<div class="name" style="display: inline;">Max :{0} <br /> Min :{1} </div>'.format(day_max2 , day_min2)
-        day2Img = '<img src="/static/{0}.png" class="img-responsive img-thumbnail" alt="Responsive image" style="width: 100%; display: block;" />'.format(day_type2)
-        day2Div = '<div class="member" style=" display: inline-block;width: 150px;height: 200px;vertical-align: top;text-align:center;">{0}{1}</div>'.format(day2Name,day2Img)
-
-        day3Name = '<div class="name" style="display: inline;">Max :{0} <br /> Min :{1} </div>'.format(day_max3 , day_min3)
-        day3Img = '<img src="/static/{0}.png" class="img-responsive img-thumbnail" alt="Responsive image" style="width: 100%; display: block;" />'.format(day_type3)
-        day3Div = '<div class="member" style=" display: inline-block;width: 150px;height: 200px;vertical-align: top;text-align:center;">{0}{1}</div>'.format(day3Name,day3Img)
-        div = '<div id="design-cast">{0}{1}{2}</div>'.format(day1Div,day2Div,day3Div)
-        return div
