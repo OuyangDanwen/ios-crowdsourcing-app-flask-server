@@ -33,7 +33,7 @@ class GoogleContentFeedAdapter(ContentFeedAdapter):
 
 
 class WeatherContentFeedAdapter(ContentFeedAdapter):
-    url = 'http://api.openweathermap.org/data/2.5/forecast/daily?cnt=3&appid=90e162ad04a530937bc6145440d2f5a7'
+    url = 'http://api.openweathermap.org/data/2.5/forecast/daily?cnt=3&appid=90e162ad04a530937bc6145440d2f5a7&units=metric'
     def weatherFeed(self):
         day_max = []
         day_min = []
@@ -45,7 +45,9 @@ class WeatherContentFeedAdapter(ContentFeedAdapter):
         # req = requests.post('http://api.openweathermap.org/data/2.5/forecast/daily?lat='+lat+'&lon='+lon+'&cnt=3&appid=90e162ad04a530937bc6145440d2f5a7')
         req = requests.get("{0}&lat={1}&lon={2}".format(self.url, lat, lon))
         json_object = req.json()
-        for i in range(0,3):
+        for day in json_object['list']:
+            day_min = day['temp']['min']
+            day_max = day['temp']['max']
             temp_max = float(json_object['list'][i]['temp']['max'])
             temp_min = float(json_object['list'][i]['temp']['min'])
             day_max.append(format(((temp_max - 273.15) * 1.8 + 32),'.2f'))
