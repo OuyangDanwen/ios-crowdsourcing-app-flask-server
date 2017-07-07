@@ -40,8 +40,8 @@ class WeatherContentFeedAdapter(ContentFeedAdapter):
         res_list = []
         for day in json_object['list']:
             res_list.append(self.construct_div(day))
-        new_html = self.constructDiv(day_type[0], day_max[0], day_min[0], day_type[1], day_max[1], day_min[1], day_type[2], day_max[2], day_min[2])
-        return new_html
+        div = '<div id="design-cast">{0}{1}{2}</div>'.format(res_list[0], res_list[1], res_list[2])
+        return div
 
     def construct_div(self, day):
         temp = '<div class="name" style="display: inline;">Max :{0} <br /> Min :{1} </div>'.format(day['temp']['max'], day['temp']['min'])
