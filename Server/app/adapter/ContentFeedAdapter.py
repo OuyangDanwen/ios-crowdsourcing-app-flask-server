@@ -33,8 +33,13 @@ class GoogleContentFeedAdapter(ContentFeedAdapter):
 
 
 class WeatherContentFeedAdapter(ContentFeedAdapter):
-    url = 'http://api.openweathermap.org/data/2.5/forecast/daily?cnt=3&appid=90e162ad04a530937bc6145440d2f5a7&units=metric'
-    def weatherFeed(self):
+    url = '''http://api.openweathermap.org/data/2.5/forecast/daily?cnt=3&appid=90e162ad04a530937bc6145440d2f5a7&units=metric'''
+    weather_icons = {
+        "Clear": "http://www.quilpieweather.net/Content/Images/WeatherIcons/Forecast/clear.svg",
+        "Clouds": "http://www.quilpieweather.net/Content/Images/WeatherIcons/Forecast/partly-cloudy.svg",
+        "Rain": "http://www.quilpieweather.net/Content/Images/WeatherIcons/Forecast/showers.svg"
+    }
+    def render_html(self):
         req = requests.get("{0}&lat={1}&lon={2}".format(self.url, self.location[0], self.location[1]))
         json_object = req.json()
         res_list = []
@@ -44,7 +49,7 @@ class WeatherContentFeedAdapter(ContentFeedAdapter):
         return div
 
     def construct_div(self, day):
-        temp = '<div class="name" style="display: inline;">Max :{0} <br /> Min :{1} </div>'.format(day['temp']['max'], day['temp']['min'])
-        # img = '<img src="/static/{0}.png" class="img-responsive img-thumbnail" alt="Responsive image" style="width: 100%; display: block;" />'.format(day['weather'][0]['main'])
-        name = '<div class="member" style=" display: inline-block;width: 150px;height: 200px;vertical-align: top;text-align:center;">{0}</div>'.format(temp)
+        temp = '<div class="name" style="display: inline;">Max :{0} <br />Min :{1} </div>'.format(day['temp']['max'], day['temp']['min'])
+        img = '<img src="{0}" class="img-responsive img-thumbnail" alt="Responsive image" style="width: 100%; display: block;" />'.format(self.weather_icons[day['weather'][0]['main']])
+        name = '<div class="member" style=" display: inline-block;width: 150px;height: 200px;vertical-align: top;text-align:center;">{0}{1}</div>'.format(temp, img)
         return name
