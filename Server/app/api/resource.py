@@ -46,7 +46,7 @@ def render_content_feed(rsrc):
         divs = gcfa.render_html()
     elif rsrc.adapterType == "weather":
         wcfa = WeatherContentFeedAdapter(rsrc.query, rsrc.maxResults, rsrc.location)
-        ret.append({"weather", (wcfa.weatherFeed())})
+        ret.append({"div", wcfa.weatherFeed()})
     for div in divs:
         ret.append({"div": div})
     return jsonify({"items": ret}), 200

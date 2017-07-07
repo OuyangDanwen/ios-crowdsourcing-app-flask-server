@@ -37,8 +37,11 @@ class WeatherContentFeedAdapter(ContentFeedAdapter):
         day_max = []
         day_min = []
         day_type = []
-        lat = self.location[1]
-        lon = self.location[0]
+        # change this
+        # lat = self.location[1]
+        # lon = self.location[0]
+        lat = 22.22
+        lon = 11.11
         req = requests.get('http://api.openweathermap.org/data/2.5/forecast/daily?lat=35&lon=139&cnt=3&appid=90e162ad04a530937bc6145440d2f5a7')
         json_object = req.json()
         # jsonObj = json.loads(json_object)
@@ -48,4 +51,27 @@ class WeatherContentFeedAdapter(ContentFeedAdapter):
             day_max.append(format(((temp_max - 273.15) * 1.8 + 32),'.2f'))
             day_min.append(format(((temp_min - 273.15) * 1.8 + 32),'.2f'))
             day_type.append((json_object['list'][i]['weather'][0]['main']))
-        return render_template('temperature.html', maxList=day_max, minList=day_min, dayType=day_type)
+            # fix this
+
+        html = """<div id="design-cast">
+        <div class="member" style=" display: inline-block;width: 150px;height: 200px;vertical-align: top;text-align:center;">
+            <img src="/static/{0}.png" class="img-responsive img-thumbnail" alt="Responsive image" style="width: 100%; display: block;" />
+            <div class="name" style="display: inline;">Max :{1}
+                <br />Min :{2}</div>
+        </div>
+        <div class="member" style=" display: inline-block;width: 150px;height: 200px;vertical-align: top;text-align:center;">
+            <img src="/static/{3}.png" class="img-responsive img-thumbnail" alt="Responsive image" style="width: 100%; display: block;"/>
+            <div class="name" style="display: inline;">Max :{4}
+                <br />Min :{5}</div>
+        </div>
+        <div class="member" style=" display: inline-block;width: 150px;height: 200px;vertical-align: top;text-align:center;">
+            <img src="/static/{6}.png" class="img-responsive img-thumbnail" alt="Responsive image" style="width: 100%; display: block;" />
+            <div class="name" style="display: inline;">Max :{7}
+                <br />Min :{8}</div>
+        </div>
+        </div"""
+        new_html = html.format(day_type[0], day_max[0], day_min[0],
+            day_type[1], day_max[1], day_min[1],
+            day_type[2], day_max[2], day_min[2])
+        # return render_template('/home/ec2-user/Server/new-src/Server/app/adapter/templates/temperature.html', maxList=day_max, minList=day_min, dayType=day_type)
+        return new_html
