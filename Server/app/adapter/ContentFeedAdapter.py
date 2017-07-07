@@ -49,7 +49,7 @@ class WeatherContentFeedAdapter(ContentFeedAdapter):
             day_max.append(format(((temp_max - 273.15) * 1.8 + 32),'.2f'))
             day_min.append(format(((temp_min - 273.15) * 1.8 + 32),'.2f'))
             day_type.append((json_object['list'][i]['weather'][0]['main']))
-        new_html = constructDiv(day_type[0], day_max[0], day_min[0],day_type[1], day_max[1], day_min[1], day_type[2], day_max[2], day_min[2])
+        new_html = self.constructDiv(day_type[0], day_max[0], day_min[0], day_type[1], day_max[1], day_min[1], day_type[2], day_max[2], day_min[2])
         return new_html
 
     def constructDiv(self,day_type1, day_max1, day_min1,day_type2, day_max2, day_min2, day_type3, day_max3, day_min3):
