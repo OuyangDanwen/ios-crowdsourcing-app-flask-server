@@ -38,17 +38,15 @@ def get_resources():
 
 # disabled location
 def render_content_feed(rsrc):
-    # location = get_session_object().location
     ret = []
-    divs = []
     if rsrc.adapterType == "google":
-        gcfa = GoogleContentFeedAdapter(rsrc.query, rsrc.maxResults, rsrc.location)
+        gcfa = GoogleContentFeedAdapter(rsrc.query, rsrc.maxResults, rsrc.location["coordinates"])
         divs = gcfa.render_html()
+        for div in divs:
+            ret.append({"div": div})
     elif rsrc.adapterType == "weather":
-        wcfa = WeatherContentFeedAdapter(rsrc.query, rsrc.maxResults, rsrc.location)
-        ret.append({"div", wcfa.weatherFeed()})
-    for div in divs:
-        ret.append({"div": div})
+        wcfa = WeatherContentFeedAdapter(rsrc.query, rsrc.maxResults, rsrc.location["coordinates"])
+        ret.append({"div": wcfa.render_html()})
     return jsonify({"items": ret}), 200
 
 
