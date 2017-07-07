@@ -34,35 +34,35 @@ class GoogleContentFeedAdapter(ContentFeedAdapter):
 
 class WeatherContentFeedAdapter(ContentFeedAdapter):
     def weatherFeed(self):
-	    day_max = []
-	    day_min = []
-	    day_type = []
-	    # lat = request.json.get('lat',None)
-	    # lon = request.json.get('lon',None)
+        day_max = []
+        day_min = []
+        day_type = []
+        # lat = request.json.get('lat',None)
+        # lon = request.json.get('lon',None)
         lat = 49.15
         lon = 139.45
-	    req = requests.post('http://api.openweathermap.org/data/2.5/forecast/daily?lat='+lat+'&lon='+lon+'&cnt=3&appid=90e162ad04a530937bc6145440d2f5a7')
-	    json_object = req.json()
+        req = requests.post('http://api.openweathermap.org/data/2.5/forecast/daily?lat='+lat+'&lon='+lon+'&cnt=3&appid=90e162ad04a530937bc6145440d2f5a7')
+        json_object = req.json()
         for i in range(0,3):
-	 	    temp_max = float(json_object['list'][i]['temp']['max'])
-	 	    temp_min = float(json_object['list'][i]['temp']['min'])
-	 	    day_max.append(format(((temp_max - 273.15) * 1.8 + 32),'.2f'))
-	 	    day_min.append(format(((temp_min - 273.15) * 1.8 + 32),'.2f'))
-	 	    day_type.append((json_object['list'][i]['weather'][0]['main']))
-	    new_html = constructDiv(day_type[0], day_max[0], day_min[0],day_type[1], day_max[1], day_min[1], day_type[2], day_max[2], day_min[2])
-	    return new_html
-	
+            temp_max = float(json_object['list'][i]['temp']['max'])
+            temp_min = float(json_object['list'][i]['temp']['min'])
+            day_max.append(format(((temp_max - 273.15) * 1.8 + 32),'.2f'))
+            day_min.append(format(((temp_min - 273.15) * 1.8 + 32),'.2f'))
+            day_type.append((json_object['list'][i]['weather'][0]['main']))
+        new_html = constructDiv(day_type[0], day_max[0], day_min[0],day_type[1], day_max[1], day_min[1], day_type[2], day_max[2], day_min[2])
+        return new_html
+
     def constructDiv(self,day_type1, day_max1, day_min1,day_type2, day_max2, day_min2, day_type3, day_max3, day_min3):
-	    day1Name = '<div class="name" style="display: inline;">Max :{0} <br /> Min :{1} </div>'.format(day_max1 , day_min1)
-    	day1Img = '<img src="/static/{0}.png" class="img-responsive img-thumbnail" alt="Responsive image" style="width: 100%; display: block;" />'.format(day_type1)
-	    day1Div = '<div class="member" style=" display: inline-block;width: 150px;height: 200px;vertical-align: top;text-align:center;">{0}{1}</div>'.format(day1Name,day1Img)
-	
-	    day2Name = '<div class="name" style="display: inline;">Max :{0} <br /> Min :{1} </div>'.format(day_max2 , day_min2)
-	    day2Img = '<img src="/static/{0}.png" class="img-responsive img-thumbnail" alt="Responsive image" style="width: 100%; display: block;" />'.format(day_type2)
-	    day2Div = '<div class="member" style=" display: inline-block;width: 150px;height: 200px;vertical-align: top;text-align:center;">{0}{1}</div>'.format(day2Name,day2Img)
-	
-	    day3Name = '<div class="name" style="display: inline;">Max :{0} <br /> Min :{1} </div>'.format(day_max3 , day_min3)
-	    day3Img = '<img src="/static/{0}.png" class="img-responsive img-thumbnail" alt="Responsive image" style="width: 100%; display: block;" />'.format(day_type3)
-	    day3Div = '<div class="member" style=" display: inline-block;width: 150px;height: 200px;vertical-align: top;text-align:center;">{0}{1}</div>'.format(day3Name,day3Img)
-	    div = '<div id="design-cast">{0}{1}{2}</div>'.format(day1Div,day2Div,day3Div)
-	    return div 
+        day1Name = '<div class="name" style="display: inline;">Max :{0} <br /> Min :{1} </div>'.format(day_max1 , day_min1)
+        day1Img = '<img src="/static/{0}.png" class="img-responsive img-thumbnail" alt="Responsive image" style="width: 100%; display: block;" />'.format(day_type1)
+        day1Div = '<div class="member" style=" display: inline-block;width: 150px;height: 200px;vertical-align: top;text-align:center;">{0}{1}</div>'.format(day1Name,day1Img)
+
+        day2Name = '<div class="name" style="display: inline;">Max :{0} <br /> Min :{1} </div>'.format(day_max2 , day_min2)
+        day2Img = '<img src="/static/{0}.png" class="img-responsive img-thumbnail" alt="Responsive image" style="width: 100%; display: block;" />'.format(day_type2)
+        day2Div = '<div class="member" style=" display: inline-block;width: 150px;height: 200px;vertical-align: top;text-align:center;">{0}{1}</div>'.format(day2Name,day2Img)
+
+        day3Name = '<div class="name" style="display: inline;">Max :{0} <br /> Min :{1} </div>'.format(day_max3 , day_min3)
+        day3Img = '<img src="/static/{0}.png" class="img-responsive img-thumbnail" alt="Responsive image" style="width: 100%; display: block;" />'.format(day_type3)
+        day3Div = '<div class="member" style=" display: inline-block;width: 150px;height: 200px;vertical-align: top;text-align:center;">{0}{1}</div>'.format(day3Name,day3Img)
+        div = '<div id="design-cast">{0}{1}{2}</div>'.format(day1Div,day2Div,day3Div)
+        return div
