@@ -12,7 +12,7 @@ class ContentFeedAdapter:
 class GoogleContentFeedAdapter(ContentFeedAdapter):
     url = "https://www.googleapis.com/customsearch/v1?key=AIzaSyB85z_G1Uml_RjlV0VpHek-88WslFgd2tE&cx=011709361973084828043:lu0egzudwnk"
 
-    def construct_divs(self, item):
+    def construct_div(self, item):
         title = '<h3>{0}</h3>'.format(item["title"].encode('utf-8'))
         url = '<a href="{0}">{1}</a>'.format(item["formattedUrl"].encode('utf-8'), title)
         snippet = '<p>{0}</p>'.format(item["htmlSnippet"].encode('utf-8'))
@@ -27,7 +27,7 @@ class GoogleContentFeedAdapter(ContentFeedAdapter):
         data = self.send_request()
         divs = []
         for item in data["items"]:
-            div = self.construct_divs(item)
+            div = self.construct_div(item)
             divs.append(div)
         return divs
 
@@ -37,12 +37,17 @@ class WeatherContentFeedAdapter(ContentFeedAdapter):
     def weatherFeed(self):
         req = requests.get("{0}&lat={1}&lon={2}".format(self.url, self.location[0], self.location[1]))
         json_object = req.json()
+        res_list = []
         for day in json_object['list']:
-            day_min = day['temp']['min']
-            day_max = day['temp']['max']
-            day_type = day['weather'][0]['main']
+            res_list.append(self.construct_div(day))
         new_html = self.constructDiv(day_type[0], day_max[0], day_min[0], day_type[1], day_max[1], day_min[1], day_type[2], day_max[2], day_min[2])
         return new_html
+
+    def construct_div(self, day):
+        temp = '<div class="name" style="display: inline;">Max :{0} <br /> Min :{1} </div>'.format(day['temp']['max'], day['temp']['min'])
+        # img = '<img src="/static/{0}.png" class="img-responsive img-thumbnail" alt="Responsive image" style="width: 100%; display: block;" />'.format(day['weather'][0]['main'])
+        name = '<div class="member" style=" display: inline-block;width: 150px;height: 200px;vertical-align: top;text-align:center;">{0}</div>'.format(temp)
+        return name
 
     def constructDiv(self,day_type1, day_max1, day_min1,day_type2, day_max2, day_min2, day_type3, day_max3, day_min3):
         day1Name = '<div class="name" style="display: inline;">Max :{0} <br /> Min :{1} </div>'.format(day_max1 , day_min1)
