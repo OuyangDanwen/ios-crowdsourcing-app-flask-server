@@ -38,7 +38,6 @@ def get_resources():
 
 # disabled location
 def render_content_feed(rsrc):
-    # location = get_session_object().location
     ret = []
     if rsrc.adapterType == "google":
         gcfa = GoogleContentFeedAdapter(rsrc.query, rsrc.maxResults, rsrc.location["coordinates"])
