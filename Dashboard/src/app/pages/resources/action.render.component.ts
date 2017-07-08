@@ -7,8 +7,8 @@ import { DeleteResourceModalComponent } from './delete-resource-modal/delete-res
 
 @Component({
   template: `
-  <i (click)="launchEditModal($event)" class="ion-edit"></i>
-  <i (click)="launchDeleteModal($event)" class="ion-trash-a"></i>
+  <div style="text-align: center;" id="action-btn"><button class="btn btn-warning btn-sm action-property" (click)="launchEditModal()" title="Edit Resource Name"><i class="ion-edit"></i>&nbsp;Edit</button>
+  <button class="btn btn-danger btn-sm action-property" (click)="launchDeleteModal()" title="Delete Resource"><i class="ion-trash-a"></i>&nbsp;Delete</button></div>
    `,
 })
 export class ActionRenderComponent implements OnInit {
