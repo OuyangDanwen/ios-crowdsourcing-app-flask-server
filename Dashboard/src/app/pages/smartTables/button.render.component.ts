@@ -8,9 +8,12 @@ import { AddPhotosModalComponent } from './add-photos-modal/add-photos-modal.com
 
 @Component({
   template: `
-  <i (click)="launchEditModal()" class="ion-edit"></i>
-  <i (click)="launchDeleteModal()" class="ion-trash-a"></i>
-  <i (click)="launchPicturesModal()" class="ion-images"></i>
+  <div style="text-align: center;" id="action-btn">
+  <button class="btn btn-success btn-sm action-property" (click)="launchPicturesModal($event)" title="Add New Training Image"><i class="ion-images"></i>&nbsp;Add</button>
+  <button class="btn btn-warning btn-sm action-property" (click)="launchEditModal($event)" title="Edit Label Name"><i class="ion-edit"></i>&nbsp;Edit</button> 
+  <button class="btn btn-danger btn-sm action-property" (click)="launchDeleteModal($event)" title="Delete Label"><i class="ion-trash-a"></i>&nbsp;Delete</button>
+
+  </div>
   `,
 })
 export class ButtonRenderComponent implements OnInit {

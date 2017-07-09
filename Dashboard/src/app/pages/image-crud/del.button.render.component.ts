@@ -6,7 +6,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   template: `
-    <i (click)="launchDeleteModal()" class="ion-trash-a"></i>
+  <div style="text-align: center;" id="action-btn">
+  <button class="btn btn-danger btn-sm action-property" (click)="launchDeleteModal()" title="Delete Training Image"><i class="ion-trash-a"></i>&nbsp;Delete</button></div>
   `,
 })
 export class DeleteButtonRenderComponent implements OnInit {

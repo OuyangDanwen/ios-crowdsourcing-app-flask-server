@@ -35,6 +35,38 @@
             color: $default-text;
             line-height: 35px;
         }
+        .action-property{
+            -khtml-opacity:.80; 
+            -moz-opacity:.80; 
+            -ms-filter:”alpha(opacity=80)”;
+            filter:alpha(opacity=80);
+            filter: progid:DXImageTransform.Microsoft.Alpha(opacity=.80);
+            opacity:.80; 
+            color: white;      
+            font-size: 12px;
+            line-height: 1.5; 
+            padding-bottom: 0px;
+            padding-top: 0px;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin-right: 10px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            
+        }
+
+        #action-btn *:last-child{
+            margin-right: 0px !important;
+        }
+
+        #last-btn{
+            margin-right: 10px;
+        }
+
+        .action-property i{
+            color: white;            
+        }
+
         tbody {
             tr {
                 color: $default-text;

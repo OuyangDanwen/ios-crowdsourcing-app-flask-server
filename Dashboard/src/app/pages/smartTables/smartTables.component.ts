@@ -29,12 +29,13 @@ export class SmartTables {
     columns: {
       name: {
         title: 'Name',
+        width: '10%',
         hideSubHeader: true,
       },
       images: {
         title: 'Images',
         editable: false,
-        width: '10%',
+        width: '1%',
         type: 'html',
         valuePrepareFunction: (cell, row) => { 
           return `<a href="/#/pages/images?label=${row.name}">${row.images}</a>`; 
@@ -43,7 +44,7 @@ export class SmartTables {
       resources: {
         title: 'Resources',
         editable: false,
-        width: '10%',
+        width: '1%',
         type: 'html',
         valuePrepareFunction: (cell, row) => { 
           return `<a href="/#/pages/resources?label=${row.name}">${row.resources}</a>`; 
@@ -51,10 +52,12 @@ export class SmartTables {
       },
       createdBy: {
         title: 'Created By',
+        width: '5%',
         editable: false,
       },
       createdOn: {
         title: 'Created On',
+        width: '10%',
         editable: false,
         filter: false,
         valuePrepareFunction: (createdOn) => {
@@ -68,7 +71,8 @@ export class SmartTables {
         type: 'custom',
         renderComponent: ButtonRenderComponent,
         valuePrepareFunction: (cell, row) => row,
-        width: '80px',
+        width: '10%',
+        align: 'center',
         filter: false,
         hideSubHeader: true,
       },

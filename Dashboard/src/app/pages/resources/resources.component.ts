@@ -56,15 +56,18 @@ export class ResourcesComponent implements OnInit {
     columns: {
       label: {
         title: 'Label',
+        width: '10%',
         editable: false,
       },
       name: {
         title: 'Name',
+        width: '8%',
         hideSubHeader: true
       },
       _cls: {
         title: 'Type',
         editable: false,
+        width: '5%',
         valuePrepareFunction: (_cls) => {
           var type = _cls.slice(9);
           return type;
@@ -73,11 +76,13 @@ export class ResourcesComponent implements OnInit {
       createdBy: {
         title: 'Created By',
         editable: false,
+        width: '5%',
       },
       createdOn: {
         title: 'Created On',
         editable: false,
         filter: false,
+        width: '10%',
         valuePrepareFunction: (createdOn) => {
           var dt = new Date(createdOn.$date);
           var formattedDate = moment(dt).format('Do MMMM YYYY, h:mm:ss a');
@@ -89,7 +94,7 @@ export class ResourcesComponent implements OnInit {
         type: 'custom',
         renderComponent: ActionRenderComponent,
         valuePrepareFunction: (cell, row) => row,
-        width: '80px',
+        width: '8%',
         filter: false,
         hideSubHeader: true
       },
