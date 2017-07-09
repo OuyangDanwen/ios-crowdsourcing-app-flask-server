@@ -16,6 +16,7 @@ import { AddResourceModalComponent } from './add-resource-modal/add-resource-mod
 import { EditResourceModalComponent } from './edit-resource-modal/edit-resource-modal.component';
 import { SaveResourceModalComponent } from './save-resource-modal/save-resource-modal.component';
 import { ViewResourceModalComponent } from './view-resource-modal/view-resource-modal.component';
+import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { ViewResourceModalComponent } from './view-resource-modal/view-resource-
     routing,
     Ng2SmartTableModule,
     HttpModule,
+    Ng2AutoCompleteModule,
   ],
   declarations: [
     ResourcesComponent,

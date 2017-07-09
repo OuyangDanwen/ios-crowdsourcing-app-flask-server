@@ -30,6 +30,24 @@ export class ResourcesService {
   //     }
   //     );
   // }
+  getLabels() {
+    const token = localStorage.getItem('access_token');
+    const headers = new Headers();
+    headers.append('Authorization', 'Bearer ' + token);
+    return this.http.get('http://54.93.252.106:8080/api/labels', { headers: headers })
+      .map(
+      (response: Response) => {
+        const data = response.json();
+        console.log(data.labels);
+        return data.labels;
+      }
+      )
+      .catch(
+      (error: Response) => {
+        return Observable.throw('Something went wrong');
+      }
+      );
+  }
 
   getResources() {
     const token = localStorage.getItem('access_token');

@@ -3,7 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ResourcesService } from '../resources.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SaveResourceModalComponent } from '../save-resource-modal/save-resource-modal.component';
-
+import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 
 @Component({
   selector: 'add-resource-modal',
@@ -29,6 +29,7 @@ export class AddResourceModalComponent implements OnInit {
   url: string = "";
   files: FileList; 
   filesLst: File[] = [];
+  labelName = [];
   resName: string = "";
   resFile: File = null;
   isContentFeed: boolean = false;
@@ -50,7 +51,9 @@ export class AddResourceModalComponent implements OnInit {
     }
 
   constructor(private resourcesService: ResourcesService, private activeModal: NgbActiveModal,private modalService: NgbModal) {
-  }
+      this.loadLabels();
+   }
+
 
    onModalLaunch() {
    debugger;
@@ -58,6 +61,8 @@ export class AddResourceModalComponent implements OnInit {
          navigator.geolocation.getCurrentPosition(this.setPosition.bind(this));
       };
     }
+
+
   
   ngOnInit() {}
 
@@ -113,8 +118,7 @@ export class AddResourceModalComponent implements OnInit {
     this.resFile = files[0];
   }
 
-  setLabel(labelTxt: string) {
-    this.labelTxt = labelTxt;
+  setLabel() {
     this.closeModal();
     this.resourcesService.uploadResource(this.resName.toLowerCase(), this.labelTxt.toLowerCase(), this.resType.toLowerCase(), this.url, this.resFile, this.locationLatitude, this.locationLongitude, this.adapterType, this.maxResults)
       .subscribe(
@@ -130,6 +134,23 @@ export class AddResourceModalComponent implements OnInit {
     this.activeModal.close();
   }
 
+  //Load label name
+   loadLabels() {
+    this.resourcesService.getLabels()
+      .subscribe(
+      (labels: any[]) => {
+        for(var i=0;i<labels.length;i++) {
+          this.labelName[i]=labels[i].name;
+        }
+      },
+      (error) => { console.log(error); },
+    );
+  }
+
+ //autocomplete check
+  labelChanged(newVal) {
+    this.labelTxt = newVal ;
+  }
 
   isValidCoordinate(coordinate: number){
     if( coordinate!=0 && ( (coordinate % 1 === 0) || (coordinate === +coordinate && coordinate!== (coordinate|0)) ) ){
@@ -151,9 +172,9 @@ export class AddResourceModalComponent implements OnInit {
   }
   disableButton(){
 
+
     if (this.resName.length > 0 && this.labelTxt.length > 0 && this.isValidLatitudeLongitude(this.locationLatitude,this.locationLongitude)){
       if ((this.resType === "Link" && this.url.length > 0) || (this.resFile) || (this.resType === "Contentfeed" && (this.maxResults > 0 && this.maxResults < 11) && (this.adapterType === "Google" || this.adapterType === "Weather") ) ) {
-        console.log("best best");
         return false;
 
       }
