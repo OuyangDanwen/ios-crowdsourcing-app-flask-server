@@ -34,16 +34,6 @@ export class ResourcesComponent implements OnInit {
         this.source.setFilter([{ field: 'label', search: filter }]);
       }
     });
-    // DO NOT REMOVE
-    // this.resService.getResourceContent("alarm")
-    //   .subscribe(
-    //   (resources: any) => {
-    //     console.log("FIELD: ");
-    //     console.log(resources);
-    //     this.resourceSource = resources;
-    //   },
-    //   (error) => { console.log(error); }
-    //   );
   }
 
   settings = {
