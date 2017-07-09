@@ -1,6 +1,5 @@
 import { Component, NgModule, OnInit } from '@angular/core';
 import { Response } from '@angular/http';
-import { ResourcesService } from './resources.service';
 import { LocalDataSource } from 'ng2-smart-table';
 import * as moment from 'moment';
 import { ActionRenderComponent } from './action.render.component';
@@ -17,9 +16,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 export class ResourcesComponent implements OnInit {
   data = [];
 
-  constructor(
-    private resService: ResourcesService, private modalService: NgbModal,
-    private activatedRoute: ActivatedRoute) {
+  constructor(private modalService: NgbModal, private activatedRoute: ActivatedRoute) {
     this.fillTable();
   }
 

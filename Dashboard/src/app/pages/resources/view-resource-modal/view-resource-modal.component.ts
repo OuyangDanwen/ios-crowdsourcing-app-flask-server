@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserModule } from '@angular/platform-browser'
 import { DomSanitizer } from '@angular/platform-browser';
+import { ResourcesService } from '../resources.service';
 
 @Component({
   selector: 'view-resource-modal',
@@ -16,7 +17,9 @@ export class ViewResourceModalComponent implements OnInit {
   resourceURL;
   modalHeader: string;
 
-  constructor(private activeModal: NgbActiveModal, private domSanitizer : DomSanitizer) {}
+  constructor(private activeModal: NgbActiveModal, private domSanitizer : DomSanitizer,
+    resService: ResourcesService) {}
+  ngOnInit() { }
   
   onModalLaunch(rowData) {
     console.log(rowData);
@@ -47,7 +50,15 @@ export class ViewResourceModalComponent implements OnInit {
     bypassSecurityTrustResourceUrl(this.baseURL + rowData.name);
   }
 
-  ngOnInit() { }
+  getHtmlForContentFeed(){
+        this.resService.getResourceContent("alarm")
+      .subscribe(
+      (content: any) => {
+        console.log(content);
+      },
+      (error) => { console.log(error); }
+      );
+  }
 
   closeModal() {
     this.activeModal.close();
