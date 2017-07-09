@@ -52,6 +52,12 @@ export class ViewResourceModalComponent implements OnInit {
       .subscribe(
       (content: any) => {
         console.log(content);
+        if (!content.items.divs){
+          console.log("HTML is not properly formatted for this resource!");
+        }
+        content.items.forEach(element => {
+          console.log(element);
+        });
       },
       (error) => { console.log(error); }
       );
