@@ -22,7 +22,7 @@ export class DeleteButtonRenderComponent implements OnInit {
     this.imgSrc = this.value;
   }
   launchDeleteModal() {
-    const activeModal = this.modalService.open(ViewPhotosModalComponent, { size: 'lg' });
+    const activeModal = this.modalService.open(ViewPhotosModalComponent, { size: 'sm' });
     activeModal.componentInstance.modalHeader = 'Delete Photo';
     activeModal.componentInstance.onModalLaunch(this.imgSrc, "delete");
   }
