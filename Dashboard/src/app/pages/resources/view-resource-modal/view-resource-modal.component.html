@@ -22,8 +22,8 @@
         <div *ngIf="resType == 'link'">
             <p> Link </p>
         </div>
-        <div *ngIf="resType == 'contentfeed'">
-            <p> {{htmlContent}} </p>
+        <div class="col-md-12" *ngIf="resType == 'contentfeed'">
+            <div [innerHtml]="htmlContent"></div>
         </div>
     </div>
     <div class="modal-footer col-md-12">
