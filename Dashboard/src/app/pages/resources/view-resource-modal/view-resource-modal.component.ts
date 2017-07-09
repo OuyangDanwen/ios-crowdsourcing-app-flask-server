@@ -44,7 +44,7 @@ export class ViewResourceModalComponent implements OnInit {
     }
     console.log("Resource type: " + this.resType);
     this.resourceURL = this.domSanitizer.
-    bypassSecurityTrustResourceUrl(this.baseURL + rowData.name);
+      bypassSecurityTrustResourceUrl(this.baseURL + rowData.name);
   }
 
   getHtmlForContentFeed(name) {
@@ -52,11 +52,12 @@ export class ViewResourceModalComponent implements OnInit {
       .subscribe(
       (content: any) => {
         console.log(content);
-        if (!content.items.divs){
+        if (!content.items || !content.items[0].div) {
           console.log("HTML is not properly formatted for this resource!");
+          return;
         }
         content.items.forEach(element => {
-          console.log(element);
+          this.htmlContent += element.div;
         });
       },
       (error) => { console.log(error); }
