@@ -11,9 +11,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 export class ViewResourceModalComponent implements OnInit {
   resType: string = "";
-  isVideo: boolean = false;
-  isPDF: boolean = false;
-  isAudio: boolean = false;
   baseURL: string = 'http://54.93.252.106:8080/api/resources/';
   resourceURL;
   modalHeader: string;
