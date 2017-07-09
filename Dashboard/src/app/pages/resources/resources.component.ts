@@ -15,8 +15,6 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
   styleUrls: ['./resources.component.scss']
 })
 export class ResourcesComponent implements OnInit {
-  // DO NOT REMOVE
-  resourceSource: File;
   data = [];
 
   constructor(
