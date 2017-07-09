@@ -112,7 +112,7 @@ export class ResourcesService {
         formData.append("size", String(file.size));
         break;
       case 'contentfeed':
-        formData.append("adapterType", adapterType.toLowerCase());
+        formData.append("adapterType", adapterType);
         formData.append("query", resLabel);
         formData.append("maxResults", String(maxResults));
         break;
