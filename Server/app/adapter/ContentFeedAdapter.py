@@ -27,7 +27,7 @@ class GoogleContentFeedAdapter(ContentFeedAdapter):
                 "formattedUrl": "https://console.developers.google.com/billing?project=3939393",
                 "htmlSnippet": "<b>Daily</b>usage exceeded!"
             }
-            data = {[item, item, item]}
+            data = {"items": [item, item, item]}
             return data
         return r.json()
 
