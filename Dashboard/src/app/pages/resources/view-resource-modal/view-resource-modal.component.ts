@@ -10,6 +10,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 
 export class ViewResourceModalComponent implements OnInit {
+  resType: string = "";
   isVideo: boolean = false;
   isPDF: boolean = false;
   isAudio: boolean = false;
@@ -22,22 +23,28 @@ export class ViewResourceModalComponent implements OnInit {
   onModalLaunch(rowData) {
     console.log(rowData);
     if (rowData._cls == 'Resource.PDFDocument') {
-      console.log('Found the Document');
-      this.isPDF = true;
+      this.resType = "pdf";
     }
     else if (rowData._cls == 'Resource.Video') {
-      console.log('Found the Video');
-      this.isVideo = true;
+      this.resType = "video";
     }
     else if (rowData._cls == 'Resource.Audio') {
-      console.log('Found the Audio');
-      this.isAudio = true;
+      this.resType = "audio";
+    }
+    else if (rowData._cls == 'Resource.Url'){
+      this.resType = "url";
+      return;
+    }
+    else if (rowData._cls == 'Resource.ContentFeed'){
+      this.resType = "contentfeed"
+      return;
     }
     else {
       this.modalHeader = 'Invalid resource extenstion (only mp3/pdf/mp4 supported)';
       console.log(this.modalHeader);
       return;
     }
+    console.log("Resource type: " + this.resType);
     this.resourceURL = this.domSanitizer.
     bypassSecurityTrustResourceUrl(this.baseURL + rowData.name);
   }
