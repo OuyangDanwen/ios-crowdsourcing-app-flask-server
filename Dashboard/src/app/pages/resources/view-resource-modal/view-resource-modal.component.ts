@@ -34,6 +34,7 @@ export class ViewResourceModalComponent implements OnInit {
         break;
       case 'Resource.Link':
         this.resType = "link";
+        this.htmlContent = `<b>URL:</b> <a href="${rowData.url}">${rowData.url}</a>`;
         return;
       case 'Resource.ContentFeed':
         this.resType = "contentfeed";
