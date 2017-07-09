@@ -37,11 +37,31 @@ export class AddResourceModalComponent implements OnInit {
   notLinkAndContentfeed: boolean = false;
   locationLatitude: number = 0;
   locationLongitude: number = 0;
+  locationLatitudeCurrentLocation: number = 0;
+  locationLongitudeCurrentLocation: number = 0;
+
+  setPosition(position: Position){
+  debugger;
+      this.locationLatitude = position.coords.latitude;
+      this.locationLongitude = position.coords.longitude;
+      this.locationLatitudeCurrentLocation = position.coords.latitude;
+      this.locationLongitudeCurrentLocation = position.coords.longitude;
+
+    }
 
   constructor(private resourcesService: ResourcesService, private activeModal: NgbActiveModal,private modalService: NgbModal) {
   }
+
+   onModalLaunch() {
+   debugger;
+      if(navigator.geolocation){
+         navigator.geolocation.getCurrentPosition(this.setPosition.bind(this));
+      };
+    }
   
   ngOnInit() {}
+
+
 
   onSelectContentFeedChange(value){
     this.adapterType = value;
@@ -118,9 +138,20 @@ export class AddResourceModalComponent implements OnInit {
     return false;
   }
 
+  isValidLatitudeLongitude(Latitude: number,Longitude: number){
+    debugger;
+    if(this.locationLongitudeCurrentLocation == Longitude && this.locationLatitudeCurrentLocation==Latitude){
+    return true;
+    }
+
+    if( (Latitude>=-90 && Latitude<=90) && (Longitude>=-180 && Longitude<=180) && this.isValidCoordinate(Latitude) && this.isValidCoordinate(Longitude)){
+      return true;
+    }
+    return false;
+  }
   disableButton(){
 
-    if (this.resName.length > 0 && this.labelTxt.length > 0 && this.isValidCoordinate(this.locationLatitude) && this.isValidCoordinate(this.locationLongitude) ){
+    if (this.resName.length > 0 && this.labelTxt.length > 0 && this.isValidLatitudeLongitude(this.locationLatitude,this.locationLongitude)){
       if ((this.resType === "Link" && this.url.length > 0) || (this.resFile) || (this.resType === "Contentfeed" && (this.maxResults > 0 && this.maxResults < 11) && (this.adapterType === "Google" || this.adapterType === "Weather") ) ) {
         console.log("best best");
         return false;
