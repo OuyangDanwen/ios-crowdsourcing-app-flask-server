@@ -17,10 +17,10 @@ export class ViewResourceModalComponent implements OnInit {
   resourceURL;
   modalHeader: string;
 
-  constructor(private activeModal: NgbActiveModal, private domSanitizer : DomSanitizer,
-    private resourcesService: ResourcesService) {}
+  constructor(private activeModal: NgbActiveModal, private domSanitizer: DomSanitizer,
+    private resourcesService: ResourcesService) { }
   ngOnInit() { }
-  
+
   onModalLaunch(rowData) {
     console.log(rowData);
     if (rowData._cls == 'Resource.PDFDocument') {
@@ -32,11 +32,11 @@ export class ViewResourceModalComponent implements OnInit {
     else if (rowData._cls == 'Resource.Audio') {
       this.resType = "audio";
     }
-    else if (rowData._cls == 'Resource.Link'){
+    else if (rowData._cls == 'Resource.Link') {
       this.resType = "link";
       return;
     }
-    else if (rowData._cls == 'Resource.ContentFeed'){
+    else if (rowData._cls == 'Resource.ContentFeed') {
       this.resType = "contentfeed"
       return;
     }
@@ -47,11 +47,11 @@ export class ViewResourceModalComponent implements OnInit {
     }
     console.log("Resource type: " + this.resType);
     this.resourceURL = this.domSanitizer.
-    bypassSecurityTrustResourceUrl(this.baseURL + rowData.name);
+      bypassSecurityTrustResourceUrl(this.baseURL + rowData.name);
   }
 
-  getHtmlForContentFeed(name){
-        this.resourcesService.getContentFeed(name)
+  getHtmlForContentFeed(name) {
+    this.resourcesService.getContentFeed(name)
       .subscribe(
       (content: any) => {
         console.log(content);
