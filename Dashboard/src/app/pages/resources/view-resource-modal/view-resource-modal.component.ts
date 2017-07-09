@@ -18,7 +18,7 @@ export class ViewResourceModalComponent implements OnInit {
   modalHeader: string;
 
   constructor(private activeModal: NgbActiveModal, private domSanitizer : DomSanitizer,
-    resService: ResourcesService) {}
+    private resourcesService: ResourcesService) {}
   ngOnInit() { }
   
   onModalLaunch(rowData) {
@@ -50,8 +50,8 @@ export class ViewResourceModalComponent implements OnInit {
     bypassSecurityTrustResourceUrl(this.baseURL + rowData.name);
   }
 
-  getHtmlForContentFeed(){
-        this.resService.getResourceContent("alarm")
+  getHtmlForContentFeed(name){
+        this.resourcesService.getContentFeed(name)
       .subscribe(
       (content: any) => {
         console.log(content);
