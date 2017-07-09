@@ -22,32 +22,29 @@ export class ViewResourceModalComponent implements OnInit {
   ngOnInit() { }
 
   onModalLaunch(rowData) {
-    console.log(rowData);
-    if (rowData._cls == 'Resource.PDFDocument') {
-      this.resType = "pdf";
-    }
-    else if (rowData._cls == 'Resource.Video') {
-      this.resType = "video";
-    }
-    else if (rowData._cls == 'Resource.Audio') {
-      this.resType = "audio";
-    }
-    else if (rowData._cls == 'Resource.Link') {
-      this.resType = "link";
-      return;
-    }
-    else if (rowData._cls == 'Resource.ContentFeed') {
-      this.resType = "contentfeed"
-      return;
-    }
-    else {
-      this.modalHeader = 'Invalid resource type';
-      console.log(this.modalHeader);
-      return;
+    switch (rowData) {
+      case 'Resource.PDFDocument':
+        this.resType = "pdf";
+      case 'Resource.Video':
+        this.resType = "video";
+      case 'Resource.Audio':
+        this.resType = "audio";
+        break;
+      case 'Resource.Link':
+        this.resType = "link";
+        return;
+      case 'Resource.ContentFeed':
+        this.resType = "contentfeed";
+        this.getHtmlForContentFeed(rowData.name);
+        break;
+      default:
+        this.modalHeader = 'Invalid resource type';
+        console.log(this.modalHeader);
+        return;
     }
     console.log("Resource type: " + this.resType);
     this.resourceURL = this.domSanitizer.
-      bypassSecurityTrustResourceUrl(this.baseURL + rowData.name);
+    bypassSecurityTrustResourceUrl(this.baseURL + rowData.name);
   }
 
   getHtmlForContentFeed(name) {
