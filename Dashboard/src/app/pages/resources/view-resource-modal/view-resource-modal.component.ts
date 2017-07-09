@@ -28,8 +28,8 @@ export class ViewResourceModalComponent implements OnInit {
     else if (rowData._cls == 'Resource.Audio') {
       this.resType = "audio";
     }
-    else if (rowData._cls == 'Resource.Url'){
-      this.resType = "url";
+    else if (rowData._cls == 'Resource.Link'){
+      this.resType = "link";
       return;
     }
     else if (rowData._cls == 'Resource.ContentFeed'){
