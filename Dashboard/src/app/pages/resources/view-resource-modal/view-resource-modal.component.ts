@@ -12,6 +12,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class ViewResourceModalComponent implements OnInit {
   resType: string = "";
   baseURL: string = 'http://54.93.252.106:8080/api/resources/';
+  htmlContent: string = "";
   resourceURL;
   modalHeader: string;
 
@@ -37,7 +38,7 @@ export class ViewResourceModalComponent implements OnInit {
       return;
     }
     else {
-      this.modalHeader = 'Invalid resource extenstion (only mp3/pdf/mp4 supported)';
+      this.modalHeader = 'Invalid resource type';
       console.log(this.modalHeader);
       return;
     }
