@@ -118,5 +118,6 @@ export class ResourcesComponent implements OnInit {
   launchAddResourceModal() {
     const activeModal = this.modalService.open(AddResourceModalComponent, { size: 'sm' });
     activeModal.componentInstance.modalHeader = 'Add Resource';
+    activeModal.componentInstance.onModalLaunch();
   }
 }
