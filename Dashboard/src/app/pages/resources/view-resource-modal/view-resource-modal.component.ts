@@ -16,13 +16,14 @@ export class ViewResourceModalComponent implements OnInit {
   baseURL: string = 'http://54.93.252.106:8080/api/resources/';
   htmlContent: string = "";
   resourceURL;
-  modalHeader: string;
+  modalHeader: string = "";
 
   constructor(private activeModal: NgbActiveModal, private domSanitizer: DomSanitizer,
     private resourcesService: ResourcesService, private renderer:Renderer2) { }
   ngOnInit() { }
 
   onModalLaunch(rowData) {
+    this.modalHeader += `${rowData._cls.substring(9)}: ${rowData.name}`;
     switch (rowData._cls) {
       case 'Resource.PDFDocument':
         this.resType = "pdf";

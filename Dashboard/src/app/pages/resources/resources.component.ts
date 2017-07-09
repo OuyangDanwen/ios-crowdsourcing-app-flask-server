@@ -86,7 +86,6 @@ export class ResourcesComponent implements OnInit {
 
   onSelect(event) {
     const activeModal = this.modalService.open(ViewResourceModalComponent, { size: 'lg' });
-    activeModal.componentInstance.modalHeader = 'View Resource';
     activeModal.componentInstance.onModalLaunch(event.data);
   }
 
