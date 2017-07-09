@@ -6,18 +6,24 @@
         </button>
     </div>
     <div class="modal-body col-md-12">
-        <div *ngIf="isVideo">
+        <div *ngIf="resType == 'video'">
             <video class="col-md-12" controls>
                 <source [src]="resourceURL" type="video/mp4">
             </video>
         </div>
-        <div *ngIf="isPDF">
+        <div *ngIf="resType == 'pdf'">
             <embed class="col-md-12" [src]="resourceURL" width="500" height="500" type='application/pdf'>
         </div>
-        <div *ngIf="isAudio">
+        <div *ngIf="resType == 'audio'">
             <audio class="col-md-12" controls>
                 <source [src]="resourceURL"type="audio/mpeg">
             </audio>
+        </div>
+        <div *ngIf="resType == 'url'">
+            <p> Audio </p>
+        </div>
+        <div *ngIf="resType == 'contentfeed'">
+            <p> Content feed </p>
         </div>
     </div>
     <div class="modal-footer col-md-12">
