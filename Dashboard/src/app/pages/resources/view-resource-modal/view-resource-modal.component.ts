@@ -37,6 +37,7 @@ export class ViewResourceModalComponent implements OnInit {
         return;
       case 'Resource.ContentFeed':
         this.resType = "contentfeed";
+        this.modalHeader += ` (${rowData.adapterType})`
         this.getHtmlForContentFeed(rowData.name);
         return;
       default:
