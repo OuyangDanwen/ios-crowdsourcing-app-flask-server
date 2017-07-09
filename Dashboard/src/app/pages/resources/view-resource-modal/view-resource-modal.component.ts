@@ -22,7 +22,7 @@ export class ViewResourceModalComponent implements OnInit {
   ngOnInit() { }
 
   onModalLaunch(rowData) {
-    switch (rowData) {
+    switch (rowData._cls) {
       case 'Resource.PDFDocument':
         this.resType = "pdf";
       case 'Resource.Video':
@@ -36,7 +36,7 @@ export class ViewResourceModalComponent implements OnInit {
       case 'Resource.ContentFeed':
         this.resType = "contentfeed";
         this.getHtmlForContentFeed(rowData.name);
-        break;
+        return;
       default:
         this.modalHeader = 'Invalid resource type';
         console.log(this.modalHeader);
