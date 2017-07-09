@@ -8,28 +8,27 @@ export class ResourcesService {
 
   constructor(private http: Http) { }
 
-  // DO NOT REMOVE. MIGHT NEED IN FUTURE
-  // getResourceContent(name: string){
-  //   console.log(name);
-  //   const token = localStorage.getItem('access_token');
-  //   const headers = new Headers();
-  //   headers.append('Authorization', 'Bearer ' + token);
+  getContentFeed(name: string){
+    console.log(name);
+    const token = localStorage.getItem('access_token');
+    const headers = new Headers();
+    headers.append('Authorization', 'Bearer ' + token);
 
-  //   return this.http.get(`http://54.93.252.106:8080/api/resources/${name}`, { headers: headers })
-  //     .map(
-  //     (response: Response) => {
-  //       var blob = new Blob([response.arrayBuffer()], { type: 'audio/mpeg' });
-  //       console.log(blob);
-  //       return blob;
-  //     }
-  //     )
-  //     .catch(
-  //     (error: Response) => {
-  //       console.log(error);
-  //       return Observable.throw('Something went wrong');
-  //     }
-  //     );
-  // }
+    return this.http.get(`http://54.93.252.106:8080/api/resources/${name}`, { headers: headers })
+      .map(
+      (response: Response) => {
+        const data = response.json();
+        return data;
+      }
+      )
+      .catch(
+      (error: Response) => {
+        console.log(error);
+        return Observable.throw('Something went wrong@getContentFeedContent');
+      }
+      );
+  }
+
   getLabels() {
     const token = localStorage.getItem('access_token');
     const headers = new Headers();
@@ -89,7 +88,9 @@ export class ResourcesService {
       );
   }
 
-    uploadResource(resName: string, resLabel: string, resType: string, resUrl: string, file: File, locationLatitude: number, locationLongitude: number, adapterType: string, maxResults: number) {
+  uploadResource(resName: string, resLabel: string,
+    resType: string, resUrl: string, file: File, locationLatitude: number,
+    locationLongitude: number, adapterType: string, maxResults: number) {
 
     const formData = new FormData();
     // Attach data 
@@ -98,8 +99,7 @@ export class ResourcesService {
     formData.append("label", resLabel);
     formData.append('longitude', String(locationLongitude));
     formData.append('latitude', String(locationLatitude));
-    console.log("Test "+String(locationLongitude)+","+String(locationLatitude))
-    // console.log("\n\n\ TSTST: " + resType.toLowerCase());
+    console.log("Test " + String(locationLongitude) + "," + String(locationLatitude))
     switch (resType) {
       case 'link':
         formData.append("url", encodeURI(resUrl));
@@ -111,9 +111,9 @@ export class ResourcesService {
         formData.append("size", String(file.size));
         break;
       case 'contentfeed':
-        formData.append("adapterType", adapterType.toLowerCase());     
-        formData.append("query", resLabel);    
-        formData.append("maxResults", String(maxResults));  
+        formData.append("adapterType", adapterType);
+        formData.append("query", resLabel);
+        formData.append("maxResults", String(maxResults));
         break;
       default:
         console.log("Invalid Resource type @ uploading resource")

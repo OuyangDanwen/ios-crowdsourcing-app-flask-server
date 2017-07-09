@@ -1,31 +1,29 @@
-<div *ngIf="isView">
+<div class="modal-content col-md-12" *ngIf="isView">
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" (click)="closeModal()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Image preview</h4>
+        <h5 class="modal-title col-md-12" id="exampleModalLabel">Image Preview</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-    <div class="modal-body">
-        <img [src]="imgSrc" style="max-width:240px;max-height:180px;">
+    <div class="modal-body col-md-12">
+        <img [src]="imgSrc" style="max-width: 100%; height:auto">
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeModal()">Close</button>
     </div>
 </div>
-<div *ngIf="isDelete">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Image Delete</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+<div class="modal-content col-md-12" *ngIf="isDelete">
+    <div class="modal-header">
+        <h5 class="modal-title col-md-12" id="exampleModalLabel">Image Delete</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
           <span aria-hidden="true">&times;</span>
         </button>
-        </div>
-        <div class="modal-body">
-            <div class="modal-body">
-                <img [src]="imgSrc" style="max-width:240px;max-height:180px;">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Close</button>
-                <button type="button" class="btn btn-primary btn-danger" (click)="deleteImage()">Delete</button>
-            </div>
-        </div>
+    </div>
+    <div class="modal-body col-md-12">
+        <img [src]="imgSrc" style="max-width: 100%; height:auto">
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Close</button>
+        <button type="button" class="btn btn-primary btn-danger" (click)="deleteImage()">Delete</button>
     </div>
 </div>

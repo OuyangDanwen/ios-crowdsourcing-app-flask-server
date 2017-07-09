@@ -1,6 +1,5 @@
 import { Component, NgModule, OnInit } from '@angular/core';
 import { Response } from '@angular/http';
-import { ResourcesService } from './resources.service';
 import { LocalDataSource } from 'ng2-smart-table';
 import * as moment from 'moment';
 import { ActionRenderComponent } from './action.render.component';
@@ -8,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddResourceModalComponent } from './add-resource-modal/add-resource-modal.component';
 import { ViewResourceModalComponent } from './view-resource-modal/view-resource-modal.component';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ResourcesService } from './resources.service';
 
 @Component({
   selector: 'app-resources',
@@ -15,13 +15,10 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
   styleUrls: ['./resources.component.scss']
 })
 export class ResourcesComponent implements OnInit {
-  // DO NOT REMOVE
-  resourceSource: File;
   data = [];
 
-  constructor(
-    private resService: ResourcesService, private modalService: NgbModal,
-    private activatedRoute: ActivatedRoute) {
+  constructor(private modalService: NgbModal, private activatedRoute: ActivatedRoute,
+  private resourcesService: ResourcesService) {
     this.fillTable();
   }
 
@@ -34,16 +31,6 @@ export class ResourcesComponent implements OnInit {
         this.source.setFilter([{ field: 'label', search: filter }]);
       }
     });
-    // DO NOT REMOVE
-    // this.resService.getResourceContent("alarm")
-    //   .subscribe(
-    //   (resources: any) => {
-    //     console.log("FIELD: ");
-    //     console.log(resources);
-    //     this.resourceSource = resources;
-    //   },
-    //   (error) => { console.log(error); }
-    //   );
   }
 
   settings = {
@@ -104,13 +91,12 @@ export class ResourcesComponent implements OnInit {
 
   onSelect(event) {
     const activeModal = this.modalService.open(ViewResourceModalComponent, { size: 'lg' });
-    activeModal.componentInstance.modalHeader = 'View Resource';
     activeModal.componentInstance.onModalLaunch(event.data);
   }
 
   source: LocalDataSource = new LocalDataSource();
   fillTable() {
-    this.resService.getResources()
+    this.resourcesService.getResources()
       .subscribe(
       (resources: any[]) => {
         console.log(resources);
