@@ -42,7 +42,6 @@ export class AddResourceModalComponent implements OnInit {
   locationLongitudeCurrentLocation: number = 0;
 
   setPosition(position: Position){
-  debugger;
       this.locationLatitude = position.coords.latitude;
       this.locationLongitude = position.coords.longitude;
       this.locationLatitudeCurrentLocation = position.coords.latitude;
@@ -56,7 +55,6 @@ export class AddResourceModalComponent implements OnInit {
 
 
    onModalLaunch() {
-   debugger;
       if(navigator.geolocation){
          navigator.geolocation.getCurrentPosition(this.setPosition.bind(this));
       };
@@ -76,7 +74,6 @@ export class AddResourceModalComponent implements OnInit {
 
   onSelectChange(value){
     console.log("before notLinkAndContentfeed " + this.notLinkAndContentfeed);
-
     if(!(value === "Link") && !(value === "Contentfeed")){
       this.notLinkAndContentfeed = true;
     }else{
@@ -160,7 +157,6 @@ export class AddResourceModalComponent implements OnInit {
   }
 
   isValidLatitudeLongitude(Latitude: number,Longitude: number){
-    debugger;
     if(this.locationLongitudeCurrentLocation == Longitude && this.locationLatitudeCurrentLocation==Latitude){
     return true;
     }
