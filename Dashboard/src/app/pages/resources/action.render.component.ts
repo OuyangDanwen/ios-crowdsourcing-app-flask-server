@@ -17,10 +17,7 @@ export class ActionRenderComponent implements OnInit {
 
   @Input() value;
 
-  constructor(private modalService: NgbModal) { 
-  }
-
-
+  constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
     this.rowData = this.value;
@@ -33,11 +30,11 @@ export class ActionRenderComponent implements OnInit {
     console.log(this.rowData);
     activeModal.componentInstance.onModalLaunch(this.rowData);
   }
+  
   launchDeleteModal(event) {
     event.stopPropagation();
     const activeModal = this.modalService.open(DeleteResourceModalComponent, { size: 'sm' });
     activeModal.componentInstance.modalHeader = 'Delete Resource';
     activeModal.componentInstance.onModalLaunch(this.rowData);
-
   }
 }
