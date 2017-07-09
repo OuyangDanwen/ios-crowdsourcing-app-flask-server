@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddResourceModalComponent } from './add-resource-modal/add-resource-modal.component';
 import { ViewResourceModalComponent } from './view-resource-modal/view-resource-modal.component';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ResourcesService } from './resources.service';
 
 @Component({
   selector: 'app-resources',
@@ -16,7 +17,8 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 export class ResourcesComponent implements OnInit {
   data = [];
 
-  constructor(private modalService: NgbModal, private activatedRoute: ActivatedRoute) {
+  constructor(private modalService: NgbModal, private activatedRoute: ActivatedRoute,
+  private resourcesService: ResourcesService) {
     this.fillTable();
   }
 
@@ -90,7 +92,7 @@ export class ResourcesComponent implements OnInit {
 
   source: LocalDataSource = new LocalDataSource();
   fillTable() {
-    this.resService.getResources()
+    this.resourcesService.getResources()
       .subscribe(
       (resources: any[]) => {
         console.log(resources);
