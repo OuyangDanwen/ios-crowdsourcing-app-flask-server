@@ -21,6 +21,14 @@ class GoogleContentFeedAdapter(ContentFeedAdapter):
 
     def send_request(self):
         r = requests.get("{0}&num={1}&q={2}".format(self.url, self.max_results, self.query))
+        if r.status_code == 403:
+            item = {
+                "title": "Daily Limit exceeded",
+                "formattedUrl": "https://console.developers.google.com/billing?project=3939393",
+                "htmlSnippet": "<b>Daily</b>usage exceeded!"
+            }
+            data = {[item, item, item]}
+            return data
         return r.json()
 
     def render_html(self):
