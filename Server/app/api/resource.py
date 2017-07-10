@@ -62,6 +62,7 @@ def get_resource(name):
     elif isinstance(rsrc, Link):
         return jsonify({"Some": "link"}), 200
     elif isinstance(rsrc, PDFDocument) or \
+            isinstance(rsrc, Text) or \
             isinstance(rsrc, Audio) or \
             isinstance(rsrc, Video):
         return send_file(
