@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserModule } from '@angular/platform-browser'
 import { DomSanitizer } from '@angular/platform-browser';
@@ -11,7 +11,6 @@ import { ResourcesService } from '../resources.service';
 })
 
 export class ViewResourceModalComponent implements OnInit {
-  @ViewChild('d1') d1:ElementRef;
   resType: string = "";
   baseURL: string = 'http://54.93.252.106:8080/api/resources/';
   htmlContent: string = "";
@@ -19,7 +18,7 @@ export class ViewResourceModalComponent implements OnInit {
   modalHeader: string = "";
 
   constructor(private activeModal: NgbActiveModal, private domSanitizer: DomSanitizer,
-    private resourcesService: ResourcesService, private renderer:Renderer2) { }
+    private resourcesService: ResourcesService) { }
   ngOnInit() { }
 
   onModalLaunch(rowData) {
