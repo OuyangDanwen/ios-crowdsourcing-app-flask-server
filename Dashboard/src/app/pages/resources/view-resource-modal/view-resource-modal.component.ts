@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserModule } from '@angular/platform-browser'
 import { DomSanitizer } from '@angular/platform-browser';
@@ -26,6 +26,9 @@ export class ViewResourceModalComponent implements OnInit {
     switch (rowData._cls) {
       case 'Resource.PDFDocument':
         this.resType = "pdf";
+        break;
+      case 'Resource.Text':
+        this.resType = "text";
         break;
       case 'Resource.Video':
         this.resType = "video";

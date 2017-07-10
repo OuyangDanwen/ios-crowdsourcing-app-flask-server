@@ -14,6 +14,7 @@ export class AddResourceModalComponent implements OnInit {
   resourceTypes: string[] = [
     "Link",
     "Document",
+    "Text",
     "Audio",
     "Video",
     "Contentfeed"
