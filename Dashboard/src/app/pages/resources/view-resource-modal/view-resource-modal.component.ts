@@ -27,8 +27,10 @@ export class ViewResourceModalComponent implements OnInit {
     switch (rowData._cls) {
       case 'Resource.PDFDocument':
         this.resType = "pdf";
+        break;
       case 'Resource.Video':
         this.resType = "video";
+        break;
       case 'Resource.Audio':
         this.resType = "audio";
         break;
