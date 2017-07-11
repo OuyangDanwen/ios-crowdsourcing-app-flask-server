@@ -61,7 +61,11 @@ class Resource(Document):
     createdBy = StringField(required=True)
 
 
-# TODO: NAME CLASHES WITH MONGOENGINE CLASS DOCUMENT =/
+class Text(Resource):
+    extension = StringField(required=True)
+    size = StringField(required=True)
+
+
 class PDFDocument(Resource):
     extension = StringField(required=True)
     size = StringField(required=True)

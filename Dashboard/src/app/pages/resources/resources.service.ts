@@ -107,6 +107,7 @@ export class ResourcesService {
       case 'audio':
       case 'video':
       case 'document':
+      case 'text':
         formData.append("file", file);
         formData.append("size", String(file.size));
         break;

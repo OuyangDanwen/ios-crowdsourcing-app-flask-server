@@ -14,6 +14,9 @@
         <div *ngIf="resType == 'pdf'">
             <embed class="col-md-12" [src]="resourceURL" width="500" height="500" type='application/pdf'>
         </div>
+        <div *ngIf="resType == 'text'">
+            <embed class="col-md-12" [src]="resourceURL" width="500" height="500" type='text/plain'>
+        </div>
         <div *ngIf="resType == 'audio'">
             <audio class="col-md-12" controls>
                 <source [src]="resourceURL"type="audio/mpeg">

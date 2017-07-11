@@ -25,7 +25,7 @@ class GoogleContentFeedAdapter(ContentFeedAdapter):
             item = {
                 "title": "Daily Limit exceeded",
                 "formattedUrl": "https://console.developers.google.com/billing?project=3939393",
-                "htmlSnippet": "<b>Daily</b>usage exceeded!"
+                "htmlSnippet": "<b>Daily</b> usage exceeded!"
             }
             data = {"items": [item, item, item]}
             return data

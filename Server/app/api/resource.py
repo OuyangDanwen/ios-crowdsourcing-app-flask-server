@@ -62,6 +62,7 @@ def get_resource(name):
     elif isinstance(rsrc, Link):
         return jsonify({"Some": "link"}), 200
     elif isinstance(rsrc, PDFDocument) or \
+            isinstance(rsrc, Text) or \
             isinstance(rsrc, Audio) or \
             isinstance(rsrc, Video):
         return send_file(
@@ -115,7 +116,7 @@ def post_resource():
         res_location = [res_longitude, res_latitude]
         res_createdBy = get_jwt_identity_override()  # Get username from auth
         # Fail early and often ;)
-        allowed_res_list = ["document", "link", "video", "audio", "contentfeed"]
+        allowed_res_list = ["text", "document", "link", "video", "audio", "contentfeed"]
         if not any(s == res_type for s in allowed_res_list):
             return jsonify({'msg': 'Invalid resource type'}), 400
         if res_type == "link":
@@ -147,6 +148,12 @@ def post_resource():
         res_path = os.path.join(app.config['RESOURCE_FOLDER'], unique_filename)
         # save file
         file.save(res_path)
+        if res_type == "text":
+            Text(
+                name=res_name, path=res_path, label=res_label,
+                createdBy=res_createdBy, createdOn=datetime.datetime.now(),
+                extension=res_extension, size=res_size, location=res_location
+            ).save()
         if res_type == "document":
             PDFDocument(
                 name=res_name, path=res_path, label=res_label,
