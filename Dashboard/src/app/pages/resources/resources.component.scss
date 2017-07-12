@@ -5,6 +5,10 @@
     }
 }
 
+.row {
+    border: 1px solid $border-light !important;
+}
+
 .modal-dialog {
     color: $dropdown-text;
     position: relative;
