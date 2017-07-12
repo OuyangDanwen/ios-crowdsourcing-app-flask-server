@@ -23,6 +23,7 @@ export class AddResourceModalComponent implements OnInit {
     "Google",
     "Weather"
   ];
+  isEmpty: boolean;
   isLink: boolean = true;
   modalHeader: string;
   resType: string = "Link";
@@ -104,28 +105,35 @@ export class AddResourceModalComponent implements OnInit {
   }
 
   setLabel() {
-      console.log('labelText'+this.labelTxt);
-      for(var i = 0; i < this.labelName.length; i++){
-        
+      this.isEmpty = this.checkEmpty();
+      if(!this.isEmpty){
+        this.labelTxt="";
       }
-
        if(this.labelTxt == "" || this.labelTxt.length==0) {
         alert('Not a valid resource');
-        console.log('not valid');
       }
       else {
       this.closeModal();
-      // this.resourcesService.uploadResource(this.resName.toLowerCase(), this.labelTxt.toLowerCase(),
-      // this.resType.toLowerCase(), this.url, this.resFile, this.locationLatitude,
-      // this.locationLongitude, this.adapterType.toLowerCase(), this.maxResults)
-      // .subscribe(
-      // (response) => {
-      //   console.log(response);
-      //   this.lgModalShow();
-      // },
-      // (error) => console.log(error)
-      // );
+      this.resourcesService.uploadResource(this.resName.toLowerCase(), this.labelTxt.toLowerCase(),
+      this.resType.toLowerCase(), this.url, this.resFile, this.locationLatitude,
+      this.locationLongitude, this.adapterType.toLowerCase(), this.maxResults)
+      .subscribe(
+      (response) => {
+        console.log(response);
+        this.lgModalShow();
+      },
+      (error) => console.log(error)
+      );
        }
+  }
+
+  checkEmpty(){
+      for(var i = 0; i < this.labelName.length; i++){
+        if(this.labelTxt == this.labelName[i]){
+          return true;
+        }
+      }
+      return false;
   }
   
     closeModal() {
