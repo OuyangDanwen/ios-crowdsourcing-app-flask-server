@@ -5,7 +5,6 @@ import * as moment from 'moment';
 import { ActionRenderComponent } from './action.render.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddResourceModalComponent } from './add-resource-modal/add-resource-modal.component';
-import { ViewResourceModalComponent } from './view-resource-modal/view-resource-modal.component';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { ResourcesService } from './resources.service';
 
@@ -43,18 +42,18 @@ export class ResourcesComponent implements OnInit {
     columns: {
       label: {
         title: 'Label',
-        width: '10%',
+        width: '8%',
         editable: false,
       },
       name: {
         title: 'Name',
-        width: '8%',
+        width: '6%',
         hideSubHeader: true
       },
       _cls: {
         title: 'Type',
         editable: false,
-        width: '5%',
+        width: '1%',
         valuePrepareFunction: (_cls) => {
           var type = _cls.slice(9);
           return type;
@@ -81,18 +80,13 @@ export class ResourcesComponent implements OnInit {
         type: 'custom',
         renderComponent: ActionRenderComponent,
         valuePrepareFunction: (cell, row) => row,
-        width: '8%',
+        width: '12%',
+        align: 'center',
         filter: false,
         hideSubHeader: true
       },
     }
   };
-
-
-  onSelect(event) {
-    const activeModal = this.modalService.open(ViewResourceModalComponent, { size: 'lg' });
-    activeModal.componentInstance.onModalLaunch(event.data);
-  }
 
   source: LocalDataSource = new LocalDataSource();
   fillTable() {
