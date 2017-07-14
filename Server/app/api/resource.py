@@ -119,6 +119,8 @@ def post_resource():
         allowed_res_list = ["text", "document", "link", "video", "audio", "contentfeed"]
         if not any(s == res_type for s in allowed_res_list):
             return jsonify({'msg': 'Invalid resource type'}), 400
+        if len(Label.objects(name=res_label)) == 0:
+            return jsonify({'msg': 'Label does not exist'}), 401
         if res_type == "link":
             res_url = request.form["url"]
             saved_obj = Link(
@@ -144,8 +146,7 @@ def post_resource():
             res_extension = request.form["ext"]
             # Assign random name
             unique_filename = str(uuid.uuid4()) + '.' + str(res_extension)
-            # res_path = os.path.join(app.config['RESOURCE_FOLDER'], unique_filename)
-            res_path = "asdsd"
+            res_path = os.path.join(app.config['RESOURCE_FOLDER'], unique_filename)
             # save file
             # res_file.save(res_path)
             if res_type == "text":
