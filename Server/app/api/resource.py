@@ -1,4 +1,5 @@
 from . import *
+import bson
 
 
 def filter_resources_location():
@@ -51,10 +52,10 @@ def render_content_feed(rsrc):
 
 
 # Get resources for a particular label
-@app.route('/api/resources/<name>', methods=['GET'])
-def get_resource(name):
+@app.route('/api/resources/<id>', methods=['GET'])
+def get_resource(id):
     attach_name = "{0}.{1}"
-    rsrc = Resource.objects(name=name).first()
+    rsrc = Resource.objects(id=bson.objectid.ObjectId(id)).first()
     if not rsrc:
         return jsonify({"msg": "Resource doesn't exist"}), 400
     if isinstance(rsrc, ContentFeed):
@@ -74,16 +75,16 @@ def get_resource(name):
 # TODO: delete the resource from file system
 @app.route('/api/resources/<name>', methods=['DELETE'])
 @jwt_required
-def delete_resource(name):
+def delete_resource(id):
     # path = "/home/ec2-user/Server/file_system/resources/" + name
-    if not len(name) > 0:
+    if not len(id) > 0:
         return jsonify({'msg': 'No resource found in request'}), 403
 
-    resource_obj = Resource.objects(name=name)
+    resource_obj = Resource.objects(id=bson.objectid.ObjectId(id))
     if len(resource_obj) == 0:
         return jsonify({"msg": "Resource doesn't exist!"}), 401
 
-    Resource.objects(name=name).delete()
+    Resource.objects(id=bson.objectid.ObjectId(id)).delete()
     # os.remove(path)
     return jsonify({'msg': 'Done'}), 200
 
@@ -92,14 +93,14 @@ def delete_resource(name):
 @jwt_required
 def put_resource():
     # Modify label and whatever it is referencing
-    old_label = request.json.get('name', None)
-    new_label = request.json.get('newname', None)
+    old_label = request.json.get('name', None) # ==> thie should be the id of the target resource
+    new_label = request.json.get('newname', None) # ==> this should be the new name for the target resource
     if not len(old_label) > 0:
         return jsonify({'msg': 'No label found in request'}), 403
-    labelList = Resource.objects(name=old_label)
+    labelList = Resource.objects(id=old_label)
     if len(labelList) == 0:
         return jsonify({"msg": "Label doesn't exist!"}), 401
-    Resource.objects(name=old_label).update_one(name=new_label)
+    Resource.objects(id=old_label).update_one(name=new_label)
     return jsonify({'msg': 'Done'}), 200
 
 
