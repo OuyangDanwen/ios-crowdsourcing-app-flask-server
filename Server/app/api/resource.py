@@ -90,24 +90,28 @@ def delete_resource(id):
 @app.route('/api/resources/<id>', methods=['PUT'])
 @jwt_required
 def put_resource(id):
-    rsrc = Resource.objects(id=id).first()
-    if not rsrc:
-        return jsonify({"msg": "Resource doesn't exist"}), 400
-    rsrc.label = request.json.get('label')
-    if not Label.objects(name=rsrc.label).first():
-        return jsonify({"msg": "Label doesn't exist"}), 400
-    rsrc.name = request.json.get('name')
-    res_longitude = float(request.json.get('longitude'))
-    res_latitude = float(request.json.get('latitude'))
-    rsrc.location = [res_longitude, res_latitude]
-    if rsrc._cls == "Resource.Link":
-        rsrc.url = request.json.get('url')
-    elif rsrc._cls == "Resource.ContentFeed":
-        rsrc.query = request.json.get('query')
-        rsrc.maxResults = int(request.json.get('maxResults'))
-        rsrc.adapterType = request.json.get('adapterType')
+    try:
+        rsrc = Resource.objects(id=id).first()
+        if not rsrc:
+            return jsonify({"msg": "Resource doesn't exist"}), 400
+        rsrc.label = request.json.get('label')
+        if not Label.objects(name=rsrc.label).first():
+            return jsonify({"msg": "Label doesn't exist"}), 400
+        rsrc.name = request.json.get('name')
+        res_longitude = float(request.json.get('longitude'))
+        res_latitude = float(request.json.get('latitude'))
+        rsrc.location = [res_longitude, res_latitude]
+        if rsrc._cls == "Resource.Link":
+            rsrc.url = request.json.get('url')
+        elif rsrc._cls == "Resource.ContentFeed":
+            rsrc.query = request.json.get('query')
+            rsrc.maxResults = int(request.json.get('maxResults'))
+            rsrc.adapterType = request.json.get('adapterType')
 
-    saved_obj = rsrc.save()
+        saved_obj = rsrc.save()
+    except Exception, e:
+        return jsonify({"msg": e.message}), 401
+        
     return jsonify(json.loads(json.dumps(saved_obj, cls=MongoEncoder))), 200
 
 
