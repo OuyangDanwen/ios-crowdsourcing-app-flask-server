@@ -143,13 +143,14 @@ export class ResourcesService {
   }
 
   editResource(oldName: string, newName: string) {
+    console.log(oldName+'test'+newName);
     const req = { "name": oldName, "newname": newName };
     let headers = new Headers({ 'Content-Type': 'application/json' });
     const token = localStorage.getItem('access_token');
     headers.append('Authorization', 'Bearer ' + token);
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.put('http://54.93.252.106:8080/api/resources/',
+    return this.http.put('http://54.93.252.106:8080/api/resources',
       req, options)
       .map(
       (response: Response) => {
