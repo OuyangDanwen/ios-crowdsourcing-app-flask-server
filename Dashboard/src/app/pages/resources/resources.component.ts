@@ -103,10 +103,6 @@ export class ResourcesComponent implements OnInit {
       (resources: any[]) => {
         console.log(resources);
         this.source.load(resources);
-        var x = this.source;
-        debugger;
-        var y = this.source.find(1);
-        debugger;
       },
       (error) => { console.log(error); }
       );
