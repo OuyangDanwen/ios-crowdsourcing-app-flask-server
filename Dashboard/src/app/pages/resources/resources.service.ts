@@ -77,7 +77,6 @@ export class ResourcesService {
       .map(
       (response: Response) => {
         const data = response.json();
-        this.setShakku("deleted" + id);
         return data;
       }
       )
@@ -134,6 +133,7 @@ export class ResourcesService {
       (response: Response) => {
         const data = response.json();
         console.log(data);
+        this.emitRow(data);
         return data;
       }
       ).catch(
