@@ -73,7 +73,7 @@ def get_resource(id):
 
 
 # TODO: delete the resource from file system
-@app.route('/api/resources/<name>', methods=['DELETE'])
+@app.route('/api/resources/<id>', methods=['DELETE'])
 @jwt_required
 def delete_resource(id):
     # path = "/home/ec2-user/Server/file_system/resources/" + name
@@ -100,7 +100,7 @@ def put_resource():
     labelList = Resource.objects(id=old_label)
     if len(labelList) == 0:
         return jsonify({"msg": "Label doesn't exist!"}), 401
-    Resource.objects(id=old_label).update_one(name=new_label)
+    Resource.objects(id=old_label).update_one(name=new_label) 
     return jsonify({'msg': 'Done'}), 200
 
 
