@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
 import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ResourcesService {
-
+  testVar = new EventEmitter<any>();
   constructor(private http: Http) { }
 
   getContentFeed(name: string){
@@ -77,6 +77,7 @@ export class ResourcesService {
       .map(
       (response: Response) => {
         const data = response.json();
+        this.setShakku("deleted" + id);
         return data;
       }
       )
@@ -140,6 +141,12 @@ export class ResourcesService {
         return Observable.throw('Something went wrong');
       }
       );
+  }
+
+  public setShakku(item){
+    console.log("emitting +" + item);
+    this.testVar.emit(item);
+    
   }
 
   editResource(oldName: string, newName: string) {

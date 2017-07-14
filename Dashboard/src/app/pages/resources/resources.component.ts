@@ -30,6 +30,10 @@ export class ResourcesComponent implements OnInit {
         this.source.setFilter([{ field: 'label', search: filter }]);
       }
     });
+    this.resourcesService.testVar.subscribe((changes)=>{
+         alert(changes);
+
+     });
   }
 
   settings = {
