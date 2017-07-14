@@ -11,6 +11,7 @@ export class EditResourceModalComponent implements OnInit {
   oldName: string = "";
   newName: string = "";
   label: string = "";
+  id: string = "";
   rowData;
   modalHeader: string;
 
@@ -21,12 +22,14 @@ export class EditResourceModalComponent implements OnInit {
   onModalLaunch(rowData) {
     this.oldName = rowData.name;
     this.newName = rowData.name;
+    this.id = rowData._id.$oid;
     this.label = rowData.label;
-    console.log(this.oldName);
   }
 
   updateResource() {
-    this.stService.editResource(this.oldName, this.newName)
+    console.log(this.newName);
+    console.log(this.id);
+    this.stService.editResource(this.id, this.newName)
       .subscribe(
       (response) => {
         console.log(response);
