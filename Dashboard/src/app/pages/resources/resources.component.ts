@@ -31,7 +31,6 @@ export class ResourcesComponent implements OnInit {
       }
     });
     this.resourcesService.addRowEmitter.subscribe((changes)=>{
-         alert(changes);
          this.source.prepend(changes);
 
      });

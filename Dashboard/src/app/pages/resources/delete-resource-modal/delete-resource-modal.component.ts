@@ -13,13 +13,13 @@ export class DeleteResourceModalComponent implements OnInit {
   tt: number = 0;
   label: string = '';
   name: string = '';
-  id : string = '';
+  id: string = '';
   safeGuard: boolean = false;
   safeGuardInput: string = '';
   numImages: number = 0;
   numResources: number = 0;
-  warningMessages : string [];
-  constructor(private stService: ResourcesService, private activeModal: NgbActiveModal) {}
+  warningMessages: string[];
+  constructor(private stService: ResourcesService, private activeModal: NgbActiveModal) { }
 
   ngOnInit() {
   }
@@ -39,10 +39,10 @@ export class DeleteResourceModalComponent implements OnInit {
     this.id = rowData._id.$oid;
     console.log(this.id);
     this.warningMessages = [
-    `Are you sure? This can't be undone!`,
-    `Are you absolutely sure?`,
-    `Successfully deleted resource!`,
-  ];
+      `Are you sure? This can't be undone!`,
+      `Are you absolutely sure?`,
+      `Successfully deleted resource!`,
+    ];
   }
 
   inc() {
@@ -51,18 +51,18 @@ export class DeleteResourceModalComponent implements OnInit {
       this.tt += 1;
       if (this.tt === 2) {
         this.stService.deleteResource(this.row)
-        .subscribe(
-        (response) => {
-          console.log(response);
-          setTimeout(() => {this.closeModal(); }, 1000);
-        },
-        (error) => console.log(error),
+          .subscribe(
+          (response) => {
+            console.log(response);
+            setTimeout(() => { this.closeModal(); }, 1000);
+          },
+          (error) => console.log(error),
         );
       }
     }
   }
 
-    closeModal() {
+  closeModal() {
     this.activeModal.close();
   }
 
