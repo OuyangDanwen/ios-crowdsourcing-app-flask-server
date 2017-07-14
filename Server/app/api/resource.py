@@ -87,19 +87,28 @@ def delete_resource(id):
     return jsonify({'msg': 'Done'}), 200
 
 
-@app.route('/api/resources', methods=['PUT'])
+@app.route('/api/resources/<id>', methods=['PUT'])
 @jwt_required
-def put_resource():
-    # Modify label and whatever it is referencing
-    old_label = request.json.get('name', None) # ==> thie should be the id of the target resource
-    new_label = request.json.get('newname', None) # ==> this should be the new name for the target resource
-    if not len(old_label) > 0:
-        return jsonify({'msg': 'No label found in request'}), 403
-    labelList = Resource.objects(id=old_label)
-    if len(labelList) == 0:
-        return jsonify({"msg": "Label doesn't exist!"}), 401
-    Resource.objects(id=old_label).update_one(name=new_label) 
-    return jsonify({'msg': 'Done'}), 200
+def put_resource(id):
+    rsrc = Resource.objects(id=id).first()
+    if not rsrc:
+        return jsonify({"msg": "Resource doesn't exist"}), 400
+    rsrc.label = request.json.get('label')
+    if not Label.objects(name=rsrc.label).first():
+        return jsonify({"msg": "Label doesn't exist"}), 400
+    rsrc.name = request.json.get('name')
+    res_longitude = float(request.json.get('longitude'))
+    res_latitude = float(request.json.get('latitude'))
+    rsrc.location = [res_longitude, res_latitude]
+    if rsrc._cls == "Resource.Link":
+        rsrc.url = request.json.get('url')
+    elif rsrc._cls == "Resource.ContentFeed":
+        rsrc.query = request.json.get('query')
+        rsrc.maxResults = int(request.json.get('maxResults'))
+        rsrc.adapterType = request.json.get('adapterType')
+
+    saved_obj = rsrc.save()
+    return jsonify(json.loads(json.dumps(saved_obj, cls=MongoEncoder))), 200
 
 
 @app.route('/api/resources', methods=['POST'])
