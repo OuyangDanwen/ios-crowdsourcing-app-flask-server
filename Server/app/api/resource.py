@@ -1,6 +1,4 @@
 from . import *
-import bson
-
 
 def filter_resources_location():
     # get location from session
@@ -55,7 +53,7 @@ def render_content_feed(rsrc):
 @app.route('/api/resources/<id>', methods=['GET'])
 def get_resource(id):
     attach_name = "{0}.{1}"
-    rsrc = Resource.objects(id=bson.objectid.ObjectId(id)).first()
+    rsrc = Resource.objects(id=id).first()
     if not rsrc:
         return jsonify({"msg": "Resource doesn't exist"}), 400
     if isinstance(rsrc, ContentFeed):
@@ -80,11 +78,11 @@ def delete_resource(id):
     if not len(id) > 0:
         return jsonify({'msg': 'No resource found in request'}), 403
 
-    resource_obj = Resource.objects(id=bson.objectid.ObjectId(id))
+    resource_obj = Resource.objects(id=id)
     if len(resource_obj) == 0:
         return jsonify({"msg": "Resource doesn't exist!"}), 401
 
-    Resource.objects(id=bson.objectid.ObjectId(id)).delete()
+    Resource.objects(id=id).delete()
     # os.remove(path)
     return jsonify({'msg': 'Done'}), 200
 
@@ -100,7 +98,7 @@ def put_resource():
     labelList = Resource.objects(id=old_label)
     if len(labelList) == 0:
         return jsonify({"msg": "Label doesn't exist!"}), 401
-    Resource.objects(id=bson.objectid.ObjectId(old_label)).update_one(name=new_label) 
+    Resource.objects(id=old_label).update_one(name=new_label) 
     return jsonify({'msg': 'Done'}), 200
 
 
