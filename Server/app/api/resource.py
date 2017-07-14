@@ -107,11 +107,9 @@ def put_resource(id):
             rsrc.query = request.json.get('query')
             rsrc.maxResults = int(request.json.get('maxResults'))
             rsrc.adapterType = request.json.get('adapterType')
-
         saved_obj = rsrc.save()
     except Exception, e:
         return jsonify({"msg": e.message}), 401
-        
     return jsonify(json.loads(json.dumps(saved_obj, cls=MongoEncoder))), 200
 
 
@@ -161,7 +159,7 @@ def post_resource():
             unique_filename = str(uuid.uuid4()) + '.' + str(res_extension)
             res_path = os.path.join(app.config['RESOURCE_FOLDER'], unique_filename)
             # save file
-            # res_file.save(res_path)
+            res_file.save(res_path)
             if res_type == "text":
                 saved_obj = Text(
                     name=res_name, path=res_path, label=res_label,
@@ -194,6 +192,8 @@ def post_resource():
         return jsonify({
             'msg': 'Resource with name already exists!'
         }), 400
+    except Exception, e:
+        return jsonify({"msg": e.message}), 401
     # Return saved object
     if not saved_obj:
         return jsonify({'msg': "Couldn't save resource!"}), 403
