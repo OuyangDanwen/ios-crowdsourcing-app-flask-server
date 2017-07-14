@@ -22,6 +22,7 @@ export class ViewResourceModalComponent implements OnInit {
   ngOnInit() { }
 
   onModalLaunch(rowData) {
+    console.log(rowData._id.$oid);
     this.modalHeader += `${rowData._cls.substring(9)}: ${rowData.name}`;
     switch (rowData._cls) {
       case 'Resource.PDFDocument':
@@ -43,7 +44,7 @@ export class ViewResourceModalComponent implements OnInit {
       case 'Resource.ContentFeed':
         this.resType = "contentfeed";
         this.modalHeader += ` (${rowData.adapterType})`
-        this.getHtmlForContentFeed(rowData.name);
+        this.getHtmlForContentFeed(rowData._id.$oid);
         return;
       default:
         this.modalHeader = 'Invalid resource type';
@@ -52,7 +53,7 @@ export class ViewResourceModalComponent implements OnInit {
     }
     console.log("Resource type: " + this.resType);
     this.resourceURL = this.domSanitizer.
-      bypassSecurityTrustResourceUrl(this.baseURL + rowData.name);
+      bypassSecurityTrustResourceUrl(this.baseURL + rowData._id.$oid);
   }
 
   getHtmlForContentFeed(name) {
