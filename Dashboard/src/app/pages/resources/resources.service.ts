@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ResourcesService {
-  testVar = new EventEmitter<any>();
+  newRow: any = new EventEmitter<any>();
   constructor(private http: Http) { }
 
   getContentFeed(name: string){
@@ -143,10 +143,10 @@ export class ResourcesService {
       );
   }
 
-  public setShakku(item){
-    console.log("emitting +" + item);
-    this.testVar.emit(item);
-    
+  public emitRow(row){
+    console.log("Emitting: ");
+    console.log(row);
+    this.newRow.emit(row);
   }
 
   editResource(oldName: string, newName: string) {
