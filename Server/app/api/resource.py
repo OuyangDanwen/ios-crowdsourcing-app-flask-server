@@ -100,7 +100,7 @@ def put_resource():
     labelList = Resource.objects(id=old_label)
     if len(labelList) == 0:
         return jsonify({"msg": "Label doesn't exist!"}), 401
-    Resource.objects(id=old_label).update_one(name=new_label) 
+    Resource.objects(id=bson.objectid.ObjectId(old_label)).update_one(name=new_label) 
     return jsonify({'msg': 'Done'}), 200
 
 
