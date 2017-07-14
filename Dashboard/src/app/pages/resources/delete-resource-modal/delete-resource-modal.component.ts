@@ -12,6 +12,7 @@ export class DeleteResourceModalComponent implements OnInit {
   tt: number = 0;
   label: string = '';
   name: string = '';
+  id : string = '';
   safeGuard: boolean = false;
   safeGuardInput: string = '';
   numImages: number = 0;
@@ -30,8 +31,11 @@ export class DeleteResourceModalComponent implements OnInit {
   }
 
   onModalLaunch(rowData) {
+    console.log(rowData);
     this.label = rowData.label;
     this.name = rowData.name;
+    this.id = rowData._id.$oid;
+    console.log(this.id);
     this.warningMessages = [
     `Are you sure? This can't be undone!`,
     `Are you absolutely sure?`,
@@ -44,7 +48,7 @@ export class DeleteResourceModalComponent implements OnInit {
       this.safeGuard = true;
       this.tt += 1;
       if (this.tt === 2) {
-        this.stService.deleteResource(this.label,this.name)
+        this.stService.deleteResource(this.id)
         .subscribe(
         (response) => {
           console.log(response);

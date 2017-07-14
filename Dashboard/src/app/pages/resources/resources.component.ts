@@ -80,7 +80,7 @@ export class ResourcesComponent implements OnInit {
         type: 'custom',
         renderComponent: ActionRenderComponent,
         valuePrepareFunction: (cell, row) => row,
-        width: '12%',
+        width: '14%',
         align: 'center',
         filter: false,
         hideSubHeader: true

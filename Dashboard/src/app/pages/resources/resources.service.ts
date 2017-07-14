@@ -68,13 +68,12 @@ export class ResourcesService {
       );
   }
 
-  deleteResource(label, name) {
+  deleteResource(id) {
     const token = localStorage.getItem('access_token');
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);
-    console.log('hehehe' + label + name);
 
-    return this.http.delete('http://54.93.252.106:8080/api/resources/' + name, { headers: headers })
+    return this.http.delete('http://54.93.252.106:8080/api/resources/' + id, { headers: headers })
       .map(
       (response: Response) => {
         const data = response.json();
