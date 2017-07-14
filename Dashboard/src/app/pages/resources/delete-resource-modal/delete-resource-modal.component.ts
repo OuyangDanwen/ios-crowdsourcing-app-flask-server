@@ -8,6 +8,7 @@ import { ResourcesService } from '../resources.service';
   styleUrls: ['./delete-resource-modal.component.scss'],
 })
 export class DeleteResourceModalComponent implements OnInit {
+  row: any = null;
   modalHeader: string;
   tt: number = 0;
   label: string = '';
@@ -31,6 +32,7 @@ export class DeleteResourceModalComponent implements OnInit {
   }
 
   onModalLaunch(rowData) {
+    this.row = rowData;
     console.log(rowData);
     this.label = rowData.label;
     this.name = rowData.name;
@@ -48,11 +50,11 @@ export class DeleteResourceModalComponent implements OnInit {
       this.safeGuard = true;
       this.tt += 1;
       if (this.tt === 2) {
-        this.stService.deleteResource(this.id)
+        this.stService.deleteResource(this.row)
         .subscribe(
         (response) => {
           console.log(response);
-          setTimeout(() => {this.closeModal(); }, 2000);
+          setTimeout(() => {this.closeModal(); }, 1000);
         },
         (error) => console.log(error),
         );

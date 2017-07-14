@@ -30,9 +30,13 @@ export class ResourcesComponent implements OnInit {
         this.source.setFilter([{ field: 'label', search: filter }]);
       }
     });
-    this.resourcesService.newRow.subscribe((changes)=>{
+    this.resourcesService.addRowEmitter.subscribe((changes)=>{
          alert(changes);
          this.source.prepend(changes);
+
+     });
+        this.resourcesService.deleteRowEmitter.subscribe((changes)=>{
+         this.source.remove(changes);
 
      });
   }
@@ -100,6 +104,10 @@ export class ResourcesComponent implements OnInit {
       (resources: any[]) => {
         console.log(resources);
         this.source.load(resources);
+        var x = this.source;
+        debugger;
+        var y = this.source.find(1);
+        debugger;
       },
       (error) => { console.log(error); }
       );

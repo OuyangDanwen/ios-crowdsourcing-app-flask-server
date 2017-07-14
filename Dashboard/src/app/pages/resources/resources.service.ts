@@ -5,7 +5,9 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ResourcesService {
-  newRow: any = new EventEmitter<any>();
+  addRowEmitter: any = new EventEmitter<any>();
+  deleteRowEmitter: any = new EventEmitter<any>();
+
   constructor(private http: Http) { }
 
   getContentFeed(name: string){
@@ -68,7 +70,8 @@ export class ResourcesService {
       );
   }
 
-  deleteResource(id) {
+  deleteResource(row) {
+    const id = row._id.$oid;
     const token = localStorage.getItem('access_token');
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);
@@ -77,6 +80,8 @@ export class ResourcesService {
       .map(
       (response: Response) => {
         const data = response.json();
+        this.deleteRowEmitter.emit(row);
+        console.log("emitted deleted");
         return data;
       }
       )
@@ -146,8 +151,9 @@ export class ResourcesService {
   public emitRow(row){
     console.log("Emitting: ");
     console.log(row);
-    this.newRow.emit(row);
+    this.addRowEmitter.emit(row);
   }
+
 
   editResource(oldName: string, newName: string) {
     console.log(oldName+'test'+newName);
