@@ -4,7 +4,7 @@ import { ResourcesService } from '../resources.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SaveResourceModalComponent } from '../save-resource-modal/save-resource-modal.component';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { AgmCoreModule } from 'angular2-google-maps/core';
+import { AgmCoreModule } from '@agm/core';
 
 
 @Component({
@@ -64,7 +64,7 @@ export class AddResourceModalComponent implements OnInit {
     console.log(`clicked the marker: ${label || index}`)
   }
   
-  mapClicked($event: MouseEvent) {
+  mapClicked($event) {
     this.markers = [];
     this.longitude = $event.coords.lng;
     this.latitude = $event.coords.lat;
@@ -74,7 +74,7 @@ export class AddResourceModalComponent implements OnInit {
     });
   }
   
-  markerDragEnd(m: marker, $event: MouseEvent) {
+  markerDragEnd(m: marker, $event) {
     console.log('dragEnd', m, $event);
   }
   markers: marker[] = [];  
@@ -231,8 +231,6 @@ export class AddResourceModalComponent implements OnInit {
     return false;
   }
   disableButton() {
-
-debugger;
     if (this.resName.length > 0 && this.labelTxt.length > 0
       && this.isValidLatitudeLongitude(this.locationLatitude, this.locationLongitude)) {
       if ((this.resType === "Link" && this.url.length > 0) || (this.resFile) ||
@@ -256,5 +254,5 @@ interface marker {
   lat: number;
   lng: number;
   label?: string;
-  draggable: boolean;
+  draggable?: boolean;
 }

@@ -1,4 +1,4 @@
-import { NgModule,ApplicationRef } from '@angular/core';
+import { NgModule,ApplicationRef, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
@@ -38,6 +38,7 @@ import { AgmCoreModule } from '@agm/core';
       apiKey: 'AIzaSyAbFOBw831G3lCOb2GDw54jbO3LJwQLBxQ'
     })
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA ],
   declarations: [
     ResourcesComponent,
     ActionRenderComponent,
