@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule,ApplicationRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
@@ -18,6 +18,11 @@ import { SaveResourceModalComponent } from './save-resource-modal/save-resource-
 import { ViewResourceModalComponent } from './view-resource-modal/view-resource-modal.component';
 import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
 
+import { AgmCoreModule } from '@agm/core';
+
+
+
+
 
 @NgModule({
   imports: [
@@ -29,6 +34,9 @@ import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
     Ng2SmartTableModule,
     HttpModule,
     Ng2AutoCompleteModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyAbFOBw831G3lCOb2GDw54jbO3LJwQLBxQ'
+    })
   ],
   declarations: [
     ResourcesComponent,
@@ -47,6 +55,8 @@ import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
     SaveResourceModalComponent,
     ViewResourceModalComponent
   ],
+
+  bootstrap: [ AddResourceModalComponent ],
   providers: [
     ResourcesService,
   ]
