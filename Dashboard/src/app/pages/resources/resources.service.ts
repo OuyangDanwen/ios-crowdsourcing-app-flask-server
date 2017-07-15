@@ -115,6 +115,7 @@ export class ResourcesService {
         formData.append("file", file);
         formData.append("size", String(file.size));
         formData.append("ext", file.name.split('.').pop());
+        break;
       case 'contentfeed':
         formData.append("adapterType", adapterType);
         formData.append("query", resLabel);
