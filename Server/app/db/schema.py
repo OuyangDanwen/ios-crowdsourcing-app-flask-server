@@ -52,7 +52,7 @@ class Image(Document):
     
 
 class Resource(Document):
-    name = StringField(required=True, unique=True)
+    name = StringField(required=True)
     path = StringField(required=True)
     label = StringField(required=True)
     location = PointField(required=True)

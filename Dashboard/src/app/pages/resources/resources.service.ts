@@ -68,13 +68,12 @@ export class ResourcesService {
       );
   }
 
-  deleteResource(label, name) {
+  deleteResource(id) {
     const token = localStorage.getItem('access_token');
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);
-    console.log('hehehe' + label + name);
 
-    return this.http.delete('http://54.93.252.106:8080/api/resources/' + name, { headers: headers })
+    return this.http.delete('http://54.93.252.106:8080/api/resources/' + id, { headers: headers })
       .map(
       (response: Response) => {
         const data = response.json();
@@ -144,13 +143,14 @@ export class ResourcesService {
   }
 
   editResource(oldName: string, newName: string) {
+    console.log(oldName+'test'+newName);
     const req = { "name": oldName, "newname": newName };
     let headers = new Headers({ 'Content-Type': 'application/json' });
     const token = localStorage.getItem('access_token');
     headers.append('Authorization', 'Bearer ' + token);
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.put('http://54.93.252.106:8080/api/resources/',
+    return this.http.put('http://54.93.252.106:8080/api/resources',
       req, options)
       .map(
       (response: Response) => {

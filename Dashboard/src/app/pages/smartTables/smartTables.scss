@@ -5,6 +5,10 @@
     }
 }
 
+.row {
+    border: 1px solid $border-light !important;
+}
+
 :host /deep/ {
     ng2-smart-table {
         th,
