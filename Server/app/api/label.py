@@ -21,12 +21,16 @@ def postLabel():
     label = request.form["label"].lower()
     if not len(label) > 0:
         return jsonify({'msg': 'No label found'}), 400
+    if len(Label.objects(name=label)) > 0:
+        return jsonify({"msg": "Label already exist!"}), 401
     username = get_jwt_identity_override()
     # Save label
-    saveLabel(label, username)
+    saved_obj = saveLabel(label, username)
+    if not saved_obj:
+        return jsonify({'msg': 'Error while creating label'}), 400
     files = request.files.getlist('files[]')
     saveLabelPhotos(files, label, username)
-    return jsonify({'msg': 'Done'}), 200
+    return jsonify(json.loads(json.dumps(saved_obj, cls=MongoEncoder))), 200
 
 @app.route('/api/labels/', methods = ['PUT'])
 def putLabel():
