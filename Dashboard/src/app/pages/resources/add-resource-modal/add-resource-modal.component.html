@@ -26,7 +26,7 @@
                 </div>
             </div>
 
-            <sebm-google-map 
+<!--             <sebm-google-map 
                   [latitude]="lat"
                   [longitude]="lng"
                   [zoom]="zoom"
@@ -57,19 +57,25 @@
                   </sebm-google-map-circle>
 
                 </sebm-google-map>
-                <p>Current location: [{{longitude}},{{latitude}}] </p>
-            <div class="form-group col-md-12">
+                <p>Current location: [{{longitude}},{{latitude}}] </p> -->
+           
+
+ 
+            <div class="form-group col-md-12 ">
+                <label>Latitude:</label>
+                <input id="latitude" class="col-md-12" type="number" value="{{locationLatitude}}" name="latitude" [(ngModel)]="locationLatitude">
+                <div  *ngIf="isLatInvalid" class="col-xs-5 invalid-field">Enter correct Latitude value.</div>
+                <label>Longitude:</label>
+                <input id="longitude" class="col-md-12" type="number" value="{{locationLongitude}}" name="longitude" [(ngModel)]="locationLongitude">
+                <div  *ngIf="isLongInvalid" class="col-xs-5 invalid-field">Enter correct Longitude value.</div>
+            </div>
+
+             <div class="form-group col-md-12">
                 <agm-map [latitude]="locationLatitude" [longitude]="locationLongitude">
                   <agm-marker [latitude]="locationLatitude" [longitude]="locationLongitude"></agm-marker>
                 </agm-map>
             </div>
-
-            <div class="form-group col-md-12">
-                <label>Latitude:</label>
-                <input id="latitude" class="col-md-12" type="number" value="{{locationLatitude}}" name="latitude" [(ngModel)]="locationLatitude">
-                <label>Longitude:</label>
-                <input id="longitude" class="col-md-12" type="number" value="{{locationLongitude}}" name="longitude" [(ngModel)]="locationLongitude">
-            </div>
+            
             <div *ngIf="isLink" class="form-group col-md-12">
                 <label class="form-control-label" for="recipient-name">URL</label><br>
                 <input class="col-md-12" type="text" name="text" [(ngModel)]="url">

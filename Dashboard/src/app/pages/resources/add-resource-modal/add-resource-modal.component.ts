@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output,ElementRef } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ResourcesService } from '../resources.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -44,7 +44,8 @@ export class AddResourceModalComponent implements OnInit {
   locationLongitude: number = 0;
   locationLatitudeCurrentLocation: number = 0;
   locationLongitudeCurrentLocation: number = 0;
-
+  isLatInvalid: boolean = false;
+  isLongInvalid: boolean = false;
 
   //lat: number = 51.678418;
   //lng: number = 7.809007;
@@ -56,30 +57,6 @@ export class AddResourceModalComponent implements OnInit {
   // initial center position for the map
   lat: number = 51.673858;
   lng: number = 7.815982;
-
-
-
-
-  clickedMarker(label: string, index: number) {
-    console.log(`clicked the marker: ${label || index}`)
-  }
-  
-  mapClicked($event) {
-    this.markers = [];
-    this.longitude = $event.coords.lng;
-    this.latitude = $event.coords.lat;
-    this.markers.push({
-      lat: $event.coords.lat,
-      lng: $event.coords.lng
-    });
-  }
-  
-  markerDragEnd(m: marker, $event) {
-    console.log('dragEnd', m, $event);
-  }
-  markers: marker[] = [];  
-
-
 
 
 
@@ -209,25 +186,36 @@ export class AddResourceModalComponent implements OnInit {
   }
 
   isValidLatitudeLongitude(Latitude: number, Longitude: number) {
-    if( Longitude === null || Latitude === null ){
-       //change boarder
-        return false;
-        
+    
+    //error msg
+    if( Longitude === null || !(Longitude >= -180 && Longitude <= 180) || !(this.isValidCoordinate(Longitude)) ){
+        this.isLongInvalid = true;
+      }else{
+        this.isLongInvalid = false; 
       }
 
-    if ( (this.locationLongitudeCurrentLocation == Longitude &&
-      this.locationLatitudeCurrentLocation == Latitude)) {
-      return true;
-    }
+    if( Latitude === null || !(Latitude >= -90 && Latitude <= 90) || !(this.isValidCoordinate(Latitude)) ){
+        this.isLatInvalid = true;
+      }else{
+        this.isLatInvalid = false; 
+      }
+
+
+
+    if( Longitude === null || Latitude === null ){
+        return false;
+      }
 
     if ((Latitude >= -90 && Latitude <= 90) && (Longitude >= -180 && Longitude <= 180)
       && this.isValidCoordinate(Latitude) && this.isValidCoordinate(Longitude)) {
       return true;
     }
+    
+    if ( (this.locationLongitudeCurrentLocation == Longitude &&
+      this.locationLatitudeCurrentLocation == Latitude)) {
+      return true;
+    }
 
-    //#d9d9d9
-    //border: 1px solid #ccc
-    //change boarder
     return false;
   }
   disableButton() {
@@ -248,11 +236,4 @@ export class AddResourceModalComponent implements OnInit {
     activeModal.componentInstance.modalHeader = '';
   }
 
-}
-
-interface marker {
-  lat: number;
-  lng: number;
-  label?: string;
-  draggable?: boolean;
 }
