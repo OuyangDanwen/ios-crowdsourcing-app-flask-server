@@ -11,19 +11,21 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 
 export class ImageRenderComponent implements OnInit {
-
   imgSrc;
+
+  rowData;
   @Input() value;
 
   constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
-    this.imgSrc = this.value;
+    this.rowData = this.value;
+    this.imgSrc = this.value.dp;
   }
 
   launchViewModal() {
     const activeModal = this.modalService.open(ViewPhotosModalComponent, { size: 'sm' });
     activeModal.componentInstance.modalHeader = 'Add Photos';
-    activeModal.componentInstance.onModalLaunch(this.imgSrc);
+    activeModal.componentInstance.onModalLaunch(this.rowData);
   }
 }

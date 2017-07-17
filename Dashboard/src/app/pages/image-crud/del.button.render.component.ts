@@ -12,18 +12,17 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class DeleteButtonRenderComponent implements OnInit {
 
-  imgSrc;
-
+  rowData;
   @Input() value;
 
   constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
-    this.imgSrc = this.value;
+    this.rowData = this.value;
   }
   launchDeleteModal() {
     const activeModal = this.modalService.open(ViewPhotosModalComponent, { size: 'sm' });
     activeModal.componentInstance.modalHeader = 'Delete Photo';
-    activeModal.componentInstance.onModalLaunch(this.imgSrc, "delete");
+    activeModal.componentInstance.onModalLaunch(this.rowData, "delete");
   }
 }

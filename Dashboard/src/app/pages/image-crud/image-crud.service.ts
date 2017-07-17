@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
 import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ImageCrudService {
-
+  deleteRowEmitter: any = new EventEmitter<any>();
   constructor(private http: Http) { }
 
   getImages() {
@@ -28,7 +28,8 @@ export class ImageCrudService {
       );
   }
 
-  deleteImage(imgSrc) {
+  deleteImage(rowData) {
+    const imgSrc = rowData.dp;
     const token = localStorage.getItem('access_token');
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);
@@ -37,7 +38,8 @@ export class ImageCrudService {
       .map(
       (response: Response) => {
         const data = response.json();
-        console.log(data.images);
+        this.deleteRowEmitter.emit(rowData);
+        console.log(data);
         return data.images;
       }
       )

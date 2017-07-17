@@ -74,7 +74,7 @@ def saveLabel(label, username):
         newdir = os.path.join(UPLOAD_FOLDER, label)
         os.mkdir(newdir)
         os.mkdir(os.path.join(THUMBNAIL_FOLDER, label))
-        create_label(label, username)
+        return create_label(label, username)
 
 
 def saveLabelPhotos(files, label, username):

@@ -10,16 +10,16 @@ export class EditLabelModalComponent implements OnInit {
   oldLabel: string = "";
   newLabel: string = "";
   createdBy: string = "";
+  id: string;
   rowData;
   modalHeader: string;
 
-  constructor(private stService: SmartTablesService, private activeModal: NgbActiveModal) {}
+  constructor(private stService: SmartTablesService, private activeModal: NgbActiveModal) { }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() { }
 
   onModalLaunch(rowData) {
+    this.id = rowData._id.$oid;
     this.oldLabel = rowData.name;
     this.newLabel = rowData.name;
     this.createdBy = rowData.createdBy;
@@ -27,18 +27,18 @@ export class EditLabelModalComponent implements OnInit {
   }
 
   updateLabel() {
-    this.stService.editLabel(this.oldLabel, this.newLabel)
+    this.stService.editLabel(this.newLabel, this.id)
       .subscribe(
       (response) => {
         console.log(response);
-        setTimeout(() => {this.closeModal();}, 2000);
+        setTimeout(() => { this.closeModal(); }, 2000);
       },
       (error) => console.log(error)
       );
   }
-isLabelValid(){
-  return this.newLabel.length > 3;
-}
+  isLabelValid() {
+    return this.newLabel.length > 3;
+  }
   closeModal() {
     this.activeModal.close();
   }

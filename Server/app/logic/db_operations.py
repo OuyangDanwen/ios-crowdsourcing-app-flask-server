@@ -64,7 +64,8 @@ def create_label(label_name, username="dummy"):
         lb = Label(
             name=label_name, path=label_path,
             createdOn=datetime.datetime.now(), createdBy=username
-        ).save()        
+        ).save()
+        return lb
     
 def add_label_and_image(label_name, image_name, username="dummy"):
     if username == 'dummy':
