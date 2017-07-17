@@ -12,11 +12,28 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
   templateUrl: './smartTables.html',
   styleUrls: ['./smartTables.scss'],
 })
-export class SmartTables {
+export class SmartTables implements OnInit{
 
   constructor(private smartTablesService: SmartTablesService, private modalService: NgbModal) {
-    this.fillTable();
   }
+
+  ngOnInit() {
+    this.fillTable();
+    // Emitters
+    this.smartTablesService.addRowEmitter.subscribe((changes) => {
+      this.source.prepend(changes);
+
+    });
+    this.smartTablesService.deleteRowEmitter.subscribe((changes) => {
+      this.source.remove(changes);
+    });
+    // TODO
+    this.smartTablesService.editRowEmitter.subscribe((changes) => {
+      
+      // this.source.remove(changes);
+    });
+  }
+
   data = [];
 
   settings = {

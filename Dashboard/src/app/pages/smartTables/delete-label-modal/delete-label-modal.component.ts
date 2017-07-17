@@ -8,6 +8,7 @@ import { SmartTablesService } from '../smartTables.service';
   styleUrls: ['./delete-label-modal.component.scss'],
 })
 export class DeleteLabelModalComponent implements OnInit {
+  rowData;
   modalHeader: string;
   tt: number = 0;
   label: string = '';
@@ -27,6 +28,7 @@ export class DeleteLabelModalComponent implements OnInit {
   }
 
   onModalLaunch(rowData) {
+    this.rowData = rowData;
     this.label = rowData.name;
     this.id = rowData._id.$oid;
     this.numImages = rowData.images;
@@ -34,6 +36,7 @@ export class DeleteLabelModalComponent implements OnInit {
     this.warningMessages = [
       `Are you sure? This can't be undone!`,
       `Deleting this label would also delete ${this.numImages} photos, and ${this.numResources} resources attached. Are you absolutely sure?`,
+      ``,
       `Successfully deleted label!`,
     ];
     console.log(this.numResources);
@@ -44,9 +47,10 @@ export class DeleteLabelModalComponent implements OnInit {
       this.safeGuard = true;
       this.tt += 1;
       if (this.tt === 2) {
-        this.stService.deleteLabel(this.id)
+        this.stService.deleteLabel(this.rowData)
           .subscribe(
           (response) => {
+            this.tt+=1;
             console.log(response);
             setTimeout(() => { this.closeModal(); }, 2000);
           },

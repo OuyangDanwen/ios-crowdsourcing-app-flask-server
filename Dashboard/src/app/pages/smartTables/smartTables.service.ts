@@ -9,6 +9,7 @@ export class SmartTablesService {
   addRowEmitter: any = new EventEmitter<any>();
   editRowEmitter: any = new EventEmitter<any>();
   deleteRowEmitter: any = new EventEmitter<any>();
+
   constructor(private http: Http) { }
 
   getLabels() {
@@ -30,7 +31,8 @@ export class SmartTablesService {
       );
   }
 
-  deleteLabel(id) {
+  deleteLabel(row) {
+    const id = row._id.$oid;
     const token = localStorage.getItem('access_token');
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);
@@ -39,6 +41,7 @@ export class SmartTablesService {
       .map(
       (response: Response) => {
         const data = response.json();
+        this.deleteRowEmitter.emit(row);
         return data;
       }
       )
@@ -69,6 +72,10 @@ export class SmartTablesService {
       (response: Response) => {
         const data = response.json();
         console.log(data);
+        // Hack ;D
+        data.images=0;
+        data.resources=0;
+        this.addRowEmitter.emit(data);
         return data;
       }
       ).catch(
@@ -91,6 +98,7 @@ export class SmartTablesService {
       .map(
       (response: Response) => {
         const data = response.json();
+        // this.editRowEmitter.emit(newLabel);
         console.log(data);
         return data;
       },
