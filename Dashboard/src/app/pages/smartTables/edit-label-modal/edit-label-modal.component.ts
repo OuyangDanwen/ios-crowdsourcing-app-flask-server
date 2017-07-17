@@ -10,6 +10,7 @@ export class EditLabelModalComponent implements OnInit {
   oldLabel: string = "";
   newLabel: string = "";
   createdBy: string = "";
+  id: string;
   rowData;
   modalHeader: string;
 
@@ -18,6 +19,7 @@ export class EditLabelModalComponent implements OnInit {
   ngOnInit() { }
 
   onModalLaunch(rowData) {
+    this.id = rowData._id.$oid;
     this.oldLabel = rowData.name;
     this.newLabel = rowData.name;
     this.createdBy = rowData.createdBy;
@@ -25,7 +27,7 @@ export class EditLabelModalComponent implements OnInit {
   }
 
   updateLabel() {
-    this.stService.editLabel(this.oldLabel, this.newLabel)
+    this.stService.editLabel(this.newLabel, this.id)
       .subscribe(
       (response) => {
         console.log(response);
