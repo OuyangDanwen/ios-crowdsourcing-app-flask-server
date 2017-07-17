@@ -3,7 +3,7 @@ from . import *
 
 @app.route('/api/labels', methods=['GET'])
 def getLabels():
-    lbs = [lb for lb in Label.objects()]
+    lbs = [lb for lb in Label.objects().order_by("-createdOn")]
     labels_dict_list = json.loads(json.dumps(lbs, cls=MongoEncoder))
     labels_list = []
     for lb in labels_dict_list:
