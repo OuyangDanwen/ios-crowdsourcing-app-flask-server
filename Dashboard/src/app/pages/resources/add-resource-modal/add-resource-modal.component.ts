@@ -46,18 +46,12 @@ export class AddResourceModalComponent implements OnInit {
   locationLongitudeCurrentLocation: number = 0;
   isLatInvalid: boolean = false;
   isLongInvalid: boolean = false;
-
-  //lat: number = 51.678418;
-  //lng: number = 7.809007;
-
-
   zoom: number = 8;
   longitude: number;
   latitude: number;
   // initial center position for the map
   lat: number = 51.673858;
   lng: number = 7.815982;
-
 
 
   setPosition(position: Position) {
@@ -71,7 +65,7 @@ export class AddResourceModalComponent implements OnInit {
 
   constructor(private resourcesService: ResourcesService, private activeModal: NgbActiveModal,
     private modalService: NgbModal) {
-      this.loadLabels();
+    this.loadLabels();
   }
 
   onModalLaunch() {
@@ -124,38 +118,38 @@ export class AddResourceModalComponent implements OnInit {
   }
 
   setLabel() {
-      this.isEmpty = this.checkEmpty();
-      if(!this.isEmpty){
-        this.labelTxt="";
-      }
-       if(this.labelTxt == "" || this.labelTxt.length==0) {
-        alert('Not a valid resource');
-      }
-      else {
-      this.closeModal();
+    this.isEmpty = this.checkEmpty();
+    if (!this.isEmpty) {
+      this.labelTxt = "";
+    }
+    if (this.labelTxt == "" || this.labelTxt.length == 0) {
+      alert('Not a valid resource');
+    }
+    else {
       this.resourcesService.uploadResource(this.resName.toLowerCase(), this.labelTxt.toLowerCase(),
-      this.resType.toLowerCase(), this.url, this.resFile, this.locationLatitude,
-      this.locationLongitude, this.adapterType.toLowerCase(), this.maxResults)
-      .subscribe(
-      (response) => {
-        console.log(response);
-        this.lgModalShow();
-      },
-      (error) => console.log(error)
-      );
-       }
+        this.resType.toLowerCase(), this.url, this.resFile, this.locationLatitude,
+        this.locationLongitude, this.adapterType.toLowerCase(), this.maxResults)
+        .subscribe(
+        (response) => {
+          this.closeModal();
+          console.log(response);
+          this.lgModalShow();
+        },
+        (error) => console.log(error)
+        );
+    }
   }
 
-  checkEmpty(){
-      for(var i = 0; i < this.labelName.length; i++){
-        if(this.labelTxt == this.labelName[i]){
-          return true;
-        }
+  checkEmpty() {
+    for (var i = 0; i < this.labelName.length; i++) {
+      if (this.labelTxt == this.labelName[i]) {
+        return true;
       }
-      return false;
+    }
+    return false;
   }
-  
-    closeModal() {
+
+  closeModal() {
     this.activeModal.close();
   }
 
@@ -174,7 +168,7 @@ export class AddResourceModalComponent implements OnInit {
 
   //autocomplete check
   labelChanged(newVal) {
-      this.labelTxt = newVal;
+    this.labelTxt = newVal;
   }
 
   isValidCoordinate(coordinate: number) {

@@ -1,5 +1,6 @@
 from . import *
 
+
 def filter_resources_location():
     # get location from session
     # get min max distance from request parameters
@@ -87,24 +88,36 @@ def delete_resource(id):
     return jsonify({'msg': 'Done'}), 200
 
 
-@app.route('/api/resources', methods=['PUT'])
+@app.route('/api/resources/<id>', methods=['PUT'])
 @jwt_required
-def put_resource():
-    # Modify label and whatever it is referencing
-    old_label = request.json.get('name', None) # ==> thie should be the id of the target resource
-    new_label = request.json.get('newname', None) # ==> this should be the new name for the target resource
-    if not len(old_label) > 0:
-        return jsonify({'msg': 'No label found in request'}), 403
-    labelList = Resource.objects(id=old_label)
-    if len(labelList) == 0:
-        return jsonify({"msg": "Label doesn't exist!"}), 401
-    Resource.objects(id=old_label).update_one(name=new_label) 
-    return jsonify({'msg': 'Done'}), 200
+def put_resource(id):
+    try:
+        rsrc = Resource.objects(id=id).first()
+        if not rsrc:
+            return jsonify({"msg": "Resource doesn't exist"}), 400
+        rsrc.label = request.json.get('label')
+        if not Label.objects(name=rsrc.label).first():
+            return jsonify({"msg": "Label doesn't exist"}), 400
+        rsrc.name = request.json.get('name')
+        res_longitude = float(request.json.get('longitude'))
+        res_latitude = float(request.json.get('latitude'))
+        rsrc.location = [res_longitude, res_latitude]
+        if rsrc._cls == "Resource.Link":
+            rsrc.url = request.json.get('url')
+        elif rsrc._cls == "Resource.ContentFeed":
+            rsrc.query = request.json.get('query')
+            rsrc.maxResults = int(request.json.get('maxResults'))
+            rsrc.adapterType = request.json.get('adapterType')
+        saved_obj = rsrc.save()
+    except Exception, e:
+        return jsonify({"msg": e.message}), 401
+    return jsonify(json.loads(json.dumps(saved_obj, cls=MongoEncoder))), 200
 
 
 @app.route('/api/resources', methods=['POST'])
 @jwt_required
 def post_resource():
+    saved_obj = None
     try:
         # Use type to create collection documents
         res_type = request.form["type"]
@@ -118,59 +131,60 @@ def post_resource():
         allowed_res_list = ["text", "document", "link", "video", "audio", "contentfeed"]
         if not any(s == res_type for s in allowed_res_list):
             return jsonify({'msg': 'Invalid resource type'}), 400
+        if len(Label.objects(name=res_label)) == 0:
+            return jsonify({'msg': 'Label does not exist'}), 401
         if res_type == "link":
             res_url = request.form["url"]
-            Link(
+            saved_obj = Link(
                 name=res_name, path=res_url, label=res_label,
                 createdBy=res_createdBy, createdOn=datetime.datetime.now(),
                 url=res_url, location=res_location
             ).save()
-            return jsonify({'msg': 'Saved!'}), 200
-        if res_type == "contentfeed":
+        elif res_type == "contentfeed":
             res_adapter_type = request.form["adapterType"]
             res_query = request.form["query"]
             res_maxResults = int(request.form["maxResults"])
-            ContentFeed(
+            saved_obj = ContentFeed(
                 name=res_name, path="", label=res_label,
                 createdBy=res_createdBy, createdOn=datetime.datetime.now(),
                 adapterType=res_adapter_type, location=res_location,
                 query=res_query, maxResults=res_maxResults
             ).save()
-            return jsonify({'msg': 'Saved!'}), 200
-        # Get file object
-        file = request.files["file"]
-        res_size = request.form["size"]
-        # Get file extension
-        res_extension = file.filename.rsplit('.', 1)[-1].lower()
-        # Assign random name
-        unique_filename = str(uuid.uuid4()) + '.' + str(res_extension)
-        res_path = os.path.join(app.config['RESOURCE_FOLDER'], unique_filename)
-        # save file
-        file.save(res_path)
-        if res_type == "text":
-            Text(
-                name=res_name, path=res_path, label=res_label,
-                createdBy=res_createdBy, createdOn=datetime.datetime.now(),
-                extension=res_extension, size=res_size, location=res_location
-            ).save()
-        if res_type == "document":
-            PDFDocument(
-                name=res_name, path=res_path, label=res_label,
-                createdBy=res_createdBy, createdOn=datetime.datetime.now(),
-                extension=res_extension, size=res_size, location=res_location
-            ).save()
-        elif res_type == "video":
-            Video(
-                name=res_name, path=res_path, label=res_label,
-                createdBy=res_createdBy, createdOn=datetime.datetime.now(),
-                extension=res_extension, size=res_size, location=res_location
-            ).save()
-        elif res_type == "audio":
-            Audio(
-                name=res_name, path=res_path, label=res_label,
-                createdBy=res_createdBy, createdOn=datetime.datetime.now(),
-                extension=res_extension, size=res_size, location=res_location
-            ).save()
+        else:
+            # Get file object
+            res_file = request.files["file"]
+            res_size = request.form["size"]
+            # Get file extension
+            res_extension = request.form["ext"]
+            # Assign random name
+            unique_filename = str(uuid.uuid4()) + '.' + str(res_extension)
+            res_path = os.path.join(app.config['RESOURCE_FOLDER'], unique_filename)
+            # save file
+            res_file.save(res_path)
+            if res_type == "text":
+                saved_obj = Text(
+                    name=res_name, path=res_path, label=res_label,
+                    createdBy=res_createdBy, createdOn=datetime.datetime.now(),
+                    extension=res_extension, size=res_size, location=res_location
+                ).save()
+            elif res_type == "document":
+                saved_obj = PDFDocument(
+                    name=res_name, path=res_path, label=res_label,
+                    createdBy=res_createdBy, createdOn=datetime.datetime.now(),
+                    extension=res_extension, size=res_size, location=res_location
+                ).save()
+            elif res_type == "video":
+                saved_obj = Video(
+                    name=res_name, path=res_path, label=res_label,
+                    createdBy=res_createdBy, createdOn=datetime.datetime.now(),
+                    extension=res_extension, size=res_size, location=res_location
+                ).save()
+            elif res_type == "audio":
+                saved_obj = Audio(
+                    name=res_name, path=res_path, label=res_label,
+                    createdBy=res_createdBy, createdOn=datetime.datetime.now(),
+                    extension=res_extension, size=res_size, location=res_location
+                ).save()
     except KeyError:
         return jsonify({
             'msg': 'Invalid request format or missing parameters! (Use multipart form data)'
@@ -179,4 +193,9 @@ def post_resource():
         return jsonify({
             'msg': 'Resource with name already exists!'
         }), 400
-    return jsonify({'msg': 'Done'}), 200
+    except Exception, e:
+        return jsonify({"msg": e.message}), 401
+    # Return saved object
+    if not saved_obj:
+        return jsonify({'msg': "Couldn't save resource!"}), 403
+    return jsonify(json.loads(json.dumps(saved_obj, cls=MongoEncoder))), 200

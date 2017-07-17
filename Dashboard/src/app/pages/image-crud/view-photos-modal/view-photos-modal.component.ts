@@ -12,18 +12,18 @@ export class ViewPhotosModalComponent implements OnInit {
   isView: boolean = false;
   isDelete: boolean = false;
   imgSrc: string = '';
-
+  rowData;
   constructor(private activeModal: NgbActiveModal, private imgService: ImageCrudService) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   closeModal() {
     this.activeModal.close();
   }
 
-  onModalLaunch(imgSrc, deld) {
-    this.imgSrc = imgSrc;
+  onModalLaunch(rowData, deld) {
+    this.rowData = rowData;
+    this.imgSrc = rowData.dp;
     if (deld === 'delete') {
       this.isDelete = true;
     }
@@ -33,7 +33,7 @@ export class ViewPhotosModalComponent implements OnInit {
   }
 
   deleteImage() {
-    this.imgService.deleteImage(this.imgSrc)
+    this.imgService.deleteImage(this.rowData)
       .subscribe(
       (response) => {
         console.log(response);
