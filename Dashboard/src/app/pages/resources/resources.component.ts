@@ -14,10 +14,10 @@ import { ResourcesService } from './resources.service';
   styleUrls: ['./resources.component.scss']
 })
 export class ResourcesComponent implements OnInit {
-  data = [];
+  source: LocalDataSource = new LocalDataSource();
 
   constructor(private modalService: NgbModal, private activatedRoute: ActivatedRoute,
-  private resourcesService: ResourcesService) {
+    private resourcesService: ResourcesService) {
     this.fillTable();
   }
 
@@ -30,14 +30,18 @@ export class ResourcesComponent implements OnInit {
         this.source.setFilter([{ field: 'label', search: filter }]);
       }
     });
-    this.resourcesService.addRowEmitter.subscribe((changes)=>{
-         this.source.prepend(changes);
+    // Emitters
+    this.resourcesService.addRowEmitter.subscribe((changes) => {
+      this.source.prepend(changes);
 
-     });
-        this.resourcesService.deleteRowEmitter.subscribe((changes)=>{
-         this.source.remove(changes);
-
-     });
+    });
+    this.resourcesService.deleteRowEmitter.subscribe((changes) => {
+      this.source.remove(changes);
+    });
+    // TODO
+    this.resourcesService.editRowEmitter.subscribe((changes) => {
+      // this.source.remove(changes);
+    });
   }
 
   settings = {
@@ -96,7 +100,6 @@ export class ResourcesComponent implements OnInit {
     }
   };
 
-  source: LocalDataSource = new LocalDataSource();
   fillTable() {
     this.resourcesService.getResources()
       .subscribe(

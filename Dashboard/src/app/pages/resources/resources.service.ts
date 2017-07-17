@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ResourcesService {
   addRowEmitter: any = new EventEmitter<any>();
+  editRowEmitter: any = new EventEmitter<any>();
   deleteRowEmitter: any = new EventEmitter<any>();
 
   constructor(private http: Http) { }
@@ -138,8 +139,8 @@ export class ResourcesService {
       formData, options).map(
       (response: Response) => {
         const data = response.json();
+        this.addRowEmitter.emit(data);
         console.log(data);
-        this.emitRow(data);
         return data;
       }
       ).catch(
@@ -148,13 +149,6 @@ export class ResourcesService {
       }
       );
   }
-
-  public emitRow(row){
-    console.log("Emitting: ");
-    console.log(row);
-    this.addRowEmitter.emit(row);
-  }
-
 
   editResource(oldName: string, newName: string) {
     console.log(oldName+'test'+newName);
@@ -169,6 +163,7 @@ export class ResourcesService {
       .map(
       (response: Response) => {
         const data = response.json();
+        // this.editRowEmitter.emit(data); TODO
         console.log(data);
         return data;
       },

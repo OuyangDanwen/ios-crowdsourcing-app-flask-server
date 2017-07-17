@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
 import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
@@ -6,7 +6,9 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class SmartTablesService {
   baseUrl = `http://54.93.252.106:8080/api`;
-
+  addRowEmitter: any = new EventEmitter<any>();
+  editRowEmitter: any = new EventEmitter<any>();
+  deleteRowEmitter: any = new EventEmitter<any>();
   constructor(private http: Http) { }
 
   getLabels() {
