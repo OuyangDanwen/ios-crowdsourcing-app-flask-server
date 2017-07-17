@@ -14,21 +14,26 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
   styleUrls: ['./image-crud.component.scss']
 })
 export class ImageCrudComponent implements OnInit {
+  source: LocalDataSource = new LocalDataSource();
 
-  constructor(private imgService: ImageCrudService, private modalService: NgbModal, private activatedRoute: ActivatedRoute) {
+  constructor(private imgService: ImageCrudService,
+    private modalService: NgbModal, private activatedRoute: ActivatedRoute) {
     this.fillTable();
   }
   ngOnInit() {
     // subscribe to router event
     this.activatedRoute.queryParams.subscribe((params: Params) => {
-        const filter: string = params['label'];
-        console.log(filter);        
-        if (filter){
-          this.source.setFilter([{ field: 'label', search: filter }]);
-        }
-      });
+      const filter: string = params['label'];
+      console.log(filter);
+      if (filter) {
+        this.source.setFilter([{ field: 'label', search: filter }]);
+      }
+    });
+    this.imgService.deleteRowEmitter.subscribe((changes) => {
+      this.source.remove(changes);
+    });
   }
-    data = [];
+  data = [];
   query: string = '';
   settings = {
     mode: 'inline',
@@ -39,12 +44,13 @@ export class ImageCrudComponent implements OnInit {
     },
     columns: {
       dp: {
-      title: 'Display Picture',
-      filter: false,
-      type: 'custom',
-      renderComponent: ImageRenderComponent,
-    },
-    label: {
+        title: 'Display Picture',
+        filter: false,
+        type: 'custom',
+        valuePrepareFunction: (cell, row) => row,
+        renderComponent: ImageRenderComponent,
+      },
+      label: {
         title: 'Label',
         editable: false,
       },
@@ -62,27 +68,28 @@ export class ImageCrudComponent implements OnInit {
           return formattedDate;
         },
       },
-       actions: {
+      actions: {
         title: 'Actions',
         type: 'custom',
         renderComponent: DeleteButtonRenderComponent,
+        valuePrepareFunction: (cell, row) => row,
         filter: false,
         width: '10%',
         hideSubHeader: true
       },
-    }    
+    }
   };
-
-  source: LocalDataSource = new LocalDataSource();
 
   fillTable() {
     this.imgService.getImages()
       .subscribe(
       (labels: any[]) => {
         for (var i = 0; i < labels.length; i++) {
-        labels[i].dp = `http://54.93.252.106:8080/api/images/${labels[i].label}/${labels[i].name}`;
-        labels[i].actions = labels[i].dp;
+          labels[i].dp = `http://54.93.252.106:8080/api/images/${labels[i].label}/${labels[i].name}`;
+          labels[i].actions = labels[i].dp;
         }
+        console.log('labels');
+        console.log(labels);
         this.source.load(labels);
       },
       (error) => { console.log(error); }
