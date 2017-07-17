@@ -13,11 +13,9 @@ export class EditLabelModalComponent implements OnInit {
   rowData;
   modalHeader: string;
 
-  constructor(private stService: SmartTablesService, private activeModal: NgbActiveModal) {}
+  constructor(private stService: SmartTablesService, private activeModal: NgbActiveModal) { }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() { }
 
   onModalLaunch(rowData) {
     this.oldLabel = rowData.name;
@@ -31,14 +29,14 @@ export class EditLabelModalComponent implements OnInit {
       .subscribe(
       (response) => {
         console.log(response);
-        setTimeout(() => {this.closeModal();}, 2000);
+        setTimeout(() => { this.closeModal(); }, 2000);
       },
       (error) => console.log(error)
       );
   }
-isLabelValid(){
-  return this.newLabel.length > 3;
-}
+  isLabelValid() {
+    return this.newLabel.length > 3;
+  }
   closeModal() {
     this.activeModal.close();
   }
