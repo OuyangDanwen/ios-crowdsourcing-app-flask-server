@@ -13,11 +13,12 @@ import { SaveLabelModalComponent } from '../save-label-modal/save-label-modal.co
 
 export class AddLabelModalComponent implements OnInit {
   modalHeader: string;
-  labelTxt: string="";
-  files: FileList; 
+  labelTxt: string = "";
+  files: FileList;
   filesLst: File[] = [];
 
-  constructor(private stService: SmartTablesService, private activeModal: NgbActiveModal,private modalService: NgbModal) {
+  constructor(private stService: SmartTablesService,
+    private activeModal: NgbActiveModal, private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -30,7 +31,7 @@ export class AddLabelModalComponent implements OnInit {
     let files: FileList = target.files;
     this.filesLst = [];
     for (var i = 0; i < files.length; i++) {
-      this.filesLst.push(files[i]);      
+      this.filesLst.push(files[i]);
     }
   }
 
@@ -51,15 +52,15 @@ export class AddLabelModalComponent implements OnInit {
     return this.labelTxt;
   }
   isLabelValid() {
-  return this.labelTxt.length > 3;
-}
+    return this.labelTxt.length > 3;
+  }
 
   closeModal() {
     this.activeModal.close();
   }
 
-   lgModalShow() {
-    const activeModal = this.modalService.open(SaveLabelModalComponent, {size: 'sm'});
+  lgModalShow() {
+    const activeModal = this.modalService.open(SaveLabelModalComponent, { size: 'sm' });
     activeModal.componentInstance.modalHeader = '';
   }
 }
