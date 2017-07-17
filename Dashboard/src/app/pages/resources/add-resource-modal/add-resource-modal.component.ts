@@ -1,9 +1,11 @@
-import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output,ElementRef } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ResourcesService } from '../resources.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SaveResourceModalComponent } from '../save-resource-modal/save-resource-modal.component';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { AgmCoreModule } from '@agm/core';
+
 
 @Component({
   selector: 'add-resource-modal',
@@ -42,12 +44,23 @@ export class AddResourceModalComponent implements OnInit {
   locationLongitude: number = 0;
   locationLatitudeCurrentLocation: number = 0;
   locationLongitudeCurrentLocation: number = 0;
+  isLatInvalid: boolean = false;
+  isLongInvalid: boolean = false;
+  zoom: number = 8;
+  longitude: number;
+  latitude: number;
+  // initial center position for the map
+  lat: number = 51.673858;
+  lng: number = 7.815982;
+
 
   setPosition(position: Position) {
     this.locationLatitude = position.coords.latitude;
     this.locationLongitude = position.coords.longitude;
     this.locationLatitudeCurrentLocation = position.coords.latitude;
     this.locationLongitudeCurrentLocation = position.coords.longitude;
+    this.lat = position.coords.latitude;
+    this.lng = position.coords.longitude;
   }
 
   constructor(private resourcesService: ResourcesService, private activeModal: NgbActiveModal,
@@ -167,20 +180,39 @@ export class AddResourceModalComponent implements OnInit {
   }
 
   isValidLatitudeLongitude(Latitude: number, Longitude: number) {
-    if (this.locationLongitudeCurrentLocation == Longitude &&
-      this.locationLatitudeCurrentLocation == Latitude) {
-      return true;
-    }
+    
+    //error msg
+    if( Longitude === null || !(Longitude >= -180 && Longitude <= 180) || !(this.isValidCoordinate(Longitude)) ){
+        this.isLongInvalid = true;
+      }else{
+        this.isLongInvalid = false; 
+      }
+
+    if( Latitude === null || !(Latitude >= -90 && Latitude <= 90) || !(this.isValidCoordinate(Latitude)) ){
+        this.isLatInvalid = true;
+      }else{
+        this.isLatInvalid = false; 
+      }
+
+
+
+    if( Longitude === null || Latitude === null ){
+        return false;
+      }
 
     if ((Latitude >= -90 && Latitude <= 90) && (Longitude >= -180 && Longitude <= 180)
       && this.isValidCoordinate(Latitude) && this.isValidCoordinate(Longitude)) {
       return true;
     }
+    
+    if ( (this.locationLongitudeCurrentLocation == Longitude &&
+      this.locationLatitudeCurrentLocation == Latitude)) {
+      return true;
+    }
+
     return false;
   }
   disableButton() {
-
-
     if (this.resName.length > 0 && this.labelTxt.length > 0
       && this.isValidLatitudeLongitude(this.locationLatitude, this.locationLongitude)) {
       if ((this.resType === "Link" && this.url.length > 0) || (this.resFile) ||
@@ -197,4 +229,5 @@ export class AddResourceModalComponent implements OnInit {
     const activeModal = this.modalService.open(SaveResourceModalComponent, { size: 'sm' });
     activeModal.componentInstance.modalHeader = '';
   }
+
 }
