@@ -15,6 +15,7 @@ def getLabels():
     }
     return jsonify(ret), 200
 
+
 @app.route('/api/labels', methods = ['POST'])
 @jwt_required
 def postLabel():
@@ -32,32 +33,37 @@ def postLabel():
     saveLabelPhotos(files, label, username)
     return jsonify(json.loads(json.dumps(saved_obj, cls=MongoEncoder))), 200
 
-@app.route('/api/labels/', methods = ['PUT'])
-def putLabel():
-    # Modify label and whatever it is referencing
-    old_label = request.json.get('label', None).lower()
-    new_label = request.json.get('newlabel', None).lower()
-    if not len(old_label) > 0:
-        return jsonify({'msg': 'No label found in request'}), 403
-    labelList = Label.objects(name=old_label)
-    if len(labelList) == 0:
-        return jsonify({"msg": "Label doesn't exist!"}), 401
-    new_path = editLabel(old_label, new_label)
-    # Change labelname in database
-    Label.objects(name=old_label).update_one(name=new_label, path=new_path)
-    # Change label in folder
-    # Change label in database (resources
-    Resource.objects(label=old_label).update(label=new_label)
-    return jsonify({'msg': 'Done'}), 200
+
+@app.route('/api/labels/<id>', methods=['PUT'])
+def putLabel(id):
+    try:
+        lbl = Label.objects(id=id).first()
+        if not lbl:
+            return jsonify({"msg": "Label doesn't exist"}), 400
+        # Modify label and whatever it is referencing
+        old_label = lbl.name
+        new_label = request.json.get('label', None).lower()
+        if not len(new_label) > 0:
+            return jsonify({'msg': 'No label found in request'}), 403
+        new_path = editLabel(old_label, new_label)
+        # Change labelname in database
+        saved_obj = Label.objects(name=old_label).update_one(name=new_label, path=new_path)
+        # Change label in folder
+        # Change label in database (resources
+        Resource.objects(label=old_label).update(label=new_label)
+    except Exception, e:
+        return jsonify({"msg": e.message}), 400
+    return jsonify(json.loads(json.dumps(saved_obj, cls=MongoEncoder))), 200
+
 
 # TODO: Delete from filesystem (both resources, and everything associated with a label :'( )
-@app.route('/api/labels/<label>', methods = ['DELETE'])
-def deleteLabel(label):
-    if not len(label) > 0:
-        return jsonify({'msg': 'No label found in request'}), 403
-    label_obj = Label.objects(name=label)
-    if len(label_obj) == 0:
-        return jsonify({"msg": "Label doesn't exist!"}), 401
-    # try:
-    Label.objects(name=label).delete()
+@app.route('/api/labels/<id>', methods=['DELETE'])
+def deleteLabel(id):
+    try:
+        lbl = Label.objects(id=id).first()
+        if not lbl:
+            return jsonify({"msg": "Label doesn't exist"}), 400
+        Label.objects(id=id).delete()
+    except Exception, e:
+        return jsonify({"msg": e.message}), 400
     return jsonify({'msg': 'Done'}), 200

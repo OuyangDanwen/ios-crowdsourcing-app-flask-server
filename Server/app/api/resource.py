@@ -1,5 +1,6 @@
 from . import *
 
+
 def filter_resources_location():
     # get location from session
     # get min max distance from request parameters
