@@ -21,8 +21,7 @@ export class AddLabelModalComponent implements OnInit {
     private activeModal: NgbActiveModal, private modalService: NgbModal) {
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   //Batch uploading
   onLabel(event: EventTarget) {
@@ -37,11 +36,11 @@ export class AddLabelModalComponent implements OnInit {
 
   setLabel(labelTxt: string) {
     this.labelTxt = labelTxt;
-    this.closeModal();
     this.stService.uploadFileLabel(this.labelTxt, this.filesLst)
       .subscribe(
       (response) => {
         console.log(response);
+        this.closeModal();
         this.lgModalShow();
       },
       (error) => console.log(error)
