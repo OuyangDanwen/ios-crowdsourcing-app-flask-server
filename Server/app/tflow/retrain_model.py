@@ -31,16 +31,11 @@ def retrain():
     os.makedirs(NEW_MODEL_DIR)
 
     start = datetime.now()
-
-    # if other errors persist, try to run ./configure in terminal
+    
     try:
         run_retrainer = subprocess.check_call("python tensorflow/examples/image_retraining/retrain.py", shell=True)
     except Exception:
         shutil.rmtree(NEW_MODEL_DIR)
-    # if run_retrainer != 0:
-    # 	bazel_clean = subprocess.check_call("bazel clean")
-    # 	build_retrainer = subprocess.check_call("bazel build --config=opt --local_resources 2048,.5,1.0 tensorflow/examples/image_retraining:retrain")
-    # 	run_retrainer = subprocess.check_call("python tensorflow/examples/image_retraining/retrain.py")
 
     end = datetime.now()
     elapsed_time = end - start
