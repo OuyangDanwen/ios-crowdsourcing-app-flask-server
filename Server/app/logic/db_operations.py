@@ -3,6 +3,7 @@ from ..db.schema import *
 import datetime
 import os
 import random
+import uuid
 
 USER_LIST = ['danwen', 'humaira', 'muhammad', 'arvind', 'sebastian', 'daniel', 'rene', 'narin', 'onur', 'yosef', 'rao', 'zardosht']
 
@@ -116,3 +117,27 @@ def add_random_resources():
         extension="mp4",
         size="1012392222",
     ).save()
+
+def isImageNameUnique(name):
+    return (schema.Image.objects(name=name).count() == 0)
+
+# only use for purge DB
+def rename_images():
+    cwd = os.listdir(app.config['UPLOAD_FOLDER'])
+    for dir in cwd:
+        label_path = os.path.join(app.config['UPLOAD_FOLDER'], dir)
+        files = os.listdir(label_path)
+        for file in files:
+            oldPath = os.path.join(os.path.join(app.config['UPLOAD_FOLDER'], dir), file)
+            imgName = str(dir) + "_" + str(uuid.uuid4()) + ".jpeg"
+            newPath = os.path.join(os.path.join(app.config['UPLOAD_FOLDER'], dir), imgName)
+            while not isImageNameUnique(newPath):
+                imgName = str(dir) + "_" + str(uuid.uuid4()) + ".jpeg"
+                newPath = os.path.join(os.path.join(app.config['UPLOAD_FOLDER'], dir), imgName)
+            os.rename(oldPath, newPath)
+            # Image(
+            #     name=imgName, path=newPath, label=lb.name, 
+            #     createdOn=datetime.datetime.now(), createdBy=getRandomUser()
+            # ).save()   
+
+
