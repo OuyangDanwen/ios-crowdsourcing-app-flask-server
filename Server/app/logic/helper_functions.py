@@ -45,10 +45,15 @@ def handleLabelForSingleImage(img, label, username, coordinates):
     labels = os.listdir(UPLOAD_FOLDER)
     imgName = label + "_" + str(uuid.uuid4()) + ".jpeg"
     imgPath = os.path.join(UPLOAD_FOLDER, os.path.join(label, imgName))
+
     if label not in labels:
         newdir = os.path.join(UPLOAD_FOLDER, label)
         os.mkdir(newdir)
         os.mkdir(os.path.join(THUMBNAIL_FOLDER, label))
+
+    while not isImageNameUnique(imgName):
+        imgName = label + '_' + str(uuid.uuid4()) + ".jpeg"
+        imgPath = os.path.join(UPLOAD_FOLDER, os.path.join(label, imgName))
     
     with open(imgPath, 'wb') as f:
         f.write(img)
@@ -56,32 +61,6 @@ def handleLabelForSingleImage(img, label, username, coordinates):
     add_label_and_image(label, imgName, username)
     resize(imgPath, imgPath)
     createThumbnail(label, imgName)
-
-    # dirCount = {}
-    # if label in labels:
-    #     dirCount[label] = len(os.listdir(os.path.join(UPLOAD_FOLDER, label))) + 1
-    #     imgName = label + '_' + str(dirCount[label]) + ".jpeg"
-    #     imgPath = os.path.join(label, imgName)
-    #     imgPath = os.path.join(UPLOAD_FOLDER, imgPath)
-    #     with open(imgPath, 'wb') as f:
-    #         f.write(img)
-    #     cropImageExact(imgPath, label, coordinates)
-    #     add_label_and_image(label, imgName, username)
-    #     resize(imgPath, imgPath)
-    #     createThumbnail(label, imgName)
-    # else :
-    #     newdir = os.path.join(UPLOAD_FOLDER, label)
-    #     os.mkdir(newdir)
-    #     imgName = label + '_1.jpeg' 
-    #     imgPath = os.path.join(newdir, imgName)
-    #     with open(imgPath, 'wb') as f:
-    #         f.write(img)
-    #     cropImageExact(imgPath, label, coordinates)
-    #     add_label_and_image(label, imgName, username)
-    #     resize(imgPath, imgPath)
-    #     os.mkdir(os.path.join(THUMBNAIL_FOLDER, label))
-    #     createThumbnail(label, imgName)
-
 
 def saveLabel(label, username):
     labels = os.listdir(UPLOAD_FOLDER)
@@ -97,6 +76,9 @@ def saveLabelPhotos(files, label, username):
         imgName = label + '_' + str(uuid.uuid4()) + ".jpeg"
         imgPath = os.path.join(label, imgName)
         imgPath = os.path.join(UPLOAD_FOLDER, imgPath)
+        while not isImageNameUnique(imgName):
+            imgName = label + '_' + str(uuid.uuid4()) + ".jpeg"
+            imgPath = os.path.join(UPLOAD_FOLDER, os.path.join(label, imgName))
         file.save(imgPath)
         resize(imgPath, imgPath)
         createThumbnail(label, imgName)
