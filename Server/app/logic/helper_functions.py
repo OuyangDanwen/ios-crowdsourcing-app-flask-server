@@ -93,9 +93,7 @@ def saveLabel(label, username):
 
 
 def saveLabelPhotos(files, label, username):
-    #dirCount = {}
     for file in files:
-        #dirCount[label] = len(os.listdir(os.path.join(UPLOAD_FOLDER, label))) + 1
         imgName = label + '_' + str(uuid.uuid4()) + ".jpeg"
         imgPath = os.path.join(label, imgName)
         imgPath = os.path.join(UPLOAD_FOLDER, imgPath)
