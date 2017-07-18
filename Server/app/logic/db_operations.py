@@ -22,16 +22,6 @@ def insert_training_data_and_create_labels():
             lastLogin=datetime.datetime.now()
         )
         user.save()
-        
-    # if schema.User.objects(username="dummy").count() == 0:
-        # user = schema.User(
-        #     usertype="admin", name="admin", username="dummy", 
-        #     password="test", createdOn=datetime.datetime.now(), 
-        #     lastLogin=datetime.datetime.now()
-        # )
-        # user.save()
-    # else:
-    #     user = schema.User.objects.get(username="dummy")   
 
     for dir in cwd:
         label_path = os.path.join(app.config['UPLOAD_FOLDER'], dir)
@@ -131,7 +121,7 @@ def rename_images():
             oldPath = os.path.join(os.path.join(app.config['UPLOAD_FOLDER'], dir), file)
             imgName = str(dir) + "_" + str(uuid.uuid4()) + ".jpeg"
             newPath = os.path.join(os.path.join(app.config['UPLOAD_FOLDER'], dir), imgName)
-            while not isImageNameUnique(newPath):
+            while not isImageNameUnique(imgName):
                 imgName = str(dir) + "_" + str(uuid.uuid4()) + ".jpeg"
                 newPath = os.path.join(os.path.join(app.config['UPLOAD_FOLDER'], dir), imgName)
             os.rename(oldPath, newPath)
