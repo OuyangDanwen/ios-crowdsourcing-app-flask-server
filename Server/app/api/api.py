@@ -45,15 +45,16 @@ def validate_label():
     validation = content['validation']
     FILE_LOCK.acquire()
     if validation:#positive
-        newPath = os.path.join(app.config['UPLOAD_FOLDER'], label)
-        dirCount = len(os.listdir(newPath))
         for filename in filenames:
-            dirCount = dirCount + 1
-            newPath = os.path.join(newPath, label + '_' + str(dirCount) + '.jpeg')
-            os.rename(filename, newPath)
-        createThumbnail(label, newPath)
+            imgName = label + '_' + str(uuid.uuid4()) + ".jpeg"
+            imgPath = os.path.join(app.config['UPLOAD_FOLDER'], os.path.join(label, imgName))
+            while not isImageNameUnique(imgName):
+                imgName = label + '_' + str(uuid.uuid4()) + ".jpeg"
+                imgPath = os.path.join(UPLOAD_FOLDER, os.path.join(label, imgName))
+            os.rename(filename, imgPath)
+        createThumbnail(label, imgPath)
         Image(
-            name=label + '_' + str(dirCount) + '.jpeg', path=newPath, label=label, 
+            name=imgName, path=imgPath, label=label, 
             createdOn=datetime.datetime.now(), createdBy=username
             ).save()
     else:#negative
