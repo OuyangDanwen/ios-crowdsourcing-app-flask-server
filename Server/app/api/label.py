@@ -20,11 +20,15 @@ def getLabels():
 @jwt_required
 def postLabel():
     label = request.form["label"].lower()
+    username = get_jwt_identity_override()
+
     if not len(label) > 0:
         return jsonify({'msg': 'No label found'}), 400
     if len(Label.objects(name=label)) > 0:
-        return jsonify({"msg": "Label already exist!"}), 401
-    username = get_jwt_identity_override()
+        files = request.files.getlist('files[]')
+        saveLabelPhotos(files, label, username)
+        return jsonify({"msg": "Succuess with no new label created"}), 200
+        
     # Save label
     saved_obj = saveLabel(label, username)
     if not saved_obj:
