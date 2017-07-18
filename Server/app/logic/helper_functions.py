@@ -70,7 +70,6 @@ def saveLabel(label, username):
         os.mkdir(os.path.join(THUMBNAIL_FOLDER, label))
         return create_label(label, username)
 
-
 def saveLabelPhotos(files, label, username):
     for file in files:
         imgName = label + '_' + str(uuid.uuid4()) + ".jpeg"
