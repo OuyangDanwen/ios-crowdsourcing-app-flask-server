@@ -119,7 +119,7 @@ def add_random_resources():
     ).save()
 
 def isImageNameUnique(name):
-    return (schema.Image.objects(name=name).count() == 0)
+    return (Image.objects(name=name).count() == 0)
 
 # only use for purge DB
 def rename_images():
