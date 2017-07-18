@@ -135,9 +135,9 @@ def rename_images():
                 imgName = str(dir) + "_" + str(uuid.uuid4()) + ".jpeg"
                 newPath = os.path.join(os.path.join(app.config['UPLOAD_FOLDER'], dir), imgName)
             os.rename(oldPath, newPath)
-            # Image(
-            #     name=imgName, path=newPath, label=lb.name, 
-            #     createdOn=datetime.datetime.now(), createdBy=getRandomUser()
-            # ).save()   
+            Image(
+                name=imgName, path=newPath, label=str(dir), 
+                createdOn=datetime.datetime.now(), createdBy=getRandomUser()
+            ).save()   
 
 
