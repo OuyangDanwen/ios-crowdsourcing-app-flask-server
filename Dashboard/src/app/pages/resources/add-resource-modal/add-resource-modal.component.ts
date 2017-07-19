@@ -46,6 +46,9 @@ export class AddResourceModalComponent implements OnInit {
   locationLongitudeCurrentLocation: number = 0;
   isLatInvalid: boolean = false;
   isLongInvalid: boolean = false;
+  isResultInvalid: boolean = false;
+  isTextInvalid: boolean = false;
+  isURLInvalid: boolean = false;
 
   //lat: number = 51.678418;
   //lng: number = 7.809007;
@@ -85,6 +88,51 @@ export class AddResourceModalComponent implements OnInit {
   onSelectContentFeedChange(value) {
     this.adapterType = value;
   }
+
+
+
+  onchangeLatitude(Latitude){
+    if( Latitude === null || !(Latitude >= -90 && Latitude <= 90) || !(this.isValidCoordinate(Latitude)) ){
+        this.isLatInvalid = true;
+      }else{
+        this.isLatInvalid = false; 
+      }
+  }
+
+  onchangeLongitude(Longitude){
+    if( Longitude === null || !(Longitude >= -180 && Longitude <= 180) || !(this.isValidCoordinate(Longitude)) ){
+      this.isLongInvalid = true;
+    }else{
+      this.isLongInvalid = false; 
+    }
+  }
+
+  onChangeResultvalues(value){
+   if(value<=0 || value>=11){
+      this.isResultInvalid = true;
+   }else{
+      this.isResultInvalid = false;
+   }
+  }
+
+  onChangeURLText(value){
+   if(value.length <= 0){
+      this.isURLInvalid = true;
+   }else{
+      this.isURLInvalid = false;
+   }
+  }
+
+  onChangeNameText(value){
+   if(value.length <= 0){
+      this.isTextInvalid = true;
+   }else{
+      this.isTextInvalid = false;
+   }
+  }
+
+
+
 
   onSelectChange(value) {
     if (!(value === "Link") && !(value === "Contentfeed")) {
@@ -188,19 +236,6 @@ export class AddResourceModalComponent implements OnInit {
   isValidLatitudeLongitude(Latitude: number, Longitude: number) {
     
     //error msg
-    if( Longitude === null || !(Longitude >= -180 && Longitude <= 180) || !(this.isValidCoordinate(Longitude)) ){
-        this.isLongInvalid = true;
-      }else{
-        this.isLongInvalid = false; 
-      }
-
-    if( Latitude === null || !(Latitude >= -90 && Latitude <= 90) || !(this.isValidCoordinate(Latitude)) ){
-        this.isLatInvalid = true;
-      }else{
-        this.isLatInvalid = false; 
-      }
-
-
 
     if( Longitude === null || Latitude === null ){
         return false;
