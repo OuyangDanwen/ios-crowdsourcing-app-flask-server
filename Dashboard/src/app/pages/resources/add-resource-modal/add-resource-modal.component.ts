@@ -247,14 +247,26 @@ export class AddResourceModalComponent implements OnInit {
 
     return false;
   }
+
+//  checkLinkErrors(link,url){
+//     if(link === "Link"){ 
+//         if(url.length <= 0){
+//            this.isURLInvalid = true;
+//         }else{
+//            this.isURLInvalid = false;
+//         }
+//      }
+//  }
+
   disableButton() {
     if (this.resName.length > 0 && this.labelTxt.length > 0
       && this.isValidLatitudeLongitude(this.locationLatitude, this.locationLongitude)) {
-      if ((this.resType === "Link" && this.url.length > 0) || (this.resFile) ||
-        (this.resType === "Contentfeed" && (this.maxResults > 0 && this.maxResults < 11) &&
-          (this.adapterType === "Google" || this.adapterType === "Weather"))) {
-        return false;
-      }
+        //this.checkLinkErrors(this.resType,this.url);
+        if ((this.resType === "Link" && this.url.length > 0) || (this.resFile) ||
+          (this.resType === "Contentfeed" && (this.maxResults > 0 && this.maxResults < 11) &&
+            (this.adapterType === "Google" || this.adapterType === "Weather"))) {
+          return false;
+        }
     }
     return true;
   }

@@ -8,17 +8,55 @@
     <div class="modal-body">
         <form enctype="multipart/form-data" class="form-horizontal">
             <div class="form-group col-md-12">
-                <label for="recipient-name">Resource</label><br>
-                <input class="col-md-12" type="text" name="text" value="{{newName}}" [(ngModel)]="newName">
-            </div>
-            <div class="form-group col-md-12">
                 <label for="recipient-name">Label</label><br>
                 <input class="col-md-12" type="text" name="text" value="{{label}}" disabled>
             </div>
+            <div class="form-group col-md-12">
+                <label for="recipient-name">Name</label>
+                <input class="col-md-12" (change)="onChangeNameText($event.target.value)" type="text" name="text" [(ngModel)]="newName">
+                <div  *ngIf="isTextInvalid"  class="col-xs-5 invalid-field">Enter correct Name value.</div>
+            </div>
+            <div class="form-group col-md-12 ">
+                <label>Latitude:</label>
+                <input id="latitude" class="col-md-12" (change)="onchangeLatitude($event.target.value)"  type="number" value="{{locationLatitude}}" name="latitude" [(ngModel)]="locationLatitude">
+                <div  *ngIf="isLatInvalid" class="col-xs-5 invalid-field">Enter correct Latitude value.</div>
+            </div>
+            <div class="form-group col-md-12 ">    
+                <label>Longitude:</label>
+                <input id="longitude" class="col-md-12" (change)="onchangeLongitude($event.target.value)" type="number" value="{{locationLongitude}}" name="longitude" [(ngModel)]="locationLongitude">
+                <div  *ngIf="isLongInvalid"  class="col-xs-5 invalid-field">Enter correct Longitude value.</div>
+            </div>
+
+             <div class="form-group col-md-12">
+                <agm-map [latitude]="locationLatitude" [longitude]="locationLongitude">
+                  <agm-marker [latitude]="locationLatitude" [longitude]="locationLongitude"></agm-marker>
+                </agm-map>  
+            </div>
+
+
+            <div *ngIf="isLink" class="form-group col-md-12">
+                <label class="form-control-label" for="recipient-name">URL</label><br>
+                <input class="col-md-12" (change)="onChangeURLText($event.target.value)" type="text" name="text" [(ngModel)]="url">
+                <div  *ngIf="isURLInvalid"  class="col-xs-5 invalid-field">Enter correct URL value.</div>
+            </div>
+
+            <div *ngIf="isContentFeed" class="form-group col-md-12">
+                <label for="recipient-name">Adapter</label><br>
+                <select class="col-md-12" (change)="onSelectContentFeedChange($event.target.value)">
+                        <option *ngFor="let r of contentFeedTypes">{{r}}</option>
+                    </select>
+            </div>    
+            <div *ngIf="isContentFeed" class="form-group col-md-12">
+                <label class="form-control-label" for="recipient-name"># Results</label><br>
+                <input class="col-md-12" value="{{maxResults}}" (change)="onChangeResultvalues($event.target.value)" type="number" name="searchResult" min="1" max="10" [(ngModel)]="maxResults">
+                <div  *ngIf="isResultInvalid"  class="col-xs-5 invalid-field">Enter correct Result value.</div>
+            </div>
+
+            
         </form>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Close</button>
-        <button type="button" class="btn btn-danger" [disabled]="!(isLabelValid())" (click)="updateResource()">Save</button>
+        <button type="button" class="btn btn-danger" [disabled]="(isLabelValid())" (click)="updateResource()">Save</button>
     </div>
 </div>

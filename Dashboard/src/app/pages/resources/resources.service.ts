@@ -151,15 +151,46 @@ export class ResourcesService {
       );
   }
 
-  editResource(oldName: string, newName: string) {
-    console.log(oldName+'test'+newName);
-    const req = { "name": oldName, "newname": newName };
+//  editResource(oldName: string, newName: string) {
+  editResource(resName: string, resLabel: string,
+    resType: string, resUrl: string, locationLatitude: number,
+    locationLongitude: number, adapterType: string, maxResults: number,id: string) {
+  const formData = new FormData();
+  debugger;
+    // Attach data 
+    formData.append("name", resName);
+    formData.append("label", resLabel);
+    formData.append('longitude', String(locationLongitude));
+    formData.append('latitude', String(locationLatitude));
+      let req;   
+    console.log("Test " + String(locationLongitude) + "," + String(locationLatitude))
+    switch (resType) {
+      case 'link':
+        req = { 'name': resName, 'label': resLabel, 'longitude': String(locationLongitude),'latitude': String(locationLatitude), 'url': (resUrl)};
+       formData.append("url", encodeURI(resUrl));
+        break;
+      case 'contentfeed':
+        req = { 'name': resName, 'label': resLabel, 'longitude': String(locationLongitude),'latitude': String(locationLatitude), "adapterType": adapterType,"query": resLabel,"maxResults": String(maxResults)};
+        formData.append("adapterType", adapterType);
+        formData.append("query", resLabel);
+        formData.append("maxResults", String(maxResults));
+        break;
+      default:
+       req = { 'name': resName, 'label': resLabel, 'location': [String(locationLongitude),String(locationLatitude)]};
+        console.log("Invalid Resource type @ updating resource")
+        break;
+    }
+
+
+
+    // console.log(oldName+'test'+newName);
+    // const req = { "name": oldName, "newname": newName };
     let headers = new Headers({ 'Content-Type': 'application/json' });
     const token = localStorage.getItem('access_token');
     headers.append('Authorization', 'Bearer ' + token);
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.put(`${this.baseUrl}/resources`,
+    return this.http.put(`${this.baseUrl}/resources/${id}`,
       req, options)
       .map(
       (response: Response) => {
