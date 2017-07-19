@@ -3,6 +3,7 @@ from ..db.schema import *
 import datetime
 import os
 import random
+import uuid
 
 USER_LIST = ['danwen', 'humaira', 'muhammad', 'arvind', 'sebastian', 'daniel', 'rene', 'narin', 'onur', 'yosef', 'rao', 'zardosht']
 
@@ -21,16 +22,6 @@ def insert_training_data_and_create_labels():
             lastLogin=datetime.datetime.now()
         )
         user.save()
-        
-    # if schema.User.objects(username="dummy").count() == 0:
-        # user = schema.User(
-        #     usertype="admin", name="admin", username="dummy", 
-        #     password="test", createdOn=datetime.datetime.now(), 
-        #     lastLogin=datetime.datetime.now()
-        # )
-        # user.save()
-    # else:
-    #     user = schema.User.objects.get(username="dummy")   
 
     for dir in cwd:
         label_path = os.path.join(app.config['UPLOAD_FOLDER'], dir)
@@ -64,7 +55,8 @@ def create_label(label_name, username="dummy"):
         lb = Label(
             name=label_name, path=label_path,
             createdOn=datetime.datetime.now(), createdBy=username
-        ).save()        
+        ).save()
+        return lb
     
 def add_label_and_image(label_name, image_name, username="dummy"):
     if username == 'dummy':
@@ -115,3 +107,27 @@ def add_random_resources():
         extension="mp4",
         size="1012392222",
     ).save()
+
+def isImageNameUnique(name):
+    return (Image.objects(name=name).count() == 0)
+
+# only use for purge DB
+def rename_images():
+    cwd = os.listdir(app.config['UPLOAD_FOLDER'])
+    for dir in cwd:
+        label_path = os.path.join(app.config['UPLOAD_FOLDER'], dir)
+        files = os.listdir(label_path)
+        for file in files:
+            oldPath = os.path.join(os.path.join(app.config['UPLOAD_FOLDER'], dir), file)
+            imgName = str(dir) + "_" + str(uuid.uuid4()) + ".jpeg"
+            newPath = os.path.join(os.path.join(app.config['UPLOAD_FOLDER'], dir), imgName)
+            while not isImageNameUnique(imgName):
+                imgName = str(dir) + "_" + str(uuid.uuid4()) + ".jpeg"
+                newPath = os.path.join(os.path.join(app.config['UPLOAD_FOLDER'], dir), imgName)
+            os.rename(oldPath, newPath)
+            Image(
+                name=imgName, path=newPath, label=str(dir), 
+                createdOn=datetime.datetime.now(), createdBy=getRandomUser()
+            ).save()   
+
+

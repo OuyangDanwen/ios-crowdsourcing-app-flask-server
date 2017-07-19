@@ -4,6 +4,7 @@ import os
 from PIL import Image
 from PIL import ImagePath
 import shutil
+import uuid
 try:
     import numpy as np
     from shapely.geometry import Point
@@ -42,31 +43,24 @@ def predict_helper(img_path, requestFrom):
 # TODO: handling of single instance of data should be made general later
 def handleLabelForSingleImage(img, label, username, coordinates):
     labels = os.listdir(UPLOAD_FOLDER)
-    dirCount = {}
-    if label in labels:
-        dirCount[label] = len(os.listdir(os.path.join(UPLOAD_FOLDER, label))) + 1
-        imgName = label + '_' + str(dirCount[label]) + ".jpeg"
-        imgPath = os.path.join(label, imgName)
-        imgPath = os.path.join(UPLOAD_FOLDER, imgPath)
-        with open(imgPath, 'wb') as f:
-            f.write(img)
-        cropImageExact(imgPath, label, coordinates)
-        add_label_and_image(label, imgName, username)
-        resize(imgPath, imgPath)
-        createThumbnail(label, imgName)
-    else :
+    imgName = label + "_" + str(uuid.uuid4()) + ".jpeg"
+    imgPath = os.path.join(UPLOAD_FOLDER, os.path.join(label, imgName))
+
+    if label not in labels:
         newdir = os.path.join(UPLOAD_FOLDER, label)
         os.mkdir(newdir)
-        imgName = label + '_1.jpeg' 
-        imgPath = os.path.join(newdir, imgName)
-        with open(imgPath, 'wb') as f:
-            f.write(img)
-        cropImageExact(imgPath, label, coordinates)
-        add_label_and_image(label, imgName, username)
-        resize(imgPath, imgPath)
-        mkdir(os.path.join(THUMBNAIL_FOLDER, label))
-        createThumbnail(label, imgName)
+        os.mkdir(os.path.join(THUMBNAIL_FOLDER, label))
 
+    while not isImageNameUnique(imgName):
+        imgName = label + '_' + str(uuid.uuid4()) + ".jpeg"
+        imgPath = os.path.join(UPLOAD_FOLDER, os.path.join(label, imgName))
+    
+    with open(imgPath, 'wb') as f:
+        f.write(img)
+    cropImageExact(imgPath, label, coordinates)
+    add_label_and_image(label, imgName, username)
+    resize(imgPath, imgPath)
+    createThumbnail(label, imgName)
 
 def saveLabel(label, username):
     labels = os.listdir(UPLOAD_FOLDER)
@@ -74,16 +68,16 @@ def saveLabel(label, username):
         newdir = os.path.join(UPLOAD_FOLDER, label)
         os.mkdir(newdir)
         os.mkdir(os.path.join(THUMBNAIL_FOLDER, label))
-        create_label(label, username)
-
+        return create_label(label, username)
 
 def saveLabelPhotos(files, label, username):
-    dirCount = {}
     for file in files:
-        dirCount[label] = len(os.listdir(os.path.join(UPLOAD_FOLDER, label))) + 1
-        imgName = label + '_' + str(dirCount[label]) + ".jpeg"
+        imgName = label + '_' + str(uuid.uuid4()) + ".jpeg"
         imgPath = os.path.join(label, imgName)
         imgPath = os.path.join(UPLOAD_FOLDER, imgPath)
+        while not isImageNameUnique(imgName):
+            imgName = label + '_' + str(uuid.uuid4()) + ".jpeg"
+            imgPath = os.path.join(UPLOAD_FOLDER, os.path.join(label, imgName))
         file.save(imgPath)
         resize(imgPath, imgPath)
         createThumbnail(label, imgName)

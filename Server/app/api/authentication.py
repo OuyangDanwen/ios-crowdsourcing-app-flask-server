@@ -59,6 +59,11 @@ def login():
 def logout():
     try:
         # delete session data
+        username = get_jwt_identity_override()
+        user_folder = os.path.join(app.config['PREDICTION_FOLDER'], username)
+        user_files = os.listdir(user_folder)
+        for file in user_files:
+            os.remove(os.path.join(user_folder, file))
         key = get_jwt_identity()
         localSessionStorage.delete(key)
         revoke_current_token()

@@ -1,10 +1,14 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
 import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ResourcesService {
+  baseUrl = `http://54.93.252.106:8080/api`;
+  addRowEmitter: any = new EventEmitter<any>();
+  editRowEmitter: any = new EventEmitter<any>();
+  deleteRowEmitter: any = new EventEmitter<any>();
 
   constructor(private http: Http) { }
 
@@ -14,7 +18,7 @@ export class ResourcesService {
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);
 
-    return this.http.get(`http://54.93.252.106:8080/api/resources/${name}`, { headers: headers })
+    return this.http.get(`${this.baseUrl}/resources/${name}`, { headers: headers })
       .map(
       (response: Response) => {
         const data = response.json();
@@ -33,7 +37,7 @@ export class ResourcesService {
     const token = localStorage.getItem('access_token');
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);
-    return this.http.get('http://54.93.252.106:8080/api/labels', { headers: headers })
+    return this.http.get(`${this.baseUrl}/labels`, { headers: headers })
       .map(
       (response: Response) => {
         const data = response.json();
@@ -53,7 +57,7 @@ export class ResourcesService {
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);
 
-    return this.http.get('http://54.93.252.106:8080/api/resources', { headers: headers })
+    return this.http.get(`${this.baseUrl}/resources`, { headers: headers })
       .map(
       (response: Response) => {
         const data = response.json();
@@ -68,15 +72,18 @@ export class ResourcesService {
       );
   }
 
-  deleteResource(id) {
+  deleteResource(row) {
+    const id = row._id.$oid;
     const token = localStorage.getItem('access_token');
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);
 
-    return this.http.delete('http://54.93.252.106:8080/api/resources/' + id, { headers: headers })
+    return this.http.delete(`${this.baseUrl}/resources/${id}`, { headers: headers })
       .map(
       (response: Response) => {
         const data = response.json();
+        this.deleteRowEmitter.emit(row);
+        console.log("emitted deleted");
         return data;
       }
       )
@@ -109,6 +116,7 @@ export class ResourcesService {
       case 'text':
         formData.append("file", file);
         formData.append("size", String(file.size));
+        formData.append("ext", file.name.split('.').pop());
         break;
       case 'contentfeed':
         formData.append("adapterType", adapterType);
@@ -128,10 +136,11 @@ export class ResourcesService {
     let options = new RequestOptions({ headers });
     // End headers
 
-    return this.http.post('http://54.93.252.106:8080/api/resources',
+    return this.http.post(`${this.baseUrl}/resources`,
       formData, options).map(
       (response: Response) => {
         const data = response.json();
+        this.addRowEmitter.emit(data);
         console.log(data);
         return data;
       }
@@ -150,11 +159,12 @@ export class ResourcesService {
     headers.append('Authorization', 'Bearer ' + token);
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.put('http://54.93.252.106:8080/api/resources',
+    return this.http.put(`${this.baseUrl}/resources`,
       req, options)
       .map(
       (response: Response) => {
         const data = response.json();
+        // this.editRowEmitter.emit(data); TODO
         console.log(data);
         return data;
       },
