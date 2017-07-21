@@ -17,7 +17,7 @@ export class EditResourceModalComponent implements OnInit {
   newName: string = "";
   label: string = "";
   id: string = "";
-  rowData;
+  rowdata;
   modalHeader: string;
 
   isEmpty: boolean;
@@ -41,7 +41,9 @@ export class EditResourceModalComponent implements OnInit {
   isTextInvalid: boolean = false;
   isURLInvalid: boolean = false;
   
-
+  isWeather: boolean = false;
+  isGoogle: boolean = false;
+  
   // initial center position for the map
   setPosition(position: Position) {
     this.locationLatitudeCurrentLocation = position.coords.latitude;
@@ -53,22 +55,21 @@ export class EditResourceModalComponent implements OnInit {
   ngOnInit() {}
 
   onModalLaunch(rowData) {
+  this.rowdata=rowData;
    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this.setPosition.bind(this));
     };
     this.oldName = rowData.name;
     this.newName = rowData.name;
-    debugger;
     this.locationLatitude = rowData.location.coordinates[0];
     this.locationLongitude = rowData.location.coordinates[1];
     this.resType = rowData._cls;
-    debugger;
-   
+    this.isWeather= false;
+    this.isGoogle= false;
 
-
+debugger;
     this.id = rowData._id.$oid;
     this.label = rowData.label;    
-      debugger;
       if(this.resType === "Resource.Link"){
         this.resType = "Link";
         this.isLink = true;
@@ -77,6 +78,13 @@ export class EditResourceModalComponent implements OnInit {
         this.resType = "ContentFeed";
         this.isContentFeed = true;
         this.adapterType = rowData.adapterType;
+        if(this.adapterType === "google"){
+          this.isWeather= false;
+          this.isGoogle= true;
+        }else if(this.adapterType === "weather"){
+          this.isWeather= true;
+          this.isGoogle= false;
+        }  
         this.maxResults = rowData.maxResults;
       }
   }
@@ -136,19 +144,13 @@ export class EditResourceModalComponent implements OnInit {
   }
 
 
-
-
-
-
   updateResource() {
     console.log(this.newName);
     console.log(this.id);
-
-
 //  this.stService.editResource(this.id, this.newName)
     this.stService.editResource(this.newName.toLowerCase(),this.label,
         this.resType.toLowerCase(), this.url, this.locationLatitude,
-        this.locationLongitude, this.adapterType.toLowerCase(), this.maxResults,this.id)
+        this.locationLongitude, this.adapterType.toLowerCase(), this.maxResults, this.id, this.rowdata)
       .subscribe(
       (response) => {
         console.log(response);

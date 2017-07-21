@@ -42,9 +42,13 @@
 
             <div *ngIf="isContentFeed" class="form-group col-md-12">
                 <label for="recipient-name">Adapter</label><br>
-                <select class="col-md-12" (change)="onSelectContentFeedChange($event.target.value)">
-                        <option *ngFor="let r of contentFeedTypes">{{r}}</option>
-                    </select>
+                <select *ngIf="isWeather" class="col-md-12"  (change)="onSelectContentFeedChange($event.target.value)">
+                    <option  *ngFor="let r of contentFeedTypes" [selected]="r == 'Weather'">{{r}}</option>
+                </select>
+
+                 <select *ngIf="isGoogle" class="col-md-12"  (change)="onSelectContentFeedChange($event.target.value)">
+                    <option  *ngFor="let r of contentFeedTypes" [selected]="r == 'Google'">{{r}}</option>
+                </select>
             </div>    
             <div *ngIf="isContentFeed" class="form-group col-md-12">
                 <label class="form-control-label" for="recipient-name"># Results</label><br>
