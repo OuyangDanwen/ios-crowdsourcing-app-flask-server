@@ -7,7 +7,7 @@
     </div>
     <div class="modal-body col-md-12">
         <div *ngIf="resType == 'video'">
-            <video class="col-md-12" controls>
+            <video class="col-md-12" width="500" height="500" autoplay controls>
                 <source [src]="resourceURL" type="video/mp4">
             </video>
         </div>
@@ -18,7 +18,7 @@
             <embed class="col-md-12" [src]="resourceURL" width="500" height="500" type='text/plain'>
         </div>
         <div *ngIf="resType == 'audio'">
-            <audio class="col-md-12" controls>
+            <audio class="col-md-12" autoplay controls>
                 <source [src]="resourceURL"type="audio/mpeg">
             </audio>
         </div>
