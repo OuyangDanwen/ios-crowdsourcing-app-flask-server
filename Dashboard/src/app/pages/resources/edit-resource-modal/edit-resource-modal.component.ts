@@ -66,8 +66,6 @@ export class EditResourceModalComponent implements OnInit {
     this.resType = rowData._cls;
     this.isWeather= false;
     this.isGoogle= false;
-
-debugger;
     this.id = rowData._id.$oid;
     this.label = rowData.label;    
       if(this.resType === "Resource.Link"){

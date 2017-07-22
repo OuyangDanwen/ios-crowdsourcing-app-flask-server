@@ -156,7 +156,6 @@ export class ResourcesService {
     resType: string, resUrl: string, locationLatitude: number,
     locationLongitude: number, adapterType: string, maxResults: number,id: string,rowdata) {
   const formData = new FormData();
-  debugger;
     // Attach data 
     let  req ;
       console.log("Test " + String(locationLongitude) + "," + String(locationLatitude))
@@ -187,10 +186,6 @@ export class ResourcesService {
         this.addRowEmitter.emit(data);
         console.log(data);
         return data;
-        //const data = response.json();
-              // this.editRowEmitter.emit(data); TODO
-       // console.log(data);
-        //return data;
       },
     )
       .catch(
