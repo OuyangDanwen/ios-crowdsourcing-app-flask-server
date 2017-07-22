@@ -46,6 +46,9 @@ export class AddResourceModalComponent implements OnInit {
   locationLongitudeCurrentLocation: number = 0;
   isLatInvalid: boolean = false;
   isLongInvalid: boolean = false;
+  isResultInvalid: boolean = false;
+  isTextInvalid: boolean = false;
+  isURLInvalid: boolean = false;
   zoom: number = 8;
   longitude: number;
   latitude: number;
@@ -79,6 +82,51 @@ export class AddResourceModalComponent implements OnInit {
   onSelectContentFeedChange(value) {
     this.adapterType = value;
   }
+
+
+
+  onchangeLatitude(Latitude){
+    if( Latitude === null || !(Latitude >= -90 && Latitude <= 90) || !(this.isValidCoordinate(Latitude)) ){
+        this.isLatInvalid = true;
+      }else{
+        this.isLatInvalid = false; 
+      }
+  }
+
+  onchangeLongitude(Longitude){
+    if( Longitude === null || !(Longitude >= -180 && Longitude <= 180) || !(this.isValidCoordinate(Longitude)) ){
+      this.isLongInvalid = true;
+    }else{
+      this.isLongInvalid = false; 
+    }
+  }
+
+  onChangeResultvalues(value){
+   if(value<=0 || value>=11){
+      this.isResultInvalid = true;
+   }else{
+      this.isResultInvalid = false;
+   }
+  }
+
+  onChangeURLText(value){
+   if(value.length <= 0){
+      this.isURLInvalid = true;
+   }else{
+      this.isURLInvalid = false;
+   }
+  }
+
+  onChangeNameText(value){
+   if(value.length <= 0){
+      this.isTextInvalid = true;
+   }else{
+      this.isTextInvalid = false;
+   }
+  }
+
+
+
 
   onSelectChange(value) {
     if (!(value === "Link") && !(value === "Contentfeed")) {
@@ -182,19 +230,6 @@ export class AddResourceModalComponent implements OnInit {
   isValidLatitudeLongitude(Latitude: number, Longitude: number) {
     
     //error msg
-    if( Longitude === null || !(Longitude >= -180 && Longitude <= 180) || !(this.isValidCoordinate(Longitude)) ){
-        this.isLongInvalid = true;
-      }else{
-        this.isLongInvalid = false; 
-      }
-
-    if( Latitude === null || !(Latitude >= -90 && Latitude <= 90) || !(this.isValidCoordinate(Latitude)) ){
-        this.isLatInvalid = true;
-      }else{
-        this.isLatInvalid = false; 
-      }
-
-
 
     if( Longitude === null || Latitude === null ){
         return false;
@@ -212,14 +247,26 @@ export class AddResourceModalComponent implements OnInit {
 
     return false;
   }
+
+//  checkLinkErrors(link,url){
+//     if(link === "Link"){ 
+//         if(url.length <= 0){
+//            this.isURLInvalid = true;
+//         }else{
+//            this.isURLInvalid = false;
+//         }
+//      }
+//  }
+
   disableButton() {
     if (this.resName.length > 0 && this.labelTxt.length > 0
       && this.isValidLatitudeLongitude(this.locationLatitude, this.locationLongitude)) {
-      if ((this.resType === "Link" && this.url.length > 0) || (this.resFile) ||
-        (this.resType === "Contentfeed" && (this.maxResults > 0 && this.maxResults < 11) &&
-          (this.adapterType === "Google" || this.adapterType === "Weather"))) {
-        return false;
-      }
+        //this.checkLinkErrors(this.resType,this.url);
+        if ((this.resType === "Link" && this.url.length > 0) || (this.resFile) ||
+          (this.resType === "Contentfeed" && (this.maxResults > 0 && this.maxResults < 11) &&
+            (this.adapterType === "Google" || this.adapterType === "Weather"))) {
+          return false;
+        }
     }
     return true;
   }

@@ -151,20 +151,39 @@ export class ResourcesService {
       );
   }
 
-  editResource(oldName: string, newName: string) {
-    console.log(oldName+'test'+newName);
-    const req = { "name": oldName, "newname": newName };
+//  editResource(oldName: string, newName: string) {
+  editResource(resName: string, resLabel: string,
+    resType: string, resUrl: string, locationLatitude: number,
+    locationLongitude: number, adapterType: string, maxResults: number,id: string,rowdata) {
+  const formData = new FormData();
+    // Attach data 
+    let  req ;
+      console.log("Test " + String(locationLongitude) + "," + String(locationLatitude))
+    switch (resType) {
+      case 'link':    
+       req = { 'name': resName, 'label': resLabel, 'longitude': String(locationLongitude),'latitude': String(locationLatitude), 'url': (resUrl)};
+        break;
+      case 'contentfeed':
+        req = { 'name': resName, 'label': resLabel, 'longitude': String(locationLongitude),'latitude': String(locationLatitude), "adapterType": adapterType,"query": resLabel,"maxResults": String(maxResults)};
+        break;
+      default:
+       req = { 'name': resName, 'label': resLabel, 'longitude': String(locationLongitude),'latitude': String(locationLatitude)};
+        console.log("Invalid Resource type @ updating resource")
+        break;
+    }
+
     let headers = new Headers({ 'Content-Type': 'application/json' });
     const token = localStorage.getItem('access_token');
     headers.append('Authorization', 'Bearer ' + token);
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.put(`${this.baseUrl}/resources`,
+    return this.http.put(`${this.baseUrl}/resources/${id}`,
       req, options)
       .map(
       (response: Response) => {
         const data = response.json();
-        // this.editRowEmitter.emit(data); TODO
+        this.deleteRowEmitter.emit(rowdata);
+        this.addRowEmitter.emit(data);
         console.log(data);
         return data;
       },
