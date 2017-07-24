@@ -55,6 +55,7 @@ def putLabel(id):
         # Change label in folder
         # Change label in database (resources
         Resource.objects(label=old_label).update(label=new_label)
+        Image.objects(label=old_label).update(label=new_label)
     except Exception, e:
         return jsonify({"msg": e.message}), 400
     return jsonify(json.loads(json.dumps(saved_obj, cls=MongoEncoder))), 200
