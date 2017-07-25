@@ -6,7 +6,7 @@ export const PAGES_MENU = [
         path: 'dashboard',
         data: {
           menu: {
-            title: 'Overview',
+            title: 'OVERVIEW',
             icon: 'ion-android-home',
             selected: false,
             expanded: false,
@@ -18,7 +18,7 @@ export const PAGES_MENU = [
         path: 'smartTables',
         data: {
           menu: {
-            title: 'Labels',
+            title: 'LABELS',
             icon: 'ion-flag',
             selected: false,
             expanded: false,
@@ -30,7 +30,7 @@ export const PAGES_MENU = [
         path: 'resources',
         data: {
           menu: {
-            title: 'Resources',
+            title: 'RESOURCES',
             icon: 'ion-folder',
             selected: false,
             expanded: false,
@@ -42,7 +42,7 @@ export const PAGES_MENU = [
         path: 'images',
         data: {
           menu: {
-            title: 'Images',
+            title: 'IMAGES',
             icon: 'ion-images',
             selected: false,
             expanded: false,
