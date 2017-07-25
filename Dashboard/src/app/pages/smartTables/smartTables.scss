@@ -59,6 +59,7 @@
         tbody {
             tr {
                 color: $default-text;
+                font-size: 18px;
             }
             tr:hover {
                 background: rgba(0, 0, 0, 0.03);
@@ -71,7 +72,7 @@
             text-align: right;
         }
         a.ng2-smart-sort-link {
-            font-size: 14px !important;
+            font-size: 16px !important;
             color: $default-text;
             font-weight: $font-bolder;
             &.sort {
