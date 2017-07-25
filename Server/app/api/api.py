@@ -52,7 +52,7 @@ def validate_label():
                 imgName = label + '_' + str(uuid.uuid4()) + ".jpeg"
                 imgPath = os.path.join(UPLOAD_FOLDER, os.path.join(label, imgName))
             os.rename(filename, imgPath)
-        createThumbnail(label, imgPath)
+        createThumbnail(label, imgName)
         Image(
             name=imgName, path=imgPath, label=label, 
             createdOn=datetime.datetime.now(), createdBy=username
