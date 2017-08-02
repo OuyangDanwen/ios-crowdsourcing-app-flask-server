@@ -1,0 +1,35 @@
+<div class="modal-content col-md-12">
+    <div class="modal-header">
+        <h5 class="modal-title col-md-12" id="exampleModalLabel">{{modalHeader}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body col-md-12">
+        <div *ngIf="resType == 'video'">
+            <video class="col-md-12" width="500" height="500" autoplay controls>
+                <source [src]="resourceURL" type="video/mp4">
+            </video>
+        </div>
+        <div *ngIf="resType == 'pdf'">
+            <embed class="col-md-12" [src]="resourceURL" width="500" height="500" type='application/pdf'>
+        </div>
+        <div *ngIf="resType == 'text'">
+            <embed class="col-md-12" [src]="resourceURL" width="500" height="500" type='text/plain'>
+        </div>
+        <div *ngIf="resType == 'audio'">
+            <audio class="col-md-12" autoplay controls>
+                <source [src]="resourceURL"type="audio/mpeg">
+            </audio>
+        </div>
+        <div *ngIf="resType == 'link'">
+            <div class="col-md-12" [innerHtml]="htmlContent"></div>
+        </div>
+        <div *ngIf="resType == 'contentfeed'">
+            <div class="col-md-12" [innerHtml]="htmlContent"></div>
+        </div>
+    </div>
+    <div class="modal-footer col-md-12">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Close</button>
+    </div>
+</div>

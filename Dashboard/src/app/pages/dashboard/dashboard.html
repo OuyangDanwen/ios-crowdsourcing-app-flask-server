@@ -1,0 +1,77 @@
+<div class="widgets">
+    <ba-card title="" baCardClass="with-scroll">
+        <div class="row">
+            <div class=" col-md-3">
+                <div class="card-block">
+                    <h1 class="card-title">TF VERSION</h1>
+                    <hr>
+                    <p class="card-text">{{this.version}}</p>
+                </div>
+            </div>
+            <div class=" col-md-3">
+                <div class="card-block">
+                    <h1 class="card-title">LAST RETRAINING</h1>
+                    <hr>
+                    <p class="card-text">{{this.training_time}}</p>
+
+                </div>
+            </div>
+            <div class=" col-md-3">
+                <div class="card-block">
+                    <h1 class="card-title">IMAGES</h1>
+                    <hr>
+                    <p class="card-text">{{this.num_images[1]}}</p>
+                </div>
+            </div>
+            <div class=" col-md-3">
+                <div class="card-block">
+                    <h1 class="card-title">SERVER VERSION</h1>
+                    <hr>
+                    <p class="card-text"> {{this.repoVersion}}</p>
+                </div>
+            </div>
+        </div>
+    </ba-card>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row show-grid">
+                <div class="col-xl-3 col-lg-6 col-md-6">
+                    <form enctype="multipart/form-data" class="form-horizontal">
+                        <ba-card title="Predict" baCardClass="with-scroll">
+                            <ba-picture-uploader [picture]="profile.picture" [defaultPicture]="defaultPicture" [uploaderOptions]="uploaderOptions" (change)="onChange($event)"></ba-picture-uploader>
+                        </ba-card>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <ba-card title="Predictions" baCardClass="with-scroll table-panel">
+                        <div class="horizontal-scroll">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr class="black-muted-bg">
+                                        <th class="align-right">Label</th>
+                                        <th class="table-arr"></th>
+                                        <th class="align-right">Confidence Score</th>
+                                        <th class="table-arr"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of metricsTableData1" class="no-top-border">
+                                        <td class="align-right">{{item.label}}</td>
+                                        <td></td>
+                                        <td class="align-right">{{item.confidence}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </ba-card>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <button class="btn btn-success" (click)="retrainModal()">Retrain</button>
+        </div>
+    </div>
+</div>

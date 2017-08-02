@@ -1,0 +1,107 @@
+@import "../../theme/sass/conf/conf";
+:host /deep/ .widgets {
+    .smart-table-container {
+        width: 100%;
+    }
+}
+
+.row {
+    border: 1px solid $border-light !important;
+}
+
+:host /deep/ {
+    ng2-smart-table {
+        th,
+        td {
+            border: 1px solid $border-light !important;
+            line-height: 35px;
+            vertical-align: middle;
+        }
+        table tr td {
+            padding: 0 8px;
+        }
+
+        .action-property{
+            -khtml-opacity:.80; 
+            -moz-opacity:.80; 
+            -ms-filter:”alpha(opacity=80)”;
+            filter:alpha(opacity=80);
+            filter: progid:DXImageTransform.Microsoft.Alpha(opacity=.80);
+            opacity:.80; 
+            color: white;      
+            font-size: 12px;
+            line-height: 1.5; 
+            padding-bottom: 0px;
+            padding-top: 0px;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin-right: 10px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            
+        }
+
+        #action-btn *:last-child{
+            margin-right: 0px !important;
+        }
+
+        .action-property i{
+            color: white;            
+        }
+
+
+        color: $default-text;
+        input {
+            line-height: 1.5 !important;
+        }
+        ng2-smart-table-cell {
+            color: $default-text;
+            line-height: 35px;
+        }
+        tbody {
+            tr {
+                color: $default-text;
+                font-size: 18px;
+            }
+            tr:hover {
+                background: rgba(0, 0, 0, 0.03);
+            }
+        }
+        a.ng2-smart-sort-link {
+            font-size: 16px !important;
+            color: $default-text;
+            font-weight: $font-bolder;
+            &.sort {
+                font-weight: $font-bolder !important;
+                &::after {
+                    border-bottom-color: $default-text !important;
+                }
+            }
+        }
+        .ng2-smart-actions {
+            width: 70px;
+            text-align: center;
+            .actions {
+                float: none;
+                text-align: center;
+            }
+        }
+        .ng2-smart-actions-title-add {
+            text-align: center;
+        }
+        a.ng2-smart-action,
+        .ng2-smart-title {
+            font-size: 14px !important;
+            color: $default-text;
+            padding: 0 5px;
+            display: inline-block;
+            &.ng2-smart-action-add-add {
+                font-size: 25px !important;
+            }
+        }
+        nav.ng2-smart-pagination-nav {
+            display: flex;
+            justify-content: center;
+        }
+    }
+}
